@@ -1,0 +1,197 @@
+{
+  "worker": 31,
+  "reviewed_worker": 30,
+  "review_date": "2026-10-14",
+  "timezone": "Asia/Riyadh",
+  "verdict": "NO-GO",
+  "production_migration_authorized": false,
+  "production_migration_performed": false,
+  "findings": {
+    "F-01": {
+      "status": "FAIL",
+      "summary": "Candidate fields are re-extracted, but caller-supplied fetch bytes and metadata are trusted without origin attestation, and the Migration 003 approval trigger can be bypassed by registering a same-named connection-local SQLite function that returns 1.",
+      "reproductions": [
+        {
+          "case": "Caller supplies fabricated fetch content and metadata",
+          "result": "append_landing_page_fetch accepted caller HTML plus a caller-claimed trusted fetcher, network_io/tls_verified metadata, and a resolved URL on attacker.example. The stored locally-computed hash matched the submitted bytes; re-extraction produced 1299.9 DZD SOURCE_CONFIRMED. A forged caller candidate claiming EUR, amount 1, and extraction version 999 was ignored."
+        },
+        {
+          "case": "Unsigned direct approval with a spoofed SQLite verifier",
+          "result": "Direct APPROVED insert without the verifier failed with 'no such function'. After registering kratzwerk_price_review_authorized as lambda *args: 1, the same unsigned review by untrusted-caller succeeded and trusted_price_evidence returned the price. No HMAC key was used."
+        }
+      ],
+      "signing_design": {
+        "key_source": "KRATZWERK_PRICE_REVIEW_HMAC_KEY in the application process environment; no isolated signer service or reviewer identity provider exists in this repository.",
+        "signed_fields": "Exact evidence ID, decision, reviewer label, review fields, reasons, and caller-provided review evidence. Underlying price_evidence fields are represented only through the evidence ID.",
+        "canonicalization": "Sorted-key compact JSON is deterministic for ordinary JSON values, but is not strict canonical JSON; json.dumps retains allow_nan=True.",
+        "replay": "A valid signature is bound to evidence ID, decision, reviewer, and changed review fields, preventing cross-item/decision/reviewer/currency reuse through the repository verifier. No explicit key ring or rotation/revocation policy exists; already inserted approvals remain eligible after key change.",
+        "trigger": "The trigger delegates to a connection-local UDF and does not authenticate the registered function or verify HMAC in SQL."
+      }
+    },
+    "F-02": {
+      "status": "PARTIAL",
+      "summary": "Public API and Migration 003 close the nonnumeric-text trusted-price defect and enforce finite positive bounds, but SQLite coerces a Python bool bound through direct SQL to numeric 1.0, which passes the numeric storage/range gate.",
+      "policy": {
+        "minimum_exclusive": 0,
+        "maximum_inclusive": 1000000000000,
+        "finite_only": true
+      },
+      "direct_sql_probes": {
+        "rejected": ["nonnumeric text", "BLOB", "positive infinity", "negative infinity", "zero", "negative", "above 1e12"],
+        "accepted_after_sqlite_coercion": {
+          "python_bool_true": {"sqlite_type": "real", "stored_value": 1.0},
+          "numeric_string_100": {"sqlite_type": "real", "stored_value": 100.0},
+          "inclusive_ceiling": {"sqlite_type": "real", "stored_value": 1000000000000.0}
+        },
+        "nan": "Bound NaN becomes NULL and is excluded from trusted_price_evidence."
+      },
+      "regression_test": "test_malformed_candidate_amount_is_rejected_at_api_and_database_boundaries confirms malformed text remains excluded from the trusted view even after dropping the test insert trigger."
+    },
+    "F-03": {
+      "status": "PASS",
+      "summary": "The documented ASCII identifier case and ordinary-identifier quoting equivalences pass; tested meaningful column and CHECK-literal drift is rejected before baseline or backup mutation.",
+      "tests": [
+        "tests.test_foundation_v2.FoundationSchemaSafetyTests.test_ascii_identifier_case_and_quoting_equivalence_is_accepted",
+        "tests.test_foundation_v2.FoundationSchemaSafetyTests.test_meaningful_identifier_drift_is_still_rejected",
+        "tests.test_foundation_v2.FoundationSchemaSafetyTests.test_check_literal_case_drift_is_rejected_before_baselining"
+      ],
+      "limitation": "Pass applies to the documented dialect and tested cases; tokenizer is not a full SQLite semantic parser."
+    },
+    "F-04": {
+      "status": "PASS",
+      "summary": "Restore staging, verification, replacement, and post-install failures preserve the target and sidecars and remove the stage in isolated fixtures.",
+      "injected_failures": [
+        "stage copy before writing",
+        "partial stage copy after writing bytes",
+        "staged verification",
+        "target replacement",
+        "post-install verification"
+      ],
+      "partial_copy_probe": {
+        "target_bytes_unchanged": true,
+        "wal_shm_unchanged": true,
+        "stage_files_remaining": []
+      }
+    },
+    "F-05": {
+      "status": "PASS",
+      "summary": "Manifest verification does not create or replace keys. Missing/invalid behavior passed the focused suite; wrong and changed 32-byte keys fail verification without changing key bytes or temporary files.",
+      "wrong_or_changed_key_error": "Backup provenance manifest signature is invalid",
+      "temporary_artifacts_changed_during_inspection": false
+    }
+  },
+  "validation": {
+    "focused_suites": {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest tests.test_foundation_v2 tests.test_migration_lifecycle tests.test_migration_cli_safety tests.test_price_evidence tests.test_ouedkniss_sensor_v2 -q",
+      "exit_code": 0,
+      "status": "PASSED",
+      "tests": 93,
+      "duration_seconds": 44.242
+    },
+    "full_suite": {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -q",
+      "exit_code": 0,
+      "status": "PASSED",
+      "tests": 219,
+      "duration_seconds": 107.643
+    },
+    "isolated_reproductions": [
+      "F-01: caller-controlled source bytes/metadata and resolved URL; forged candidate is ignored but caller content is re-extracted.",
+      "F-01: direct unsigned approval fails without UDF and succeeds with same-named UDF registered to return 1; trusted view exposes row.",
+      "F-02: direct SQLite text/BLOB/range/boolean/NaN/infinity/numeric-string coercion probes.",
+      "F-04: partial stage-file write followed by exception; target and sidecars unchanged, no stage remains.",
+      "F-05: missing/invalid key regression tests and changed/wrong-key verification with temporary manifest keys."
+    ],
+    "migration_lifecycle": {
+      "status": "PASSED_ON_ISOLATED_DATABASES",
+      "sequence": "001 -> 002 -> 003",
+      "migration_003_failure_points": 7,
+      "rollback_and_retry": "Each injected failure restored versions 1/2 and a subsequent retry applied version 3.",
+      "checksum_drift_and_incomplete_state": "Rejected in focused lifecycle suite.",
+      "rollback_policy": "Forward-only; destructive rollback refused."
+    },
+    "not_run": []
+  },
+  "migration_checksums": {
+    "001_foundation_v2.sql": {
+      "sha256": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+      "matches_recorded_value": true
+    },
+    "002_price_evidence.sql": {
+      "sha256": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844",
+      "matches_recorded_value": true
+    },
+    "003_price_evidence_trust_policy.sql": {
+      "sha256": "f91fb42af6d2f9556fafe6252b7395c85bb3e1778abc11195f5f1fa5a51245b6",
+      "production_registry_value": null
+    }
+  },
+  "production_read_only_audit": {
+    "path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+    "connection": "SQLite file URI mode=ro with PRAGMA query_only=ON",
+    "before": {
+      "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+      "integrity_check": "ok",
+      "foreign_key_violations": 0,
+      "migration_002_objects": [],
+      "migration_003_objects": [],
+      "schema_migrations": null,
+      "user_version": 0,
+      "wal_exists": false,
+      "shm_exists": false,
+      "table_counts": {
+        "sellers": 3,
+        "marketplace_listings": 17,
+        "marketplace_listing_observations": 51,
+        "facebook_ads": 162,
+        "facebook_ad_observations": 217,
+        "products": 0,
+        "product_aliases": 0,
+        "product_mappings": 0,
+        "legacy_products": 18,
+        "legacy_sellers": 3,
+        "legacy_marketplace_listings": 17,
+        "legacy_price_history": 0,
+        "legacy_advertising_campaigns": 69
+      }
+    },
+    "after": {
+      "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+      "integrity_check": "ok",
+      "foreign_key_violations": 0,
+      "migration_002_objects": [],
+      "migration_003_objects": [],
+      "schema_migrations": null,
+      "user_version": 0,
+      "wal_exists": false,
+      "shm_exists": false,
+      "table_counts": {
+        "sellers": 3,
+        "marketplace_listings": 17,
+        "marketplace_listing_observations": 51,
+        "facebook_ads": 162,
+        "facebook_ad_observations": 217,
+        "products": 0,
+        "product_aliases": 0,
+        "product_mappings": 0,
+        "legacy_products": 18,
+        "legacy_sellers": 3,
+        "legacy_marketplace_listings": 17,
+        "legacy_price_history": 0,
+        "legacy_advertising_campaigns": 69
+      }
+    },
+    "unchanged": true
+  },
+  "safety": {
+    "production_write_connection_opened": false,
+    "production_backup_created": false,
+    "production_migration_002_or_003_applied": false,
+    "production_capture_or_recovery_or_restore_or_rollback_run": false,
+    "production_review_key_created_or_provisioned": false,
+    "original_legacy_database_modified": false,
+    "code_or_migrations_modified": false,
+    "mutation_tests_used_temporary_databases": true,
+    "dependencies_installed": false
+  }
+}
