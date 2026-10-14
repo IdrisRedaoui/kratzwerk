@@ -1,0 +1,173 @@
+{
+  "worker": "032",
+  "title": "Price Evidence Trust Boundary Remediation",
+  "date": "2026-10-14",
+  "timezone": "Asia/Riyadh",
+  "overall_verdict": "READY WITH CONDITIONS",
+  "production_ready": false,
+  "production_migration_authorized": false,
+  "production_migration_performed": false,
+  "production_review_key_provisioned": false,
+  "findings": {
+    "F-01A": {
+      "status": "FIXED",
+      "summary": "Caller-submitted bytes and fetch claims are audit input only; they cannot establish verified fetch provenance, SOURCE_CONFIRMED currency, or trusted Facebook prices.",
+      "before": {
+        "amount": 1299.9,
+        "currency": "DZD",
+        "currency_basis": "SOURCE_CONFIRMED",
+        "attacker_resolved_url_accepted": true,
+        "claimed_trusted_fetcher_accepted": true,
+        "claimed_tls_verified_accepted": true,
+        "claimed_network_io_accepted": true,
+        "local_content_hash_matched_submitted_bytes": true
+      },
+      "after": {
+        "provenance_status": "UNVERIFIED",
+        "normalized_resolved_url": null,
+        "normalized_http_status": null,
+        "normalized_content_type": null,
+        "fetcher_label": "untrusted_caller_submission",
+        "amount_retained_for_audit": 1299.9,
+        "currency": null,
+        "currency_basis": "UNKNOWN",
+        "product_identity_status": "UNVERIFIED",
+        "trusted_price_view_contains_price": false,
+        "content_hash_authenticates_origin": false
+      },
+      "remaining_condition": "No controlled network fetcher exists. Keep provenance verification disabled until a trusted service binds fetch evidence to the exact observation and destination, validates DNS and every redirect/target, and authenticates its fetch attestation."
+    },
+    "F-01B": {
+      "status": "PARTIAL",
+      "summary": "SQLite UDF authorization bypass and public API approval paths are closed, but no real authenticated reviewer, isolated signer, protected key lifecycle, or verified persistence service exists.",
+      "before": {
+        "spoofed_udf_name": "kratzwerk_price_review_authorized",
+        "spoofed_udf_return_value": 1,
+        "unsigned_approval_accepted": true,
+        "trusted_view_returned_approved_price": true,
+        "trusted_price": 72000.0,
+        "currency": "DZD"
+      },
+      "after": {
+        "spoofed_udf_has_effect": false,
+        "unsigned_approval_rejected": true,
+        "verified_authorization_claim_rejected": true,
+        "approval_api_enabled": false,
+        "trusted_view_contains_approved_price": false,
+        "repository_signing_function_or_signature_parameter": false
+      },
+      "remaining_condition": "Before enabling approvals, implement and independently review authenticated reviewer identity, an isolated signer, asymmetric signing and verification, strict signed-field binding, key IDs/rotation/revocation, missing/unknown/invalid-key fail-closed behavior, and a controlled verified persistence path."
+    },
+    "F-02": {
+      "status": "FIXED",
+      "summary": "Supported public Python APIs validate numeric candidates before SQLite binding, including explicit bool rejection and finite positive policy bounds.",
+      "api_rejects": [
+        "True",
+        "False",
+        "numeric-looking strings",
+        "BLOBs",
+        "NaN",
+        "positive and negative infinity",
+        "zero",
+        "negative amounts",
+        "amounts greater than 1e12"
+      ],
+      "api_accepts_upper_bound": true,
+      "limitation": "SQLite REAL affinity converts a bound Python True to numeric 1.0, indistinguishable from integer 1 after conversion. Direct unrestricted SQLite file writers are outside the supported API trust boundary and require OS/process controls."
+    },
+    "migration_lifecycle": {
+      "status": "FIXED",
+      "summary": "Migration 004 adds closed trust boundaries as a forward-only transactional migration; migrations 001, 002, and 003 remain byte-for-byte unchanged.",
+      "migration_004_sql_statements": 7,
+      "failure_injection_rolls_back_each_statement": true,
+      "retry_after_rollback_succeeds": true,
+      "incomplete_state_and_checksum_drift_rejected": true,
+      "existing_003_reviews_default_to_unverified": true
+    }
+  },
+  "security_regressions": {
+    "fabricated_fetch_attack_reproduced_before_fix": true,
+    "spoofed_sqlite_udf_attack_reproduced_before_fix": true,
+    "forged_extracted_candidate_fields_ignored": true,
+    "unsigned_approval_rejected": true,
+    "verified_authorization_claim_rejected": true,
+    "invalid_modified_and_replayed_signature_attempts_rejected_at_api_boundary": true,
+    "missing_key_configuration_does_not_enable_approval": true,
+    "strict_json_rejects_non_string_keys_and_non_finite_numbers": true,
+    "ssrf_obvious_local_and_non_public_ip_targets_rejected": true,
+    "numeric_binding_probe_matrix_recorded": true
+  },
+  "migration_checksums_sha256": {
+    "001_foundation_v2.sql": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+    "002_price_evidence.sql": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844",
+    "003_price_evidence_trust_policy.sql": "f91fb42af6d2f9556fafe6252b7395c85bb3e1778abc11195f5f1fa5a51245b6",
+    "004_closed_price_trust_boundaries.sql": "f8677b4c76dd956f4316a12d4ec09d4b9161f54f06aa10201fa32a4e9eda03f3"
+  },
+  "tests": [
+    {
+      "command": "python -B -m unittest tests.test_price_evidence -q",
+      "result": "passed",
+      "tests": 35
+    },
+    {
+      "command": "python -B -m unittest tests.test_migration_lifecycle -q",
+      "result": "passed",
+      "tests": 21
+    },
+    {
+      "command": "python -B -m unittest tests.test_foundation_v2 tests.test_migration_lifecycle tests.test_migration_cli_safety tests.test_price_evidence tests.test_ouedkniss_sensor_v2 -q",
+      "result": "passed",
+      "tests": 101
+    },
+    {
+      "command": "python -B -m unittest discover -s tests -q",
+      "result": "passed",
+      "tests": 227
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed",
+      "details": "No whitespace errors."
+    }
+  ],
+  "production_read_only_audit": {
+    "connection_mode": "SQLite URI mode=ro with PRAGMA query_only=ON",
+    "before_source": "Worker 031 read-only baseline",
+    "write_connection_opened": false,
+    "production_mutation_performed": false,
+    "sha256_before_and_after": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_unchanged": true,
+    "integrity_check": "ok",
+    "foreign_key_violations": 0,
+    "user_version": 0,
+    "schema_migrations_table_present": false,
+    "migration_002_003_004_objects_present": false,
+    "wal_sidecar_present_before_or_after": false,
+    "shm_sidecar_present_before_or_after": false,
+    "table_counts_before_and_after": {
+      "sellers": 3,
+      "marketplace_listings": 17,
+      "marketplace_listing_observations": 51,
+      "facebook_ads": 162,
+      "facebook_ad_observations": 217,
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_advertising_campaigns": 69
+    },
+    "production_backup_created": false,
+    "production_capture_recovery_restore_rollback_run": false,
+    "production_review_or_price_approval_created": false
+  },
+  "required_conditions": [
+    "Keep price fetch provenance and review authorization closed.",
+    "Obtain a fresh independent review of Migration 004 and its tests.",
+    "Implement and independently review trusted fetch, reviewer identity, isolated signing, key lifecycle, controlled file access, and verified persistence before enabling trusted prices.",
+    "Do not treat this report as production readiness or production migration approval."
+  ],
+  "final_verdict": "READY WITH CONDITIONS"
+}

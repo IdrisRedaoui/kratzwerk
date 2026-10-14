@@ -69,15 +69,18 @@ with connect() as db:
 
 `migrations/001_foundation_v2.sql` renames old tables to `legacy_*`, creates
 the new schema, and copies source records without inventing product matches.
-`migrate.py` tracks Migrations 001, 002, and 003 in `schema_migrations`.
+`migrate.py` tracks Migrations 001 through 004 in `schema_migrations`.
 Each migration gets its own verified SQLite online backup and transaction.
 The runner checks migration checksums, schema objects, integrity, foreign keys,
 and unchanged source-row fingerprints. An untracked existing schema is recorded
 as a verified baseline with an unknown original application time. Migration 003
-adds currency allowlist guards, positive finite amount enforcement, an approval
-authorization check, the trusted-view currency allowlist, and the legacy
-currency-unknown assessment view. Migration 002 remains unchanged so an
-installation with its checksum recorded can apply Migration 003.
+adds currency allowlist guards, positive finite amount enforcement, the
+trusted-view currency allowlist, and the legacy currency-unknown assessment
+view. Migration 004 removes the connection-local SQLite verifier as an
+authorization boundary, marks fetch and review attestations unverified, and
+closes approval writes until separate trusted services exist. Migrations 001,
+002, and 003 checksums stay unchanged; a database already at version 3 advances
+by applying Migration 004.
 
 The schema validator accepts SQLite ASCII identifier case equivalence and
 equivalent quoting of ordinary non-keyword identifiers using double quotes,
@@ -85,31 +88,51 @@ backticks, or brackets. It preserves string literal meaning and does not infer
 roles for quoted keywords or Unicode case-folding. Definitions outside this
 dialect are reported as schema drift before a baseline or migration is changed.
 
-Facebook price evidence stores submitted fetch bytes beside their SHA-256 hash.
-The repository verifies that hash and re-runs the documented JSON-LD extractor
-from that content; caller-created candidates, currency labels, and extractor
-metadata do not establish provenance. A structured candidate amount must be a
-finite numeric value greater than zero and no greater than `1e12`. Raw fetch
-content and unparseable values remain available for audit, while the trusted
-view excludes malformed SQLite storage classes.
+`append_landing_page_fetch()` does not fetch the network. It stores caller
+content and claims as audit input, labels the record `UNVERIFIED`, clears the
+caller-supplied resolved URL, HTTP status, and content type from normalized
+fields, and records fetcher, TLS, and network claims as untrusted metadata. Its
+SHA-256 is an integrity check over submitted bytes, never proof of origin.
+Extracted Facebook candidates retain raw bytes and numeric interpretation for
+audit, but currency, unit, and product identity stay unverified. The observed
+destination is checked for malformed URLs and obvious private/local IP and
+hostname forms. This API makes no request and is not an SSRF-safe fetch service.
+A real fetch service must bind results to the exact ad observation and recorded
+destination, resolve and pin every hop, recheck redirects, reject loopback,
+private, link-local, and other prohibited destinations, and attest final URL,
+status, content type, and timestamp.
 
-An `APPROVED` review requires an HMAC-SHA256 signature from an explicitly
-provisioned review authority. Set `KRATZWERK_PRICE_REVIEW_HMAC_KEY` to the
-out-of-band key (at least 32 UTF-8 bytes) in the trusted review service. The
-signature covers the evidence ID, reviewer label, decision, all structured
-review fields, and the complete evidence object. The repository exposes
-`price_evidence_review_authorization_payload()` so the authorized signer can
-form the canonical payload; ordinary review calls without a valid signature
-cannot create an approval. A currency override marked
-`INDEPENDENTLY_VERIFIED` must include a distinct source URL, its exact content,
-the content SHA-256, and the same supported currency code in the signed
-`currency_evidence` array. Missing or contradictory evidence remains currency
-unknown unless that signed review supplies separate evidence.
+There is no trusted fetch service, reviewer identity provider, or approval
+signer in this repository. Migration 004 therefore makes those states
+unavailable: repository calls can append only unverified fetches and nonapproval
+review proposals; the database trigger rejects `APPROVED`, and the trusted-price
+view requires verified fetch and authorization states. The view consequently
+returns no prices until separate controlled services exist. Do not add a local
+HMAC secret to the evidence repository. The future integration contract is an
+authenticated reviewer identity and an isolated signer holding a private
+asymmetric key, with the controlled application write path verifying a strict
+deterministic statement covering the exact evidence identity, immutable
+evidence digest, reviewer, decision, timestamp, every review field, and review
+evidence. The signer needs explicit key IDs, rotation, revocation, and
+fail-closed missing/invalid-key behavior. Only that controlled path may persist
+verified state. A reviewer label or caller-supplied signature is not
+authorization.
+
+The price amount policy accepts finite numeric values in `(0, 1e12]`. Public
+Python APIs reject booleans before SQLite binding, along with strings, BLOBs,
+non-finite values, zero, negative values, and values above the ceiling. SQLite
+may coerce a bound boolean or numeric-looking string to a numeric value; after
+affinity conversion it cannot recover the original Python type. Database checks
+and trusted-view storage-class filters are defense in depth, not proof of the
+original type. Direct writers are outside the supported trust boundary. Anyone
+with unrestricted write access to the SQLite file can alter schema and data;
+preventing that requires filesystem/process access controls and a controlled
+application write path.
 
 ```powershell
 python migrate.py status --db 'C:\path\to\isolated-copy.sqlite' --isolated-db
-python migrate.py preflight --db 'C:\path\to\isolated-copy.sqlite' --target 3 --isolated-db
-python migrate.py apply --db 'C:\path\to\isolated-copy.sqlite' --target 3 --isolated-db
+python migrate.py preflight --db 'C:\path\to\isolated-copy.sqlite' --target 4 --isolated-db
+python migrate.py apply --db 'C:\path\to\isolated-copy.sqlite' --target 4 --isolated-db
 python migrate.py restore --db 'C:\path\to\isolated-copy.sqlite' --backup 'C:\path\to\verified-pre-migration.bak' --isolated-db --writers-stopped
 ```
 
@@ -150,7 +173,7 @@ the current database and sidecars, and have the database operator restore only
 after independently establishing which backup belongs to that target. SQLite
 integrity alone is not evidence of backup provenance.
 
-Migration 002/003 are restored from their verified pre-migration backups. Foundation V2
+Migrations 002/003/004 are restored from their verified pre-migration backups. Foundation V2
 rollback is disabled until an independently verified destructive procedure is
 available. Stop all writers and connections before an on-disk restore. In WAL
 mode, checkpoint and close the database first; the restore keeps the previous
@@ -162,7 +185,7 @@ The rollback refusal is reported as:
 > Foundation V2 rollback is disabled: no independently verified destructive rollback procedure is available. Stop writers and restore a verified pre-migration backup instead.
 
 The Ouedkniss capture command checks the complete Migration 002 schema and
-Migration 003 trust policy against the configured `KRATZWERK_DB_PATH` before
+Migration 003/004 trust policy against the configured `KRATZWERK_DB_PATH` before
 network collection and before writes. It fails closed when either schema is
 missing or incomplete and never runs a migration.
 Historical recovery is separate and must be run against an isolated database
@@ -187,7 +210,9 @@ Price-evidence extractors and database write guards currently recognize
 unrecognized three-letter codes, are retained as raw evidence with a null
 structured code and unknown basis. The trusted-price view independently
 requires a supported code, an eligible basis, an acceptable unit and price
-type, reliable product identity, and an approved review.
+type, reliable product identity, verified authorization state, and (for
+Facebook evidence) verified source-fetch state. At present no component can
+create those verified states, so the trusted-price view returns no rows.
 
 ## Validation
 

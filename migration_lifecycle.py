@@ -23,7 +23,10 @@ from schema_validation import (
     PRICE_EVIDENCE_CURRENCY_POLICY_OBJECTS,
     PRICE_EVIDENCE_REQUIRED_OBJECTS,
     PRICE_EVIDENCE_TABLE_COLUMNS,
+    PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS,
+    PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS,
     price_evidence_currency_policy_problems,
+    price_evidence_trust_boundary_problems,
     _canonical_sql,
     _sqlite_ascii_lower,
     foundation_schema_problems,
@@ -37,6 +40,7 @@ MIGRATIONS: dict[int, tuple[str, Path]] = {
     1: ("001_foundation_v2.sql", ROOT / "migrations" / "001_foundation_v2.sql"),
     2: ("002_price_evidence.sql", ROOT / "migrations" / "002_price_evidence.sql"),
     3: ("003_price_evidence_trust_policy.sql", ROOT / "migrations" / "003_price_evidence_trust_policy.sql"),
+    4: ("004_closed_price_trust_boundaries.sql", ROOT / "migrations" / "004_closed_price_trust_boundaries.sql"),
 }
 REGISTRY_TABLE = "schema_migrations"
 MIGRATION_001_SOURCE = {
@@ -158,12 +162,15 @@ def check_database_health(conn: sqlite3.Connection) -> dict[str, Any]:
 
 def _schema_state_snapshot(path: Path) -> dict[str, Any]:
     state = inspect_database(path)
-    if any(state[key] == "PARTIAL" for key in ("foundation_001", "price_evidence_002", "price_evidence_003")):
+    if any(state[key] == "PARTIAL" for key in (
+        "foundation_001", "price_evidence_002", "price_evidence_003", "price_evidence_004"
+    )):
         raise MigrationError("Cannot create a provenance manifest for a partial or ambiguous schema")
     return {
         "foundation_001": state["foundation_001"],
         "price_evidence_002": state["price_evidence_002"],
         "price_evidence_003": state["price_evidence_003"],
+        "price_evidence_004": state["price_evidence_004"],
         "user_version": state["user_version"],
         "migrations": [
             {
@@ -173,6 +180,21 @@ def _schema_state_snapshot(path: Path) -> dict[str, Any]:
             for row in state["migrations"]
         ],
     }
+
+
+def _manifest_schema_state_matches(
+    actual: Mapping[str, Any], recorded: Any
+) -> bool:
+    if recorded == dict(actual):
+        return True
+    # Format-v1 manifests created before Migration 004 did not contain this key.
+    # Accept that signed shape only when the inspected backup has no Migration 004.
+    if isinstance(recorded, dict) and "price_evidence_004" not in recorded:
+        compatible = dict(actual)
+        if compatible.get("price_evidence_004") == "ABSENT":
+            compatible.pop("price_evidence_004", None)
+            return recorded == compatible
+    return False
 
 
 def _manifest_path(backup: Path) -> Path:
@@ -233,7 +255,7 @@ def _manifest_signature(manifest: Mapping[str, Any]) -> str:
 def backup_database(
     path: Path,
     *,
-    migration_version: int = 3,
+    migration_version: int = 4,
     isolated: bool = False,
 ) -> Path:
     """Create a consistent online backup to a separate, atomically installed file."""
@@ -349,7 +371,7 @@ def verify_backup(
         if expected_target is not None and not same_database_file(target_text, expected_target):
             raise MigrationError("Backup was created for a different database target")
         actual_state = _schema_state_snapshot(backup)
-        if manifest.get("schema_state") != actual_state:
+        if not _manifest_schema_state_matches(actual_state, manifest.get("schema_state")):
             raise MigrationError("Backup schema or migration state does not match its provenance manifest")
         result["manifest"] = manifest
         return result
@@ -438,6 +460,26 @@ def _price_currency_policy_state(conn: sqlite3.Connection) -> tuple[str, list[st
     return "ABSENT", problems
 
 
+def _price_trust_boundary_state(conn: sqlite3.Connection) -> tuple[str, list[str]]:
+    problems = price_evidence_trust_boundary_problems(conn)
+    if not problems:
+        return "APPLIED", []
+    found = object_types(conn)
+    expected_names = PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS["trigger"] - {
+        "trg_price_evidence_reviews_authorization"
+    }
+    if any(name in found for name in expected_names):
+        return "PARTIAL", problems
+    columns = {
+        str(row[1])
+        for table in PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS
+        for row in conn.execute(f'PRAGMA table_info("{table}")')
+    }
+    if columns & {column for names in PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS.values() for column in names}:
+        return "PARTIAL", problems
+    return "ABSENT", problems
+
+
 def _registry_state(conn: sqlite3.Connection) -> tuple[bool, dict[int, dict[str, Any]]]:
     found = object_types(conn)
     if REGISTRY_TABLE not in found:
@@ -481,14 +523,17 @@ def _registry_state(conn: sqlite3.Connection) -> tuple[bool, dict[int, dict[str,
 
 
 def _check_registry_consistency(
-    rows: Mapping[int, Mapping[str, Any]], foundation: str, price: str, currency_policy: str
+    rows: Mapping[int, Mapping[str, Any]], foundation: str, price: str,
+    currency_policy: str, trust_boundary: str,
 ) -> None:
     for version in rows:
         if version > 1 and any(previous not in rows for previous in range(1, version)):
             raise MigrationError(
                 f"Migration registry is inconsistent: version {version:03d} is recorded without its predecessors"
             )
-    for version, schema_state in ((1, foundation), (2, price), (3, currency_policy)):
+    for version, schema_state in (
+        (1, foundation), (2, price), (3, currency_policy), (4, trust_boundary)
+    ):
         row = rows.get(version)
         if row is None:
             continue
@@ -520,8 +565,9 @@ def inspect_database(path: Path) -> dict[str, Any]:
         foundation, foundation_problems = _foundation_state(conn)
         price, price_problems = _price_state(conn)
         currency_policy, currency_policy_problems = _price_currency_policy_state(conn)
+        trust_boundary, trust_boundary_problems = _price_trust_boundary_state(conn)
         has_registry, registry = _registry_state(conn)
-        _check_registry_consistency(registry, foundation, price, currency_policy)
+        _check_registry_consistency(registry, foundation, price, currency_policy, trust_boundary)
         health = check_database_health(conn)
         return {
             "database": str(path),
@@ -531,6 +577,8 @@ def inspect_database(path: Path) -> dict[str, Any]:
             "price_evidence_problems": price_problems,
             "price_evidence_003": currency_policy,
             "price_evidence_003_problems": currency_policy_problems,
+            "price_evidence_004": trust_boundary,
+            "price_evidence_004_problems": trust_boundary_problems,
             "registry_present": has_registry,
             "migrations": [registry[v] for v in sorted(registry)],
             "user_version": int(conn.execute("PRAGMA user_version").fetchone()[0]),
@@ -540,7 +588,7 @@ def inspect_database(path: Path) -> dict[str, Any]:
         conn.close()
 
 
-def preflight_database(path: Path, *, target_version: int = 3) -> dict[str, Any]:
+def preflight_database(path: Path, *, target_version: int = 4) -> dict[str, Any]:
     if target_version not in MIGRATIONS:
         raise MigrationError(f"Unsupported target migration {target_version}")
     result = inspect_database(path)
@@ -584,6 +632,12 @@ def preflight_database(path: Path, *, target_version: int = 3) -> dict[str, Any]
             + "; ".join(result["price_evidence_003_problems"])
             + ". No objects were removed. Restore a verified pre-migration backup or inspect a separate copy."
         )
+    if result["price_evidence_004"] == "PARTIAL":
+        raise MigrationError(
+            "Migration 004 has partial or structurally incomplete trust-boundary objects: "
+            + "; ".join(result["price_evidence_004_problems"])
+            + ". No objects were removed. Restore a verified pre-migration backup or inspect a separate copy."
+        )
     if target_version >= 2 and result["foundation_001"] != "APPLIED" and result["foundation_001"] != "ABSENT":
         raise MigrationError("Migration 002 requires a complete Foundation V2 schema")
     if (
@@ -592,6 +646,9 @@ def preflight_database(path: Path, *, target_version: int = 3) -> dict[str, Any]
         and result["price_evidence_002"] != "APPLIED"
     ):
         raise MigrationError("Migration 003 cannot be present without a complete Migration 002 schema")
+    if target_version >= 4 and result["price_evidence_004"] == "APPLIED":
+        if result["price_evidence_003"] != "APPLIED" or result["price_evidence_002"] != "APPLIED":
+            raise MigrationError("Migration 004 cannot be present without complete Migrations 002 and 003")
     return result
 
 
@@ -721,12 +778,18 @@ def _write_registry_baselines(
         foundation, foundation_problems = _foundation_state(baseline_conn)
         price, price_problems = _price_state(baseline_conn)
         currency_policy, currency_policy_problems = _price_currency_policy_state(baseline_conn)
+        trust_boundary, trust_boundary_problems = _price_trust_boundary_state(baseline_conn)
         requirements = {
             1: (foundation == "APPLIED", foundation_problems),
             2: (foundation == "APPLIED" and price == "APPLIED", price_problems),
             3: (
                 foundation == "APPLIED" and price == "APPLIED" and currency_policy == "APPLIED",
                 currency_policy_problems,
+            ),
+            4: (
+                foundation == "APPLIED" and price == "APPLIED"
+                and currency_policy == "APPLIED" and trust_boundary == "APPLIED",
+                trust_boundary_problems,
             ),
         }
         for version in versions:
@@ -752,6 +815,8 @@ def _write_registry_baselines(
         _ensure_registry(conn)
         foundation, _ = _foundation_state(conn)
         price, _ = _price_state(conn)
+        currency_policy, _ = _price_currency_policy_state(conn)
+        trust_boundary, _ = _price_trust_boundary_state(conn)
         for version in versions:
             if version == 1 and foundation != "APPLIED":
                 raise MigrationError("Cannot baseline Migration 001 without a complete Foundation V2 schema")
@@ -761,6 +826,11 @@ def _write_registry_baselines(
                 foundation != "APPLIED" or price != "APPLIED" or currency_policy != "APPLIED"
             ):
                 raise MigrationError("Cannot baseline Migration 003 without its complete schema")
+            if version == 4 and (
+                foundation != "APPLIED" or price != "APPLIED"
+                or currency_policy != "APPLIED" or trust_boundary != "APPLIED"
+            ):
+                raise MigrationError("Cannot baseline Migration 004 without its complete schema")
             _record_migration(
                 conn,
                 version,
@@ -800,7 +870,7 @@ def _apply_one(
             sources_before = _source_map_for_001_before(source_conn)
         finally:
             source_conn.close()
-    elif version in (2, 3):
+    elif version in (2, 3, 4):
         source_tables = MIGRATION_002_SOURCE_TABLES
         source_conn = _connect_read_only(path)
         try:
@@ -827,6 +897,7 @@ def _apply_one(
             if foundation != "APPLIED":
                 raise MigrationError("Migration 002 requires a complete Foundation V2 schema")
             currency_policy, currency_policy_problems = _price_currency_policy_state(conn)
+            trust_boundary, trust_boundary_problems = _price_trust_boundary_state(conn)
             if version == 2 and price != "ABSENT":
                 raise MigrationError(
                     "Migration 002 object set changed during preflight: "
@@ -838,6 +909,13 @@ def _apply_one(
                 raise MigrationError(
                     "Migration 003 object set changed during preflight: "
                     + "; ".join(currency_policy_problems)
+                )
+            if version == 4 and currency_policy != "APPLIED":
+                raise MigrationError("Migration 004 requires a complete Migration 003 schema")
+            if version == 4 and trust_boundary != "ABSENT":
+                raise MigrationError(
+                    "Migration 004 object set changed during preflight: "
+                    + "; ".join(trust_boundary_problems)
                 )
         _run_script(conn, sql_path, fail_after_statement=fail_after_statement)
         if version == 1:
@@ -854,13 +932,20 @@ def _apply_one(
             current_sources = source_fingerprints(conn, MIGRATION_002_SOURCE_TABLES)
             if current_sources != sources_before:
                 raise MigrationError("Migration 002 changed source-table row/ID fingerprints")
-        else:
+        elif version == 3:
             currency_policy, problems = _price_currency_policy_state(conn)
             if currency_policy != "APPLIED":
                 raise MigrationError("Migration 003 postflight is incomplete: " + "; ".join(problems))
             current_sources = source_fingerprints(conn, MIGRATION_002_SOURCE_TABLES)
             if current_sources != sources_before:
                 raise MigrationError("Migration 003 changed source-table row/ID fingerprints")
+        else:
+            trust_boundary, problems = _price_trust_boundary_state(conn)
+            if trust_boundary != "APPLIED":
+                raise MigrationError("Migration 004 postflight is incomplete: " + "; ".join(problems))
+            current_sources = source_fingerprints(conn, MIGRATION_002_SOURCE_TABLES)
+            if current_sources != sources_before:
+                raise MigrationError("Migration 004 changed source-table row/ID fingerprints")
         health = check_database_health(conn)
         # The applied record is the final transactional change, after all schema/data checks pass.
         _record_migration(
@@ -891,8 +976,11 @@ def _apply_one(
         elif version == 2:
             state, problems = _price_state(verify_conn)
             sources = source_fingerprints(verify_conn, MIGRATION_002_SOURCE_TABLES)
-        else:
+        elif version == 3:
             state, problems = _price_currency_policy_state(verify_conn)
+            sources = source_fingerprints(verify_conn, MIGRATION_002_SOURCE_TABLES)
+        else:
+            state, problems = _price_trust_boundary_state(verify_conn)
             sources = source_fingerprints(verify_conn, MIGRATION_002_SOURCE_TABLES)
         if state != "APPLIED" or (sources_before is not None and sources != sources_before):
             raise MigrationError(
@@ -916,7 +1004,7 @@ def _apply_one(
 def apply_migrations(
     path: Path,
     *,
-    target_version: int = 3,
+    target_version: int = 4,
     fail_after_statement: int | None = None,
     isolated: bool = False,
 ) -> MigrationRun:
@@ -928,12 +1016,13 @@ def apply_migrations(
     foundation = snapshot["foundation_001"]
     price = snapshot["price_evidence_002"]
     currency_policy = snapshot["price_evidence_003"]
+    trust_boundary = snapshot["price_evidence_004"]
     conn = _connect_read_only(path)
     try:
         _has_registry, registry = _registry_state(conn)
     finally:
         conn.close()
-    _check_registry_consistency(registry, foundation, price, currency_policy)
+    _check_registry_consistency(registry, foundation, price, currency_policy, trust_boundary)
 
     if foundation == "ABSENT":
         _apply_one(
@@ -946,12 +1035,12 @@ def apply_migrations(
             _write_registry_baselines(path, [1], run, isolated=isolated)
 
     if target_version >= 2:
-        for version in (2, 3):
+        for version in (2, 3, 4):
             if version > target_version:
                 break
             snapshot = inspect_database(path)
             schema_state = snapshot[
-                "price_evidence_002" if version == 2 else "price_evidence_003"
+                {2: "price_evidence_002", 3: "price_evidence_003", 4: "price_evidence_004"}[version]
             ]
             if schema_state == "APPLIED":
                 conn = _connect_read_only(path)
@@ -973,11 +1062,8 @@ def apply_migrations(
                     fail_after_statement=fail_after_statement,
                 )
 
-    if target_version == 1:
-        run.states.pop(MIGRATIONS[2][0], None)
-        run.states.pop(MIGRATIONS[3][0], None)
-    elif target_version == 2:
-        run.states.pop(MIGRATIONS[3][0], None)
+    for version in range(target_version + 1, len(MIGRATIONS) + 1):
+        run.states.pop(MIGRATIONS[version][0], None)
     return run
 
 
@@ -1044,7 +1130,7 @@ def restore_verified_backup(
         _copy_backup_to_restore_stage(backup, stage)
         staged_info = verify_backup(stage)
         staged_state = _schema_state_snapshot(stage)
-        if staged_state != manifest["schema_state"]:
+        if not _manifest_schema_state_matches(staged_state, manifest["schema_state"]):
             raise MigrationError("Staged backup migration state does not match its provenance manifest")
 
         # This rename fails on Windows if any process still has the database open.

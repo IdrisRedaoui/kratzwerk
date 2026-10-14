@@ -50,7 +50,7 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="explicitly select non-production mode; always refuses the protected production file",
     )
-    parser.add_argument("--target", type=int, choices=(1, 2, 3), default=3, help="highest migration version")
+    parser.add_argument("--target", type=int, choices=(1, 2, 3, 4), default=4, help="highest migration version")
     parser.add_argument("--backup", type=Path, help="verified backup path for restore")
     parser.add_argument(
         "--writers-stopped",

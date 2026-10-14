@@ -3,7 +3,6 @@ from __future__ import annotations
 import sqlite3
 import json
 import hashlib
-import hmac
 import os
 import tempfile
 import unittest
@@ -27,22 +26,15 @@ from database_safety import DatabaseTargetError
 from price_evidence.recovery import recover_ouedkniss_price_evidence
 from price_evidence.repository import (
     append_price_evidence_review,
-    price_evidence_review_authorization_payload,
 )
 from tests.test_foundation_v2 import make_legacy_database
 
 
-TEST_REVIEW_KEY = "isolated-test-review-key-not-for-production-0001"
-
-
-def signed_review(conn: sqlite3.Connection, evidence_id: int, **kwargs) -> int:
-    payload = price_evidence_review_authorization_payload(evidence_id, **kwargs)
-    canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    signature = hmac.new(TEST_REVIEW_KEY.encode("utf-8"), canonical, hashlib.sha256).hexdigest()
-    with patch.dict(os.environ, {"KRATZWERK_PRICE_REVIEW_HMAC_KEY": TEST_REVIEW_KEY}):
-        return append_price_evidence_review(
-            conn, evidence_id, authorization_signature=signature, **kwargs
-        )
+def assert_approval_unavailable(testcase: unittest.TestCase, conn: sqlite3.Connection,
+                                evidence_id: int, **kwargs) -> None:
+    kwargs["decision"] = "APPROVED"
+    with testcase.assertRaisesRegex(ValueError, "APPROVED is unavailable"):
+        append_price_evidence_review(conn, evidence_id, **kwargs)
 
 
 def independent_currency_evidence(code: str) -> dict:
@@ -303,7 +295,90 @@ class MigrationLifecycleTests(unittest.TestCase):
         run = apply_migrations(self.db, target_version=3, isolated=True)
         self.assertEqual(run.states["003_price_evidence_trust_policy.sql"], "APPLIED")
         self.assertEqual(inspect_database(self.db)["price_evidence_003"], "APPLIED")
+
+    def test_migration_004_failure_injection_retry_and_checksum_preservation(self) -> None:
+        apply_migrations(self.db, target_version=3, isolated=True)
+        source_before = self.fingerprints()
+        script = migration_lifecycle.MIGRATIONS[4][1].read_text(encoding="utf-8")
+        statement_count = len(migration_lifecycle._sql_statements(script))
+        self.assertGreater(statement_count, 1)
+        for failure_point in range(1, statement_count + 1):
+            with self.subTest(failure_point=failure_point):
+                with self.assertRaisesRegex(RuntimeError, "Injected migration failure"):
+                    apply_migrations(
+                        self.db, target_version=4,
+                        fail_after_statement=failure_point, isolated=True,
+                    )
+                self.assertEqual(self.fingerprints(), source_before)
+                state = inspect_database(self.db)
+                self.assertEqual(state["price_evidence_003"], "APPLIED")
+                self.assertEqual(state["price_evidence_004"], "ABSENT")
+
+        run = apply_migrations(self.db, target_version=4, isolated=True)
+        self.assertEqual(run.states["004_closed_price_trust_boundaries.sql"], "APPLIED")
+        state = inspect_database(self.db)
+        self.assertEqual(state["price_evidence_004"], "APPLIED")
         self.assertEqual(self.fingerprints(), source_before)
+        conn = self.connect()
+        try:
+            rows = {row["version"]: row for row in inspect_database(self.db)["migrations"]}
+            self.assertEqual(rows[3]["checksum"], migration_lifecycle.migration_checksum(3))
+            self.assertEqual(rows[4]["checksum"], migration_lifecycle.migration_checksum(4))
+            trigger_sql = conn.execute(
+                "SELECT sql FROM sqlite_master WHERE type='trigger' "
+                "AND name='trg_price_evidence_reviews_authorization'"
+            ).fetchone()[0]
+            self.assertNotIn("kratzwerk_price_review_authorized", trigger_sql)
+            self.assertEqual(conn.execute("SELECT COUNT(*) FROM trusted_price_evidence").fetchone()[0], 0)
+        finally:
+            conn.close()
+
+    def test_migration_004_partial_state_and_checksum_drift_are_rejected(self) -> None:
+        apply_migrations(self.db, target_version=3, isolated=True)
+        source_before = self.fingerprints()
+        conn = self.connect()
+        try:
+            conn.execute(
+                "ALTER TABLE facebook_landing_page_fetches ADD COLUMN provenance_status "
+                "TEXT NOT NULL DEFAULT 'UNVERIFIED' "
+                "CHECK (provenance_status IN ('UNVERIFIED','VERIFIED'))"
+            )
+            conn.execute(
+                "ALTER TABLE price_evidence_reviews ADD COLUMN authorization_status "
+                "TEXT NOT NULL DEFAULT 'UNVERIFIED' "
+                "CHECK (authorization_status IN ('UNVERIFIED','VERIFIED'))"
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        with self.assertRaisesRegex(MigrationError, "Migration 00(2|4) has partial"):
+            preflight_database(self.db, target_version=4)
+
+        # Isolate checksum-drift validation from the deliberately partial fixture.
+        drift_db = self.directory / "worker032-drift.sqlite"
+        make_legacy_database(drift_db)
+        apply_migrations(drift_db, target_version=4, isolated=True)
+        conn = sqlite3.connect(drift_db)
+        try:
+            conn.execute("UPDATE schema_migrations SET checksum='drift' WHERE version=4")
+            conn.commit()
+        finally:
+            conn.close()
+        with self.assertRaisesRegex(MigrationError, "Migration 004 checksum drift"):
+            inspect_database(drift_db)
+        self.assertEqual(self.fingerprints(), source_before)
+
+    def test_pre_004_signed_backup_manifest_shape_remains_verifiable(self) -> None:
+        apply_migrations(self.db, target_version=3, isolated=True)
+        backup = backup_database(self.db, migration_version=3, isolated=True)
+        manifest_path = Path(str(backup) + ".manifest.json")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["schema_state"].pop("price_evidence_004")
+        manifest.pop("signature_hmac_sha256")
+        manifest["signature_hmac_sha256"] = migration_lifecycle._manifest_signature(manifest)
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        verified = verify_backup(backup, require_manifest=True)
+        self.assertEqual(verified["manifest"]["schema_state"].get("price_evidence_004"), None)
 
     def test_positive_legacy_amount_remains_currency_unknown_without_new_evidence(self) -> None:
         legacy = self.directory / "legacy-positive-price.sqlite"
@@ -315,7 +390,7 @@ class MigrationLifecycleTests(unittest.TestCase):
         finally:
             conn.close()
 
-        apply_migrations(legacy, target_version=3, isolated=True)
+        apply_migrations(legacy, target_version=4, isolated=True)
         conn = sqlite3.connect(legacy, isolation_level=None)
         conn.row_factory = sqlite3.Row
         try:
@@ -343,7 +418,7 @@ class MigrationLifecycleTests(unittest.TestCase):
         finally:
             conn.close()
 
-    def test_legacy_migrated_currency_requires_independent_review_to_become_trusted(self) -> None:
+    def test_legacy_migrated_currency_stays_unknown_without_trusted_review_service(self) -> None:
         legacy = self.directory / "legacy-positive-trust.sqlite"
         make_legacy_database(legacy)
         conn = sqlite3.connect(legacy)
@@ -352,7 +427,7 @@ class MigrationLifecycleTests(unittest.TestCase):
             conn.commit()
         finally:
             conn.close()
-        apply_migrations(legacy, target_version=3, isolated=True)
+        apply_migrations(legacy, target_version=4, isolated=True)
         conn = sqlite3.connect(legacy)
         conn.row_factory = sqlite3.Row
         try:
@@ -373,10 +448,9 @@ class MigrationLifecycleTests(unittest.TestCase):
                     'VALID','[]','{}','legacy-unconfirmed-test')""",
                 (observation["id"], observation["observed_at"], observation["observed_at"]),
             ).lastrowid
-            signed_review(
+            assert_approval_unavailable(self,
                 conn,
                 evidence_id,
-                decision="APPROVED",
                 reviewer="fixture-reviewer",
                 reviewed_at="2026-10-13T10:01:00Z",
                 quality_status="VALID",
@@ -388,10 +462,9 @@ class MigrationLifecycleTests(unittest.TestCase):
             self.assertIsNone(conn.execute(
                 "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (evidence_id,)
             ).fetchone())
-            signed_review(
+            assert_approval_unavailable(self,
                 conn,
                 evidence_id,
-                decision="APPROVED",
                 reviewer="independent-reviewer",
                 reviewed_at="2026-10-13T10:02:00Z",
                 quality_status="VALID",
@@ -407,7 +480,7 @@ class MigrationLifecycleTests(unittest.TestCase):
                 "SELECT currency_code,currency_basis FROM trusted_price_evidence WHERE price_evidence_id=?",
                 (evidence_id,),
             ).fetchone()
-            self.assertEqual(tuple(trusted), ("DZD", "INDEPENDENTLY_VERIFIED"))
+            self.assertIsNone(trusted)
         finally:
             conn.close()
 

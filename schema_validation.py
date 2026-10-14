@@ -112,6 +112,19 @@ PRICE_EVIDENCE_CURRENCY_POLICY_OBJECTS: dict[str, set[str]] = {
     },
 }
 
+PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS: dict[str, set[str]] = {
+    "facebook_landing_page_fetches": {"provenance_status"},
+    "price_evidence_reviews": {"authorization_status"},
+}
+
+PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS: dict[str, set[str]] = {
+    "view": {"trusted_price_evidence"},
+    "trigger": {
+        "trg_price_evidence_reviews_authorization",
+        "trg_landing_fetch_attestation_unverified",
+    },
+}
+
 
 def object_types(conn: sqlite3.Connection) -> dict[str, str]:
     return {
@@ -132,6 +145,7 @@ def table_columns(conn: sqlite3.Connection, table: str) -> set[str]:
 
 _EXPECTED_PRICE_SQL: dict[str, str] | None = None
 _EXPECTED_PRICE_CURRENCY_POLICY_SQL: dict[str, str] | None = None
+_EXPECTED_PRICE_TRUST_BOUNDARY_SQL: dict[str, str] | None = None
 _EXPECTED_FOUNDATION_SQL: dict[str, tuple[str, str]] | None = None
 _EXPECTED_FOUNDATION_TABLE_SHAPES: dict[str, tuple] | None = None
 _ASCII_LOWER_TABLE = str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")
@@ -414,6 +428,65 @@ def _expected_price_currency_policy_sql() -> dict[str, str]:
         reference.close()
 
 
+def _expected_price_trust_boundary_sql() -> dict[str, str]:
+    global _EXPECTED_PRICE_TRUST_BOUNDARY_SQL
+    if _EXPECTED_PRICE_TRUST_BOUNDARY_SQL is not None:
+        return _EXPECTED_PRICE_TRUST_BOUNDARY_SQL
+    reference = sqlite3.connect(":memory:")
+    try:
+        reference.executescript("""
+            CREATE TABLE marketplace_listings(id INTEGER PRIMARY KEY, platform TEXT NOT NULL);
+            CREATE TABLE marketplace_listing_observations(
+                id INTEGER PRIMARY KEY,
+                listing_id INTEGER NOT NULL REFERENCES marketplace_listings(id),
+                observed_at TEXT NOT NULL, price REAL, currency TEXT,
+                source_payload_json TEXT NOT NULL DEFAULT '{}'
+            );
+            CREATE TABLE facebook_ads(id INTEGER PRIMARY KEY, library_id TEXT);
+            CREATE TABLE facebook_ad_observations(
+                id INTEGER PRIMARY KEY, ad_id INTEGER, observed_at TEXT
+            );
+        """)
+        root = Path(__file__).resolve().parent
+        for filename in (
+            "002_price_evidence.sql",
+            "003_price_evidence_trust_policy.sql",
+            "004_closed_price_trust_boundaries.sql",
+        ):
+            path = root / "migrations" / filename
+            pending = ""
+            for line in path.read_text(encoding="utf-8").splitlines(keepends=True):
+                pending += line
+                if not sqlite3.complete_statement(pending):
+                    continue
+                statement = pending.strip()
+                meaningful = any(
+                    item.strip() and not item.lstrip().startswith("--")
+                    for item in statement.splitlines()
+                )
+                if meaningful:
+                    reference.execute(statement)
+                pending = ""
+            if pending.strip():
+                raise RuntimeError(f"{filename} SQL has an incomplete statement")
+        names = {
+            name
+            for group in PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS.values()
+            for name in group
+        } | set(PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS)
+        _EXPECTED_PRICE_TRUST_BOUNDARY_SQL = {
+            str(row[0]): str(row[1])
+            for row in reference.execute(
+                "SELECT name, sql FROM sqlite_master WHERE name IN (%s)" % ",".join("?" * len(names)),
+                tuple(sorted(names)),
+            )
+            if row[1] is not None
+        }
+        return _EXPECTED_PRICE_TRUST_BOUNDARY_SQL
+    finally:
+        reference.close()
+
+
 def _missing_objects(
     found: dict[str, str], required: dict[str, set[str]]
 ) -> list[str]:
@@ -479,11 +552,14 @@ def price_evidence_schema_problems(conn: sqlite3.Connection) -> list[str]:
 
     expected_sql = _expected_price_evidence_sql()
     currency_policy_sql = _expected_price_currency_policy_sql()
+    trust_boundary_sql = _expected_price_trust_boundary_sql()
     for name, expected in expected_sql.items():
         actual = conn.execute("SELECT sql FROM sqlite_master WHERE name = ? COLLATE NOCASE", (name,)).fetchone()
         valid_definitions = {expected}
         if name == "trusted_price_evidence":
             valid_definitions.add(currency_policy_sql.get(name, ""))
+        if name in trust_boundary_sql:
+            valid_definitions.add(trust_boundary_sql[name])
         if actual is None or not any(
             _canonical_sql(actual[0]) == _canonical_sql(definition)
             for definition in valid_definitions
@@ -513,7 +589,11 @@ def price_evidence_schema_problems(conn: sqlite3.Connection) -> list[str]:
         problems.append(f"trusted_price_evidence view is not queryable: {exc}")
     managed_tables = set(PRICE_EVIDENCE_TABLE_COLUMNS)
     expected_indexes = PRICE_EVIDENCE_REQUIRED_OBJECTS["index"]
-    expected_triggers = PRICE_EVIDENCE_REQUIRED_OBJECTS["trigger"] | PRICE_EVIDENCE_CURRENCY_POLICY_OBJECTS["trigger"]
+    expected_triggers = (
+        PRICE_EVIDENCE_REQUIRED_OBJECTS["trigger"]
+        | PRICE_EVIDENCE_CURRENCY_POLICY_OBJECTS["trigger"]
+        | PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS["trigger"]
+    )
     for row in conn.execute(
         "SELECT type, name, tbl_name FROM sqlite_master WHERE type IN ('index','trigger')"
     ):
@@ -532,16 +612,48 @@ def price_evidence_currency_policy_problems(conn: sqlite3.Connection) -> list[st
     found = object_types(conn)
     problems.extend(_missing_objects(found, PRICE_EVIDENCE_CURRENCY_POLICY_OBJECTS))
     expected = _expected_price_currency_policy_sql()
+    trust_boundary = _expected_price_trust_boundary_sql()
     for name, definition in expected.items():
         actual = conn.execute("SELECT type, sql FROM sqlite_master WHERE name = ? COLLATE NOCASE", (name,)).fetchone()
+        valid_definitions = {definition}
+        if name in trust_boundary:
+            valid_definitions.add(trust_boundary[name])
         if actual is None or str(actual[0]) != ("view" if name in ("trusted_price_evidence", "legacy_currency_unconfirmed_observations") else "trigger"):
             problems.append(f"missing or wrong type for Migration 003 object {name}")
-        elif _canonical_sql(actual[1]) != _canonical_sql(definition):
+        elif not any(_canonical_sql(actual[1]) == _canonical_sql(item) for item in valid_definitions):
             problems.append(f"SQL definition of {name} differs from Migration 003")
     try:
         conn.execute("SELECT * FROM legacy_currency_unconfirmed_observations LIMIT 0")
     except sqlite3.Error as exc:
         problems.append(f"legacy_currency_unconfirmed_observations view is not queryable: {exc}")
+    return problems
+
+
+def price_evidence_trust_boundary_problems(conn: sqlite3.Connection) -> list[str]:
+    """Require Migration 004's closed, fail-safe trust boundary."""
+    problems = price_evidence_currency_policy_problems(conn)
+    found = object_types(conn)
+    problems.extend(_missing_objects(found, PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS))
+    for table, required in PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS.items():
+        missing = required - table_columns(conn, table) if found.get(table) == "table" else required
+        if missing:
+            problems.append(f"columns in {table}: {', '.join(sorted(missing))}")
+    expected = _expected_price_trust_boundary_sql()
+    for name, definition in expected.items():
+        actual = conn.execute(
+            "SELECT type, sql FROM sqlite_master WHERE name = ? COLLATE NOCASE", (name,)
+        ).fetchone()
+        expected_type = "view" if name == "trusted_price_evidence" else (
+            "table" if name in PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS else "trigger"
+        )
+        if actual is None or str(actual[0]) != expected_type:
+            problems.append(f"missing or wrong type for Migration 004 object {name}")
+        elif _canonical_sql(actual[1]) != _canonical_sql(definition):
+            problems.append(f"SQL definition of {name} differs from Migration 004")
+    try:
+        conn.execute("SELECT * FROM trusted_price_evidence LIMIT 0")
+    except sqlite3.Error as exc:
+        problems.append(f"Migration 004 trusted_price_evidence view is not queryable: {exc}")
     return problems
 
 
@@ -552,8 +664,8 @@ def _pragma_violations(conn: sqlite3.Connection, pragma: str) -> list[tuple]:
 def schema_readiness_message(problems: Iterable[str], *, database: str) -> str:
     details = "; ".join(problems)
     return (
-        "Ouedkniss capture is blocked: Migration 002 (price evidence) or Migration 003 "
-        "(currency trust policy) is missing or "
+        "Ouedkniss capture is blocked: Migration 002 (price evidence) or Migration 003/004 "
+        "(currency and source/review trust policy) is missing or "
         f"structurally incomplete in the configured database {database}. {details}. "
         "Create and verify a backup, then run the versioned migration preflight and apply "
         "command against this explicitly selected database. The sensor never applies migrations."
@@ -567,11 +679,14 @@ __all__ = [
     "PRICE_EVIDENCE_TABLE_COLUMNS",
     "PRICE_EVIDENCE_REQUIRED_OBJECTS",
     "PRICE_EVIDENCE_CURRENCY_POLICY_OBJECTS",
+    "PRICE_EVIDENCE_TRUST_BOUNDARY_COLUMNS",
+    "PRICE_EVIDENCE_TRUST_BOUNDARY_OBJECTS",
     "object_types",
     "table_columns",
     "foundation_schema_problems",
     "price_evidence_schema_problems",
     "price_evidence_currency_policy_problems",
+    "price_evidence_trust_boundary_problems",
     "_pragma_violations",
     "schema_readiness_message",
 ]

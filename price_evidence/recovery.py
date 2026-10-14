@@ -18,7 +18,7 @@ from price_evidence.repository import (
     append_ouedkniss_price_evidence,
     price_evidence_schema_installed,
 )
-from schema_validation import price_evidence_currency_policy_problems
+from schema_validation import price_evidence_trust_boundary_problems
 
 
 def _now() -> str:
@@ -71,8 +71,8 @@ def recover_ouedkniss_price_evidence(
         raise RuntimeError("Historical recovery requires an autocommit connection for resumability")
     if not price_evidence_schema_installed(conn):
         raise RuntimeError(
-            "Migrations 002 and 003 must be applied and verified before historical recovery: "
-            + "; ".join(price_evidence_currency_policy_problems(conn))
+            "Migrations 002, 003, and 004 must be applied and verified before historical recovery: "
+            + "; ".join(price_evidence_trust_boundary_problems(conn))
         )
     conn.row_factory = sqlite3.Row
     extracted_at = extracted_at or _now()

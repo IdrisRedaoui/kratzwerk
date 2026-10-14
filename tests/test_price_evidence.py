@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import hashlib
-import hmac
 import os
 from dataclasses import replace
 from pathlib import Path
@@ -20,24 +19,17 @@ from price_evidence.repository import (
     append_ouedkniss_price_evidence,
     append_price_evidence_review,
     apply_price_evidence_migration,
-    price_evidence_review_authorization_payload,
 )
 from price_evidence.recovery import recover_ouedkniss_price_evidence
 
 
 ROOT = Path(__file__).resolve().parent
 FIXTURES = ROOT / "fixtures" / "price_evidence"
-TEST_REVIEW_KEY = "isolated-test-review-key-not-for-production-0001"
-
-
-def signed_review(conn: sqlite3.Connection, evidence_id: int, **kwargs) -> int:
-    payload = price_evidence_review_authorization_payload(evidence_id, **kwargs)
-    canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    signature = hmac.new(TEST_REVIEW_KEY.encode("utf-8"), canonical, hashlib.sha256).hexdigest()
-    with patch.dict(os.environ, {"KRATZWERK_PRICE_REVIEW_HMAC_KEY": TEST_REVIEW_KEY}):
-        return append_price_evidence_review(
-            conn, evidence_id, authorization_signature=signature, **kwargs
-        )
+def assert_approval_unavailable(testcase: unittest.TestCase, conn: sqlite3.Connection,
+                                evidence_id: int, **kwargs) -> None:
+    kwargs["decision"] = "APPROVED"
+    with testcase.assertRaisesRegex(ValueError, "APPROVED is unavailable"):
+        append_price_evidence_review(conn, evidence_id, **kwargs)
 
 
 def independent_currency_evidence(code: str, label: str = "DZD") -> dict:
@@ -366,7 +358,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             json.loads(stored[3])["candidate"]["offer_jsonld"]["priceCurrency"], "XYZ"
         )
 
-        signed_review(
+        assert_approval_unavailable(self,
             self.conn,
             evidence_id,
             decision="APPROVED",
@@ -382,15 +374,15 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (evidence_id,)
         ).fetchone())
 
-    def test_currency_write_boundary_accepts_only_canonical_supported_codes(self) -> None:
+    def test_caller_submitted_pages_never_establish_supported_currency(self) -> None:
         for index, code in enumerate(("dzd", "eur", "usd"), start=10):
             with self.subTest(currency=code):
                 evidence_id = self._append_constructed_facebook(code, "SOURCE_CONFIRMED", index)
                 stored = self.conn.execute(
                     "SELECT currency_code,currency_basis FROM price_evidence WHERE id=?", (evidence_id,)
                 ).fetchone()
-                self.assertEqual(tuple(stored), (code.upper(), "SOURCE_CONFIRMED"))
-                signed_review(
+                self.assertEqual(tuple(stored), (None, "UNKNOWN"))
+                assert_approval_unavailable(self,
                     self.conn, evidence_id, decision="APPROVED", reviewer="reviewer-1",
                     reviewed_at=f"2026-10-12T12:{index:02d}:00Z", quality_status="VALID",
                     unit_status="NOT_APPLICABLE", product_identity_state="VERIFIED",
@@ -400,7 +392,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
                     "SELECT currency_code FROM trusted_price_evidence WHERE price_evidence_id=?",
                     (evidence_id,),
                 ).fetchone()
-                self.assertEqual(trusted[0], code.upper())
+                self.assertIsNone(trusted)
 
     def test_malformed_and_unsupported_candidate_currency_is_preserved_but_unconfirmed(self) -> None:
         for index, raw_code in enumerate(("XYZ", "US$", "AB", "DZDollars"), start=30):
@@ -416,7 +408,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
                 candidate_evidence = json.loads(row[2])["candidate"]
                 self.assertEqual(candidate_evidence["offer_jsonld"]["priceCurrency"], raw_code)
 
-    def test_worker_029_supported_currency_claims_need_source_or_signed_independent_evidence(self) -> None:
+    def test_worker_029_currency_claims_remain_untrusted_without_services(self) -> None:
         missing_id = self._append_constructed_facebook(
             "DZD", "INDEPENDENTLY_VERIFIED", 801, source_currency=None
         )
@@ -425,16 +417,8 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             (missing_id,),
         ).fetchone()
         self.assertEqual(tuple(missing[:2]), (None, "UNKNOWN"))
-        self.assertTrue(json.loads(missing[2])["fetch_provenance"]["content_hash_verified"])
-        with self.assertRaisesRegex(ValueError, "authorized review signature"):
-            append_price_evidence_review(
-                self.conn, missing_id, decision="APPROVED", reviewer="untrusted-caller",
-                reviewed_at="2026-10-12T15:00:00Z", quality_status="VALID",
-                currency_code="DZD", currency_basis="INDEPENDENTLY_VERIFIED",
-                unit_status="NOT_APPLICABLE", product_identity_state="VERIFIED",
-                product_identity_key="reviewed:missing-currency", price_type="REGULAR",
-            )
-        signed_review(
+        self.assertTrue(json.loads(missing[2])["fetch_provenance"]["content_hash_integrity_verified"])
+        assert_approval_unavailable(self,
             self.conn, missing_id, decision="APPROVED", reviewer="authorized-reviewer",
             reviewed_at="2026-10-12T15:01:00Z", quality_status="VALID",
             currency_code="DZD", currency_basis="INDEPENDENTLY_VERIFIED",
@@ -442,7 +426,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             product_identity_key="reviewed:missing-currency", price_type="REGULAR",
             evidence=independent_currency_evidence("DZD"),
         )
-        self.assertIsNotNone(self.conn.execute(
+        self.assertIsNone(self.conn.execute(
             "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (missing_id,)
         ).fetchone())
 
@@ -455,15 +439,14 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
         ).fetchone()
         self.assertEqual(tuple(contradictory[:2]), (None, "UNKNOWN"))
         self.assertIn("CURRENCY_CODE_UNRECOGNIZED", contradictory[2])
-        with self.assertRaisesRegex(ValueError, "not substantiated"):
-            signed_review(
-                self.conn, contradictory_id, decision="APPROVED", reviewer="authorized-reviewer",
-                reviewed_at="2026-10-12T15:02:00Z", quality_status="VALID",
-                currency_code="DZD", currency_basis="SOURCE_CONFIRMED",
-                unit_status="NOT_APPLICABLE", product_identity_state="VERIFIED",
-                product_identity_key="reviewed:contradictory-currency", price_type="REGULAR",
-            )
-        signed_review(
+        assert_approval_unavailable(self,
+            self.conn, contradictory_id, reviewer="authorized-reviewer",
+            reviewed_at="2026-10-12T15:02:00Z", quality_status="VALID",
+            currency_code="DZD", currency_basis="SOURCE_CONFIRMED",
+            unit_status="NOT_APPLICABLE", product_identity_state="VERIFIED",
+            product_identity_key="reviewed:contradictory-currency", price_type="REGULAR",
+        )
+        assert_approval_unavailable(self,
             self.conn, contradictory_id, decision="APPROVED", reviewer="authorized-reviewer",
             reviewed_at="2026-10-12T15:03:00Z", quality_status="VALID",
             currency_code="DZD", currency_basis="INDEPENDENTLY_VERIFIED",
@@ -471,7 +454,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             product_identity_key="reviewed:contradictory-currency", price_type="REGULAR",
             evidence=independent_currency_evidence("DZD"),
         )
-        self.assertIsNotNone(self.conn.execute(
+        self.assertIsNone(self.conn.execute(
             "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (contradictory_id,)
         ).fetchone())
 
@@ -483,7 +466,8 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
         )
         extracted = extract_landing_page_prices(html)
         invalid_amounts = (
-            "not-a-number", True, float("nan"), float("inf"), float("-inf"),
+            "not-a-number", "100", b"100", True, False,
+            float("nan"), float("inf"), float("-inf"),
             0, -1, 1_000_000_000_001,
         )
         for amount in invalid_amounts:
@@ -497,6 +481,10 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
         self.assertEqual(self.conn.execute("SELECT COUNT(*) FROM price_evidence").fetchone()[0], 0)
 
         valid_id = append_facebook_price_evidence(self.conn, fetch_id, extracted)[0]
+        limit_candidate = replace(extracted.candidates[0], candidate_amount=1_000_000_000_000)
+        self.assertEqual(append_facebook_price_evidence(
+            self.conn, fetch_id, replace(extracted, candidates=(limit_candidate,))
+        )[0], valid_id)
         columns = [row[1] for row in self.conn.execute("PRAGMA table_info(price_evidence)")]
         values = dict(zip(columns, self.conn.execute(
             "SELECT * FROM price_evidence WHERE id=?", (valid_id,)
@@ -520,19 +508,71 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             "SELECT id FROM price_evidence WHERE idempotency_key=?",
             ("malformed-text-amount-lower-level",),
         ).fetchone()[0]
-        signed_review(
-            self.conn, malformed_id, decision="APPROVED", reviewer="authorized-reviewer",
-            reviewed_at="2026-10-12T16:01:00Z", quality_status="VALID",
-            currency_code="DZD", currency_basis="SOURCE_CONFIRMED",
-            unit_status="NOT_APPLICABLE", product_identity_state="VERIFIED",
-            product_identity_key="reviewed:malformed-amount", price_type="REGULAR",
-        )
         self.assertEqual(self.conn.execute(
             "SELECT typeof(candidate_amount) FROM price_evidence WHERE id=?", (malformed_id,)
         ).fetchone()[0], "text")
         self.assertIsNone(self.conn.execute(
             "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (malformed_id,)
         ).fetchone())
+
+    def test_sqlite_amount_affinity_cannot_recover_original_python_types(self) -> None:
+        seed_facebook(self.conn, ad_id=950, observation_id=2950)
+        html = fixture("normal_numeric.html")
+        fetch_id = append_landing_page_fetch(
+            self.conn, 2950, fetched_at="2026-10-12T16:30:00Z", fetch_status="FETCHED", content=html,
+        )
+        base_id = append_facebook_price_evidence(
+            self.conn, fetch_id, extract_landing_page_prices(html)
+        )[0]
+        columns = [row[1] for row in self.conn.execute("PRAGMA table_info(price_evidence)")]
+        base = dict(zip(columns, self.conn.execute(
+            "SELECT * FROM price_evidence WHERE id=?", (base_id,)
+        ).fetchone()))
+        base.pop("id", None)
+        names = list(base)
+        sql = f"INSERT INTO price_evidence ({','.join(names)}) VALUES ({','.join('?' for _ in names)})"
+        probes = (
+            (True, True, "real", 1.0),
+            (False, False, None, None),
+            (100, True, "real", 100.0),
+            (123.5, True, "real", 123.5),
+            ("100", True, "real", 100.0),
+            (b"100", False, None, None),
+            (float("nan"), True, "null", None),
+            (float("inf"), False, None, None),
+            (float("-inf"), False, None, None),
+            (0, False, None, None),
+            (-1, False, None, None),
+            (1_000_000_000_000, True, "real", 1_000_000_000_000.0),
+            (1_000_000_000_001, False, None, None),
+        )
+        for index, (value, accepted, expected_type, expected_value) in enumerate(probes):
+            with self.subTest(value=repr(value)):
+                row_values = dict(base)
+                row_values["candidate_amount"] = value
+                row_values["idempotency_key"] = f"sqlite-affinity-{index}"
+                try:
+                    self.conn.execute(sql, tuple(row_values[name] for name in names))
+                except sqlite3.IntegrityError:
+                    self.assertFalse(accepted)
+                    continue
+                self.assertTrue(accepted)
+                stored = self.conn.execute(
+                    "SELECT typeof(candidate_amount),candidate_amount FROM price_evidence WHERE idempotency_key=?",
+                    (f"sqlite-affinity-{index}",),
+                ).fetchone()
+                self.assertEqual(tuple(stored), (expected_type, expected_value))
+                self.assertIsNone(self.conn.execute(
+                    "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id="
+                    "(SELECT id FROM price_evidence WHERE idempotency_key=?)",
+                    (f"sqlite-affinity-{index}",),
+                ).fetchone())
+
+        seed_ouedkniss(self.conn, 2, 2, "2026-10-13T10:00:00Z", amount=1_000_000_000_000)
+        maximum_id = append_ouedkniss_price_evidence(self.conn, 2)
+        self.assertEqual(self.conn.execute(
+            "SELECT candidate_amount FROM price_evidence WHERE id=?", (maximum_id,)
+        ).fetchone()[0], 1_000_000_000_000.0)
 
     def test_database_currency_guards_and_trusted_view_reject_lower_level_forgery(self) -> None:
         evidence_id = self._append_constructed_facebook("DZD", "SOURCE_CONFIRMED", 70)
@@ -583,7 +623,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (evidence_id,)
         ).fetchone())
 
-    def test_low_valid_point_price_can_enter_trusted_view(self) -> None:
+    def test_low_valid_point_price_remains_untrusted_without_review_service(self) -> None:
         seed_ouedkniss(
             self.conn, 1, 1, "2026-10-10T10:00:00Z", amount=0.01,
             unit="DZD", price_type="FIXED",
@@ -602,7 +642,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
                 'SUCCESS','VALID','[]','{}','valid-low-fixture')"""
         )
         self.assertEqual(self.conn.execute("SELECT COUNT(*) FROM trusted_price_evidence").fetchone()[0], 0)
-        signed_review(
+        assert_approval_unavailable(self,
             self.conn, 1, decision="APPROVED", reviewer="reviewer-1",
             reviewed_at="2026-10-10T12:00:00Z", quality_status="VALID",
             currency_code="DZD", currency_basis="SOURCE_CONFIRMED",
@@ -611,10 +651,12 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             price_type="REGULAR", evidence={"low_price_reviewed": True},
         )
         row = self.conn.execute("SELECT * FROM trusted_price_evidence").fetchone()
-        self.assertIsNotNone(row)
-        self.assertEqual(row["candidate_amount"], 0.01)
+        self.assertIsNone(row)
+        self.assertEqual(self.conn.execute(
+            "SELECT candidate_amount FROM price_evidence WHERE id=1"
+        ).fetchone()[0], 0.01)
 
-    def test_review_can_make_previously_untrusted_price_eligible_without_mutating_evidence(self) -> None:
+    def test_unavailable_approval_leaves_price_evidence_untrusted_and_unchanged(self) -> None:
         observed_at = "2026-10-10T10:00:00Z"
         for index in range(1, 4):
             seed_ouedkniss(self.conn, index, index, observed_at)
@@ -625,7 +667,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
         ).fetchone())
         self.assertEqual(self.conn.execute("SELECT COUNT(*) FROM trusted_price_evidence").fetchone()[0], 0)
         review_evidence = independent_currency_evidence("DZD")
-        signed_review(
+        assert_approval_unavailable(self,
             self.conn, evidence_id, decision="APPROVED", reviewer="reviewer-1",
             reviewed_at="2026-10-11T10:00:00Z", quality_status="VALID",
             currency_code="DZD", currency_basis="INDEPENDENTLY_VERIFIED",
@@ -635,9 +677,7 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             evidence={"manual_review": "fixture-only", **review_evidence},
         )
         trusted = self.conn.execute("SELECT * FROM trusted_price_evidence WHERE price_evidence_id=?", (evidence_id,)).fetchone()
-        self.assertIsNotNone(trusted)
-        self.assertEqual(trusted["currency_code"], "DZD")
-        self.assertEqual(trusted["candidate_amount"], 1.0)
+        self.assertIsNone(trusted)
         self.assertEqual(original, tuple(self.conn.execute(
             "SELECT candidate_amount,currency_code,quality_status,reason_codes_json FROM price_evidence WHERE id=?",
             (evidence_id,),
@@ -675,6 +715,137 @@ class OuedknissPriceEvidenceTests(unittest.TestCase):
             )
         self.assertEqual(self.conn.execute(
             "SELECT COUNT(*) FROM facebook_landing_page_fetches"
+        ).fetchone()[0], 0)
+
+    def test_worker_031_fabricated_fetch_bytes_and_claims_stay_untrusted(self) -> None:
+        seed_facebook(self.conn, ad_id=91, observation_id=901,
+                      url="https://shop.example/observed-item")
+        html = fixture("normal_numeric.html")
+        fetch_id = append_landing_page_fetch(
+            self.conn, 901, fetched_at="2026-10-14T08:00:00Z", fetch_status="FETCHED",
+            content=html, resolved_url="https://attacker.example/injected-final-url",
+            http_status=200, content_type="text/html; charset=utf-8",
+            fetcher_name="trusted-fetcher-v99", fetcher_version="99",
+            evidence={"network_io": True, "tls_verified": True},
+        )
+        fetch = self.conn.execute(
+            "SELECT * FROM facebook_landing_page_fetches WHERE id=?", (fetch_id,)
+        ).fetchone()
+        claims = json.loads(fetch["evidence_json"])
+        self.assertEqual(fetch["provenance_status"], "UNVERIFIED")
+        self.assertEqual(fetch["fetch_status"], "FAILED")
+        self.assertIsNone(fetch["resolved_url"])
+        self.assertIsNone(fetch["http_status"])
+        self.assertIsNone(fetch["content_type"])
+        self.assertEqual(fetch["fetcher_name"], "untrusted_caller_submission")
+        self.assertEqual(claims["caller_claims"]["resolved_url"], "https://attacker.example/injected-final-url")
+        self.assertEqual(claims["caller_claims"]["fetcher_name"], "trusted-fetcher-v99")
+        self.assertTrue(claims["caller_claims"]["metadata"]["tls_verified"])
+        self.assertTrue(claims["caller_claims"]["metadata"]["network_io"])
+        self.assertEqual(fetch["content_sha256"], hashlib.sha256(html.encode()).hexdigest())
+        self.assertFalse(claims["source_origin_authenticated"])
+        self.assertEqual(claims["content_sha256_semantics"], "integrity_only_not_origin_authentication")
+
+        extracted = extract_landing_page_prices(html)
+        forged_candidate = replace(
+            extracted.candidates[0], candidate_amount=1, currency_code="EUR",
+            currency_basis="SOURCE_CONFIRMED", product_identity_state="VERIFIED",
+            product_key="forged:identity",
+        )
+        caller_extraction = LandingPageExtraction(
+            extraction_status="SUCCESS", candidates=(forged_candidate,), reason_codes=(),
+            evidence={"fetcher": "trusted-fetcher-v99", "network_io": True},
+        )
+        evidence_id = append_facebook_price_evidence(self.conn, fetch_id, caller_extraction)[0]
+        evidence = self.conn.execute(
+            "SELECT candidate_amount,currency_code,currency_basis,product_identity_state,"
+            "supporting_evidence_json FROM price_evidence WHERE id=?", (evidence_id,)
+        ).fetchone()
+        self.assertEqual(evidence["candidate_amount"], 1299.9)
+        self.assertIsNone(evidence["currency_code"])
+        self.assertEqual(evidence["currency_basis"], "UNKNOWN")
+        self.assertEqual(evidence["product_identity_state"], "UNVERIFIED")
+        provenance = json.loads(evidence["supporting_evidence_json"])["fetch_provenance"]
+        self.assertFalse(provenance["source_origin_authenticated"])
+        self.assertFalse(provenance["content_hash_proves_origin"])
+        self.assertEqual(self.conn.execute(
+            "SELECT COUNT(*) FROM trusted_price_evidence"
+        ).fetchone()[0], 0)
+
+    def test_observed_destination_rejects_obvious_ssrf_targets(self) -> None:
+        for url in (
+            "http://127.0.0.1/admin", "https://[::1]/", "http://10.0.0.8/",
+            "http://169.254.1.2/", "http://localhost/", "http://service.local/",
+            "http://user:pass@shop.example/", "https://shop.example:8443/",
+        ):
+            with self.subTest(url=url):
+                seed_facebook(self.conn, ad_id=100 + len(url), observation_id=1000 + len(url), url=url)
+                with self.assertRaises(ValueError):
+                    append_landing_page_fetch(
+                        self.conn, 1000 + len(url), fetched_at="2026-10-14T09:00:00Z",
+                        fetch_status="FETCHED", content="raw",
+                    )
+
+    def test_worker_031_spoofed_sqlite_udf_cannot_authorize_unsigned_approval(self) -> None:
+        seed_ouedkniss(
+            self.conn, 1, 1, "2026-10-10T10:00:00Z", amount=72000,
+            unit="NOT_APPLICABLE", price_type="FIXED",
+        )
+        evidence_id = append_ouedkniss_price_evidence(self.conn, 1)
+        calls = []
+        self.conn.create_function(
+            "kratzwerk_price_review_authorized", 14,
+            lambda *args: calls.append(args) or 1,
+        )
+        insert = """INSERT INTO price_evidence_reviews (
+            price_evidence_id,decision,quality_status,currency_code,currency_basis,
+            unit_status,product_identity_state,product_identity_key,price_type,
+            reviewer,reviewed_at,reason_codes_json,supporting_evidence_json,idempotency_key
+        ) VALUES (?, 'APPROVED','VALID','DZD','SOURCE_CONFIRMED',
+            'NOT_APPLICABLE','VERIFIED','spoofed:identity','REGULAR',
+            'untrusted-caller','2026-10-14T09:30:00Z','[]','{}','unsigned-spoofed-review')"""
+        with self.assertRaisesRegex(sqlite3.IntegrityError, "trusted price review service is not configured"):
+            self.conn.execute(insert, (evidence_id,))
+        self.assertEqual(calls, [])
+        self.assertIsNone(self.conn.execute(
+            "SELECT 1 FROM trusted_price_evidence WHERE price_evidence_id=?", (evidence_id,)
+        ).fetchone())
+
+    def test_signature_attempts_missing_key_and_nonstandard_review_json_fail_closed(self) -> None:
+        seed_ouedkniss(self.conn, 1, 1, "2026-10-10T10:00:00Z", amount=100)
+        evidence_id = append_ouedkniss_price_evidence(self.conn, 1)
+        seed_ouedkniss(self.conn, 2, 2, "2026-10-10T11:00:00Z", amount=200)
+        other_evidence_id = append_ouedkniss_price_evidence(self.conn, 2)
+        common = {
+            "decision": "APPROVED", "reviewer": "untrusted-caller",
+            "reviewed_at": "2026-10-14T10:00:00Z", "quality_status": "VALID",
+            "currency_code": "DZD", "currency_basis": "SOURCE_CONFIRMED",
+            "unit_status": "NOT_APPLICABLE", "product_identity_state": "VERIFIED",
+            "product_identity_key": "spoofed:key", "price_type": "REGULAR",
+        }
+        with patch.dict(os.environ, {"KRATZWERK_PRICE_REVIEW_HMAC_KEY": ""}):
+            with self.assertRaisesRegex(ValueError, "no trusted review service"):
+                append_price_evidence_review(self.conn, evidence_id, **common)
+        # The API has no signature parameter: invalid, altered-field, and replayed
+        # signatures cannot be submitted through the evidence caller boundary.
+        attempts = (
+            (evidence_id, common, "invalid-signature"),
+            (evidence_id, {**common, "product_identity_key": "changed-after-signing"}, "signature-for-other-fields"),
+            (other_evidence_id, common, "replayed-signature"),
+        )
+        for target_id, review_fields, signature in attempts:
+            with self.subTest(signature=signature):
+                with self.assertRaisesRegex(TypeError, "authorization_signature"):
+                    append_price_evidence_review(
+                        self.conn, target_id, **review_fields, authorization_signature=signature
+                    )
+        with self.assertRaises(ValueError):
+            append_price_evidence_review(
+                self.conn, evidence_id, decision="NEEDS_MORE_EVIDENCE", reviewer="reviewer",
+                reviewed_at="2026-10-14T10:01:00Z", evidence={"measurement": float("nan")},
+            )
+        self.assertEqual(self.conn.execute(
+            "SELECT COUNT(*) FROM price_evidence_reviews"
         ).fetchone()[0], 0)
 
 
@@ -779,7 +950,16 @@ class FacebookOfflineExtractionTests(unittest.TestCase):
             self.assertEqual(conn.execute("SELECT COUNT(*) FROM trusted_price_evidence").fetchone()[0], 0)
             self.assertEqual(append_facebook_price_evidence(conn, fetch_id, result)[0], evidence_id)
             row = conn.execute("SELECT source_observed_at,price_observed_at FROM price_evidence WHERE id=?", (evidence_id,)).fetchone()
-            self.assertEqual(tuple(row), ("2026-10-01T10:00:00Z", "2026-10-11T10:00:00Z"))
+            fetch_record = conn.execute(
+                "SELECT fetched_at,evidence_json FROM facebook_landing_page_fetches WHERE id=?",
+                (fetch_id,),
+            ).fetchone()
+            self.assertEqual(row[0], "2026-10-01T10:00:00Z")
+            self.assertEqual(row[1], fetch_record["fetched_at"])
+            self.assertEqual(
+                json.loads(fetch_record["evidence_json"])["caller_claims"]["fetched_at"],
+                "2026-10-11T10:00:00Z",
+            )
             verified = extract_landing_page_prices(
                 html, source_entity_key="library-20", verified_product_evidence={
                     "@id:sku:prod-1": {"review": "fixture manual identity check", "basis": "exact SKU"}
@@ -790,7 +970,7 @@ class FacebookOfflineExtractionTests(unittest.TestCase):
                 content=html, resolved_url="https://shop.example/products/prod-1",
             )
             later_evidence = append_facebook_price_evidence(conn, later_fetch, verified)[0]
-            signed_review(
+            assert_approval_unavailable(self,
                 conn, later_evidence, decision="APPROVED", reviewer="reviewer-1",
                 reviewed_at="2026-10-12T10:05:00Z", quality_status="VALID",
                 currency_code="DZD", currency_basis="SOURCE_CONFIRMED",
@@ -799,9 +979,7 @@ class FacebookOfflineExtractionTests(unittest.TestCase):
                 price_type="REGULAR", evidence={"target_identity": "exact fixture SKU"},
             )
             view = conn.execute("SELECT * FROM trusted_price_evidence WHERE price_evidence_id=?", (later_evidence,)).fetchone()
-            self.assertIsNotNone(view)
-            self.assertEqual(view["ad_observed_at"], "2026-10-01T10:00:00Z")
-            self.assertEqual(view["price_known_at"], "2026-10-12T10:00:00Z")
+            self.assertIsNone(view)
             self.assertNotEqual(evidence_id, later_evidence)
             self.assertEqual(conn.execute("SELECT COUNT(*) FROM price_evidence").fetchone()[0], 2)
         finally:
@@ -824,7 +1002,7 @@ class FacebookOfflineExtractionTests(unittest.TestCase):
             states = conn.execute(
                 "SELECT product_identity_state,quality_status FROM price_evidence ORDER BY id"
             ).fetchall()
-            self.assertTrue(all(row["product_identity_state"] == "AMBIGUOUS" for row in states))
+            self.assertTrue(all(row["product_identity_state"] == "UNVERIFIED" for row in states))
             self.assertTrue(all(row["quality_status"] == "AMBIGUOUS" for row in states))
             self.assertEqual(conn.execute("SELECT COUNT(*) FROM trusted_price_evidence").fetchone()[0], 0)
         finally:

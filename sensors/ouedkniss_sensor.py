@@ -19,7 +19,7 @@ from urllib.request import Request, urlopen
 import config
 from config import connect
 from price_evidence.repository import append_ouedkniss_evidence_for_capture
-from schema_validation import price_evidence_currency_policy_problems, schema_readiness_message
+from schema_validation import price_evidence_trust_boundary_problems, schema_readiness_message
 
 
 logging.basicConfig(
@@ -108,7 +108,7 @@ def require_price_evidence_schema() -> None:
         ))
     conn = config.connect(read_only=True)
     try:
-        problems = price_evidence_currency_policy_problems(conn)
+        problems = price_evidence_trust_boundary_problems(conn)
         fk_violations = [tuple(row) for row in conn.execute("PRAGMA foreign_key_check")]
         if fk_violations:
             problems.append(f"foreign_key_check returned {len(fk_violations)} violation(s)")
