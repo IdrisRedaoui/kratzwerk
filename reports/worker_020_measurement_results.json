@@ -1,0 +1,158 @@
+{
+  "ai_provider_run_count": 0,
+  "derived_rows": {
+    "after_first": {
+      "candidate_evidence": 0,
+      "candidate_generation_runs": 23,
+      "classification_results": 268,
+      "normalization_decision_events": 23,
+      "normalization_extraction_runs": 268,
+      "normalization_runs": 268,
+      "normalization_source_refs": 268,
+      "product_candidates": 0,
+      "product_mentions": 23
+    },
+    "after_second": {
+      "candidate_evidence": 0,
+      "candidate_generation_runs": 23,
+      "classification_results": 268,
+      "normalization_decision_events": 23,
+      "normalization_extraction_runs": 268,
+      "normalization_runs": 268,
+      "normalization_source_refs": 268,
+      "product_candidates": 0,
+      "product_mentions": 23
+    },
+    "before": {
+      "candidate_evidence": 0,
+      "candidate_generation_runs": 0,
+      "classification_results": 0,
+      "normalization_decision_events": 0,
+      "normalization_extraction_runs": 0,
+      "normalization_runs": 0,
+      "normalization_source_refs": 0,
+      "product_candidates": 0,
+      "product_mentions": 0
+    }
+  },
+  "facebook": {
+    "classification": {
+      "EDUCATION": 3,
+      "PRODUCT": 7,
+      "REAL_ESTATE": 0,
+      "SERVICE": 3,
+      "UNKNOWN": 204
+    },
+    "mentions": 7,
+    "observations": 217,
+    "usable_text": 129
+  },
+  "idempotency": {
+    "additional_derived_rows": {
+      "candidate_evidence": 0,
+      "candidate_generation_runs": 0,
+      "classification_results": 0,
+      "normalization_decision_events": 0,
+      "normalization_extraction_runs": 0,
+      "normalization_runs": 0,
+      "normalization_source_refs": 0,
+      "product_candidates": 0,
+      "product_mentions": 0
+    },
+    "first_pass_observations": 268,
+    "passed": true,
+    "second_pass_observations": 268
+  },
+  "isolated_catalog_counts_before_after": {
+    "after": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    },
+    "before": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    }
+  },
+  "isolated_source_observations_unchanged": true,
+  "marketplace": {
+    "classification": {
+      "EDUCATION": 0,
+      "PRODUCT": 16,
+      "REAL_ESTATE": 14,
+      "SERVICE": 2,
+      "UNKNOWN": 19
+    },
+    "entity_title_fallback_mentions": 0,
+    "entity_title_fallback_observations": 0,
+    "mentions": 16,
+    "observation_local_title_coverage": "34/51",
+    "observation_local_titles": 34,
+    "observations": 51
+  },
+  "measurement_database_path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\worker_020_measurement.sqlite",
+  "production_database": {
+    "catalog_counts_after": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    },
+    "catalog_counts_before": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    },
+    "observation_fingerprints_unchanged": true,
+    "schema_migrated": false,
+    "sha256_after": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "sha256_before": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "unchanged": true
+  },
+  "run_date": "2026-10-07",
+  "safety": {
+    "no_dependency_installation": true,
+    "no_facebook_capture": true,
+    "no_production_writes": true,
+    "no_provider_calls": true,
+    "normalization_schema_applied_only_to_isolated_copy": true
+  },
+  "test_result": "Full suite: `python -m unittest discover -s tests -q` - 154 tests passed in 54.178 seconds.",
+  "total_product_mentions": 23,
+  "versions": {
+    "classification": "classification_v2",
+    "extraction": "deterministic_extract_v2",
+    "matching": "deterministic_match_v1",
+    "normalization": "deterministic_v1",
+    "selector": "source_text_selector_v2"
+  },
+  "worker_019_baseline": {
+    "facebook": {
+      "classification": {
+        "EDUCATION": 3,
+        "PRODUCT": 15,
+        "REAL_ESTATE": 0,
+        "SERVICE": 3,
+        "UNKNOWN": 196
+      },
+      "mentions": 15,
+      "observations": 217,
+      "usable_text": 129
+    },
+    "marketplace": {
+      "classification": {
+        "EDUCATION": 0,
+        "PRODUCT": 24,
+        "REAL_ESTATE": 21,
+        "SERVICE": 3,
+        "UNKNOWN": 3
+      },
+      "entity_title_fallback_mentions": 8,
+      "entity_title_fallback_observations": 17,
+      "mentions": 24,
+      "observation_local_titles": 34,
+      "observations": 51
+    },
+    "total_product_mentions": 39
+  }
+}

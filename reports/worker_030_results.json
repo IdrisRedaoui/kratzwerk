@@ -1,0 +1,217 @@
+{
+  "worker": 30,
+  "remediated_review": 29,
+  "report_date": "2026-10-14",
+  "timezone": "Asia/Riyadh",
+  "verdict": "READY WITH CONDITIONS",
+  "production_migration_authorized": false,
+  "production_migration_performed": false,
+  "production_ready": false,
+  "conditions": [
+    "An authorized review service must provision and protect the HMAC review key out of band before it records approvals.",
+    "A fresh independent review must assess the remediation before any separate production migration decision."
+  ],
+  "findings": {
+    "F-01": {
+      "status": "FIXED",
+      "summary": "Facebook evidence is re-extracted from hash-checked content linked to the exact ad destination; caller candidate fields cannot establish currency or verification. APPROVED reviews require a signed authorization, and independent currency overrides require distinct source content with a matching hash and explicit supported currency.",
+      "reproductions": [
+        {
+          "case": "No source currency; caller claims DZD and INDEPENDENTLY_VERIFIED",
+          "test": "tests.test_price_evidence.OuedknissPriceEvidenceTests.test_worker_029_supported_currency_claims_need_source_or_signed_independent_evidence",
+          "result": "Stored currency remains NULL/UNKNOWN and the row is excluded until a signed independent evidence review is supplied."
+        },
+        {
+          "case": "Source declares XYZ; caller claims DZD and SOURCE_CONFIRMED",
+          "test": "tests.test_price_evidence.OuedknissPriceEvidenceTests.test_worker_029_supported_currency_claims_need_source_or_signed_independent_evidence",
+          "result": "Stored currency remains NULL/UNKNOWN; a source-confirmed DZD review is rejected; a separately supported and signed independent review can authorize DZD."
+        },
+        {
+          "case": "Caller-created unsupported Facebook currency candidate",
+          "test": "tests.test_price_evidence.OuedknissPriceEvidenceTests.test_worker_027_forged_facebook_currency_cannot_become_trusted",
+          "result": "Repository stores values derived from exact source content, not caller candidate labels."
+        },
+        {
+          "case": "Attempt to rebind fetch content to a different destination URL",
+          "test": "tests.test_price_evidence.OuedknissPriceEvidenceTests.test_facebook_fetch_cannot_rebind_content_to_a_different_destination",
+          "result": "Rejected before fetch row persistence."
+        }
+      ],
+      "condition": "The HMAC key is external configuration and was not provisioned in production. Without a valid signature approvals fail closed."
+    },
+    "F-02": {
+      "status": "FIXED",
+      "summary": "Python input validation rejects nonnumeric, boolean, nonfinite, nonpositive, and over-limit amounts. Migration 003 enforces SQLite numeric storage class and range on insert, and the trusted view independently checks storage class and bounds.",
+      "policy": {
+        "minimum_exclusive": 0,
+        "maximum_inclusive": 1000000000000,
+        "finite_only": true
+      },
+      "test": "tests.test_price_evidence.OuedknissPriceEvidenceTests.test_malformed_candidate_amount_is_rejected_at_api_and_database_boundaries",
+      "reproduced_amount": "not-a-number",
+      "result": "Repository rejects the malformed candidate before insert; the database trigger rejects direct text insertion; after test-only trigger removal the trusted view still excludes the text amount."
+    },
+    "F-03": {
+      "status": "FIXED",
+      "summary": "Schema checks normalize SQLite ASCII identifier casing and equivalent quoting for ordinary non-keyword identifiers across object names, DDL tokens, columns, foreign keys, and index layouts. Definitions outside the documented dialect fail as schema drift before baseline or migration changes.",
+      "supported_dialect": "ASCII identifier case equivalence; ordinary non-keyword identifiers may be unquoted or quoted with double quotes, backticks, or brackets. String literals and quoted keywords remain distinct. Unicode case folding, quoted-keyword role inference, extensions, and arbitrary parser rewrite equivalence are not supported.",
+      "tests": [
+        "tests.test_foundation_v2.FoundationSchemaSafetyTests.test_ascii_identifier_case_and_quoting_equivalence_is_accepted",
+        "tests.test_foundation_v2.FoundationSchemaSafetyTests.test_meaningful_identifier_drift_is_still_rejected",
+        "tests.test_foundation_v2.FoundationSchemaSafetyTests.test_check_literal_case_drift_is_rejected_before_baselining"
+      ],
+      "result": "Equivalent PRODUCTS/quoted CANONICAL_NAME is accepted; a renamed column and meaningful CHECK literal drift are rejected."
+    },
+    "F-04": {
+      "status": "FIXED",
+      "summary": "Restore cleanup and rollback cover copy, staged verification, replacement, and final verification. Target and sidecars are restored after failed replacement; safe stage files are deleted, and cleanup errors report the exact remaining stage path and cause.",
+      "tests": [
+        "tests.test_migration_lifecycle.MigrationLifecycleTests.test_restore_failure_at_copy_verification_and_replacement_preserves_target_and_sidecars",
+        "tests.test_migration_lifecycle.MigrationLifecycleTests.test_restore_reports_exact_stage_path_when_cleanup_fails",
+        "tests.test_migration_lifecycle.MigrationLifecycleTests.test_restore_preserves_existing_wal_and_shm_beside_previous_database"
+      ],
+      "injected_failures": [
+        "stage copy",
+        "stage verification",
+        "target replacement",
+        "post-install verification",
+        "stage cleanup"
+      ],
+      "result": "Failed restore leaves target and sidecars byte-for-byte unchanged; safe stages are removed and cleanup failure diagnostics name the remaining file."
+    },
+    "F-05": {
+      "status": "FIXED",
+      "summary": "Manifest verification reads existing key material only. Missing or invalid material fails explicitly; key initialization is a separate operation and backup creation requires an already provisioned key.",
+      "test": "tests.test_migration_lifecycle.MigrationLifecycleTests.test_missing_manifest_key_verification_fails_without_creating_replacement",
+      "result": "Verification with a missing key does not create a key; invalid key bytes remain unchanged; backup creation with a missing key creates no backup artifact."
+    }
+  },
+  "validation": {
+    "focused_suites": {
+      "command": "python -B -m unittest tests.test_foundation_v2 tests.test_migration_lifecycle tests.test_migration_cli_safety tests.test_price_evidence tests.test_ouedkniss_sensor_v2 -q",
+      "status": "PASSED",
+      "tests": 93,
+      "duration_seconds": 40.062
+    },
+    "full_suite": {
+      "command": "python -B -m unittest discover -s tests -q",
+      "status": "PASSED",
+      "tests": 219,
+      "duration_seconds": 99.816
+    },
+    "migration_lifecycle": {
+      "status": "PASSED",
+      "failure_injection": "Migration 003 failure injected after each of seven SQL statements; each attempt rolled back registry/schema state and retry succeeded.",
+      "checksum_drift": "Rejected before apply.",
+      "incomplete_registry_and_schema": "Rejected in isolated tests.",
+      "append_only_source_history": "Source fingerprints unchanged across migrations and retries."
+    },
+    "production_benchmark_access": "The existing full-suite benchmark reads production in mode=ro and copies it only to a TemporaryDirectory database; all writes occur on that temporary copy."
+  },
+  "production_audit": {
+    "path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+    "connection": "SQLite mode=ro with PRAGMA query_only=ON",
+    "before": {
+      "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+      "integrity_check": "ok",
+      "foreign_key_violations": 0,
+      "foundation_001_schema": "APPLIED",
+      "migration_002": "ABSENT",
+      "migration_003": "ABSENT",
+      "schema_migrations": "ABSENT",
+      "user_version": 0,
+      "sidecars": {
+        "wal": false,
+        "shm": false
+      },
+      "table_counts": {
+        "sellers": 3,
+        "marketplace_listings": 17,
+        "marketplace_listing_observations": 51,
+        "facebook_ads": 162,
+        "facebook_ad_observations": 217,
+        "products": 0,
+        "product_aliases": 0,
+        "product_mappings": 0,
+        "legacy_products": 18,
+        "legacy_sellers": 3,
+        "legacy_marketplace_listings": 17,
+        "legacy_price_history": 0,
+        "legacy_advertising_campaigns": 69
+      }
+    },
+    "after": {
+      "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+      "integrity_check": "ok",
+      "foreign_key_violations": 0,
+      "foundation_001_schema": "APPLIED",
+      "migration_002": "ABSENT",
+      "migration_003": "ABSENT",
+      "schema_migrations": "ABSENT",
+      "user_version": 0,
+      "sidecars": {
+        "wal": false,
+        "shm": false
+      },
+      "table_counts": {
+        "sellers": 3,
+        "marketplace_listings": 17,
+        "marketplace_listing_observations": 51,
+        "facebook_ads": 162,
+        "facebook_ad_observations": 217,
+        "products": 0,
+        "product_aliases": 0,
+        "product_mappings": 0,
+        "legacy_products": 18,
+        "legacy_sellers": 3,
+        "legacy_marketplace_listings": 17,
+        "legacy_price_history": 0,
+        "legacy_advertising_campaigns": 69
+      }
+    },
+    "unchanged": true
+  },
+  "migration_checksums": {
+    "001_foundation_v2.sql": {
+      "current_sha256": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+      "recorded_sha256": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+      "match": true
+    },
+    "002_price_evidence.sql": {
+      "current_sha256": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844",
+      "recorded_sha256": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844",
+      "match": true
+    },
+    "003_price_evidence_trust_policy.sql": {
+      "current_sha256": "f91fb42af6d2f9556fafe6252b7395c85bb3e1778abc11195f5f1fa5a51245b6",
+      "recorded_sha256": null,
+      "match": null
+    }
+  },
+  "preserved_artifact_hashes": {
+    "normalization/worker_018_manifest.json": "7ca5adbb43e1eac270d58d03b4ca8292b713d61b125595b039f114179b17e686",
+    "reports/worker_027_independent_review.md": "e8c80827249bef9aa76a6569f79968548dbd01add4ffa7947bee11d7394ae95c",
+    "reports/worker_027_results.json": "d7762be19a07a5350680d2511933712b3be6238e74454c21d398005d292d69c7",
+    "reports/worker_029_independent_review.md": "825f146b4202bc0b193560922cc5dda95f0eb9d77e0d503ecb9281e15a60db53",
+    "reports/worker_029_results.json": "2b04344049f86cd3661c8d3e26d9e9fd16db0183c73dcff32c21e1bf65657e79"
+  },
+  "safety": {
+    "production_backup_performed": false,
+    "production_migration_performed": false,
+    "production_capture_performed": false,
+    "production_recovery_performed": false,
+    "production_restore_performed": false,
+    "production_rollback_performed": false,
+    "production_write_capable_operations_performed": false,
+    "original_legacy_database_modified": false,
+    "migration_001_modified": false,
+    "migration_002_modified": false,
+    "production_review_key_created": false,
+    "dependencies_installed": false,
+    "mutation_tests_used_isolated_databases": true,
+    "production_catalog_or_trusted_price_fixtures_added": false,
+    "new_production_backup_artifacts_created": false,
+    "worker_027_results_and_manifest_hashes_match_worker_029_recorded_values": true,
+    "worker_029_input_reports_modified": false
+  }
+}

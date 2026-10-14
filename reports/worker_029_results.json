@@ -1,0 +1,439 @@
+{
+  "worker": 29,
+  "reviewed_worker": 28,
+  "review_date": "2026-10-13",
+  "timezone": "Asia/Riyadh",
+  "verdict": "NO-GO",
+  "production_migration_authorized": false,
+  "production_migration_performed": false,
+  "production_write_capable_operations_performed": false,
+  "production_operator_backup_performed": false,
+  "dependencies_installed": false,
+  "source_or_test_files_modified": false,
+  "legacy_database_modified": false,
+  "production_audit": {
+    "path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+    "connection": "SQLite mode=ro with PRAGMA query_only=ON; lifecycle status used read-only inspection",
+    "expected_sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "before": {
+      "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+      "integrity_check": "ok",
+      "foreign_key_violations": 0,
+      "foundation_001": "APPLIED",
+      "migration_002": "ABSENT",
+      "migration_003": "ABSENT",
+      "schema_migrations_present": false,
+      "user_version": 0,
+      "wal_exists": false,
+      "shm_exists": false,
+      "row_counts": {
+        "sellers": 3,
+        "marketplace_listings": 17,
+        "marketplace_listing_observations": 51,
+        "facebook_ads": 162,
+        "facebook_ad_observations": 217,
+        "products": 0,
+        "product_aliases": 0,
+        "product_mappings": 0,
+        "legacy_products": 18,
+        "legacy_sellers": 3,
+        "legacy_marketplace_listings": 17,
+        "legacy_price_history": 0,
+        "legacy_advertising_campaigns": 69
+      }
+    },
+    "after": {
+      "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+      "integrity_check": "ok",
+      "foreign_key_violations": 0,
+      "foundation_001": "APPLIED",
+      "migration_002": "ABSENT",
+      "migration_003": "ABSENT",
+      "schema_migrations_present": false,
+      "user_version": 0,
+      "wal_exists": false,
+      "shm_exists": false,
+      "row_counts": {
+        "sellers": 3,
+        "marketplace_listings": 17,
+        "marketplace_listing_observations": 51,
+        "facebook_ads": 162,
+        "facebook_ad_observations": 217,
+        "products": 0,
+        "product_aliases": 0,
+        "product_mappings": 0,
+        "legacy_products": 18,
+        "legacy_sellers": 3,
+        "legacy_marketplace_listings": 17,
+        "legacy_price_history": 0,
+        "legacy_advertising_campaigns": 69
+      }
+    },
+    "matches_required_baseline_before_and_after": true,
+    "new_production_backups": [],
+    "normalization_manifest_sha256": "7ca5adbb43e1eac270d58d03b4ca8292b713d61b125595b039f114179b17e686",
+    "worker_027_review_sha256": "e8c80827249bef9aa76a6569f79968548dbd01add4ffa7947bee11d7394ae95c",
+    "worker_027_results_sha256": "d7762be19a07a5350680d2511933712b3be6238e74454c21d398005d292d69c7"
+  },
+  "migration_immutability": {
+    "001": {
+      "filename": "001_foundation_v2.sql",
+      "historically_recorded_sha256": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+      "current_sha256": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+      "matches": true
+    },
+    "002": {
+      "filename": "002_price_evidence.sql",
+      "historically_recorded_sha256": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844",
+      "current_sha256": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844",
+      "matches": true
+    },
+    "003": {
+      "filename": "003_price_evidence_trust_policy.sql",
+      "current_sha256": "0661a45a9c48fca4915049c06b1826d5b6e6229b994dd92bfb5ea819b5f8b014",
+      "new_migration": true
+    },
+    "historical_checksum_source": "Read-only schema_migrations registry in data/worker_024_validation.sqlite"
+  },
+  "commands": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest tests.test_foundation_v2 tests.test_migration_lifecycle tests.test_migration_cli_safety tests.test_price_evidence tests.test_ouedkniss_sensor_v2 -q",
+      "exit_code": 0,
+      "test_count": 85,
+      "duration_seconds": 30.028,
+      "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -q",
+      "exit_code": 0,
+      "test_count": 211,
+      "duration_seconds": 97.239,
+      "skipped": 0
+    }
+  ],
+  "review_a_worker_027_reproductions": [
+    {
+      "case": "caller_constructed_facebook_XYZ_independently_verified_then_approved",
+      "severity": "none",
+      "reproduction_steps": [
+        "On an isolated Migration 002/003 schema, insert a Facebook fetch and submit a caller-constructed PriceCandidate with currency_code XYZ and currency_basis INDEPENDENTLY_VERIFIED.",
+        "Append an APPROVED review carrying XYZ and INDEPENDENTLY_VERIFIED.",
+        "Inspect price_evidence and trusted_price_evidence for that row."
+      ],
+      "expected_result": "Unsupported raw currency is preserved, structured currency is NULL, basis is UNKNOWN, and the trusted view omits the row.",
+      "actual_result": "Stored currency was NULL, basis UNKNOWN, and trusted-view count was 0.",
+      "affected_code_schema_boundary": "Facebook repository writer, currency insert triggers, trusted-price view",
+      "disposition": "Worker 027 regression reproduced as fixed; see F-01 for a distinct supported-code provenance bypass."
+    },
+    {
+      "case": "CHECK_literal_deleted_to_DELETED",
+      "severity": "none",
+      "reproduction_steps": [
+        "Create and migrate a temporary legacy fixture to Foundation 001.",
+        "Drop its registry, change only the marketplace_listings CHECK literal using writable_schema, and increment schema_version.",
+        "Inspect and attempt target-version-1 apply."
+      ],
+      "expected_result": "Validator reports schema drift before backup or baseline registry creation.",
+      "actual_result": "Foundation state PARTIAL; apply rejected; database bytes and backup set unchanged; no registry created.",
+      "affected_code_schema_boundary": "Foundation schema validator and preflight",
+      "disposition": "Fixed; reproduced."
+    },
+    {
+      "case": "unexpected_insert_blocking_trigger",
+      "severity": "none",
+      "reproduction_steps": [
+        "Create and migrate a temporary legacy fixture to Foundation 001.",
+        "Drop its registry and add an unexpected BEFORE INSERT trigger that raises ABORT on marketplace_listings.",
+        "Inspect and attempt target-version-1 apply."
+      ],
+      "expected_result": "Validator detects the unexpected trigger before baseline acceptance.",
+      "actual_result": "Foundation state PARTIAL; apply rejected; database bytes and backup set unchanged; no registry created.",
+      "affected_code_schema_boundary": "Foundation schema validator and preflight",
+      "disposition": "Fixed; reproduced."
+    },
+    {
+      "case": "direct_backup_database_wrong_target",
+      "severity": "none",
+      "reproduction_steps": [
+        "Create a temporary SQLite target and record its SHA-256 and adjacent backup set.",
+        "Call the exported backup_database() helper directly without isolated=True."
+      ],
+      "expected_result": "Target policy rejects before creating files or modifying the database.",
+      "actual_result": "DatabaseTargetError before backup creation; target SHA-256 and backup set unchanged.",
+      "affected_code_schema_boundary": "Exported backup helper target guard",
+      "disposition": "Fixed; reproduced."
+    },
+    {
+      "case": "healthy_unrelated_or_unmanifested_restore_source",
+      "severity": "none",
+      "reproduction_steps": [
+        "Create an isolated restore target.",
+        "Attempt restore from a healthy unsigned SQLite file and a signed backup created for a different target path."
+      ],
+      "expected_result": "Both sources are rejected before replacing the target.",
+      "actual_result": "Unmanifested source rejected for missing provenance; signed unrelated source rejected for target mismatch; target bytes unchanged.",
+      "affected_code_schema_boundary": "Backup verifier and restore target binding",
+      "disposition": "Fixed; reproduced."
+    }
+  ],
+  "review_b_migration_003": {
+    "starting_database": "Read-only Worker 024 validation database copied to a temporary isolated path; it already recorded valid Migration 001 and 002 registry checksums.",
+    "supported_runner": "apply_migrations(path, target_version=3, isolated=True)",
+    "initial_states": ["APPLIED", "APPLIED", "ABSENT"],
+    "final_states": ["APPLIED", "APPLIED", "APPLIED"],
+    "final_registry_versions": [1, 2, 3],
+    "migration_001_002_recorded_checksums_unchanged": true,
+    "source_observation_fingerprints_unchanged": true,
+    "required_object_count": 19,
+    "missing_required_objects": [],
+    "required_objects": {
+      "tables": ["facebook_landing_page_fetches", "price_evidence", "price_evidence_reviews"],
+      "indexes": [
+        "ix_landing_page_fetch_observation_time",
+        "ix_price_evidence_marketplace_observation",
+        "ix_price_evidence_landing_fetch",
+        "ix_price_evidence_source_time",
+        "ix_price_evidence_reviews_latest"
+      ],
+      "views": ["trusted_price_evidence", "legacy_currency_unconfirmed_observations"],
+      "triggers": [
+        "trg_price_evidence_platform_guard",
+        "trg_landing_fetch_no_update",
+        "trg_landing_fetch_no_delete",
+        "trg_price_evidence_no_update",
+        "trg_price_evidence_no_delete",
+        "trg_price_evidence_reviews_no_update",
+        "trg_price_evidence_reviews_no_delete",
+        "trg_price_evidence_currency_allowlist",
+        "trg_price_evidence_reviews_currency_allowlist"
+      ]
+    },
+    "ddl_failure_injection": {
+      "statement_count": 5,
+      "after_each_statement": [1, 2, 3, 4, 5],
+      "every_failure_rolled_back_schema_and_registry_to_001_002": true,
+      "every_failure_preserved_source_fingerprints": true,
+      "retry_succeeded_after_every_failure": true
+    },
+    "negative_states": {
+      "checksum_drift": "Rejected before apply with checksum-drift error.",
+      "incomplete_migration_002": "Rejected as recorded APPLIED but structurally PARTIAL.",
+      "conflicting_migration_003_object_name": "Rejected by preflight as partial/incomplete schema.",
+      "already_applied_003": "Repeated apply stayed APPLIED, registry [1,2,3], and created no backup."
+    },
+    "untracked_existing_001_002": {
+      "migration_001": {"state": "BASELINED", "applied_at": null},
+      "migration_002": {"state": "BASELINED", "applied_at": null},
+      "migration_003": {"state": "APPLIED", "applied_at": "runner-generated timestamp"},
+      "invented_prior_application_timestamp": false
+    },
+    "positive_legacy_amount_fixture": {
+      "amount": 72000,
+      "source_observation_preserved": true,
+      "uncertainty_view_currency_code": null,
+      "uncertainty_view_currency_basis": "UNKNOWN",
+      "trusted_without_independent_review": false
+    }
+  },
+  "review_c_currency_trust": {
+    "supported_codes": ["DZD", "EUR", "USD"],
+    "unsupported_raw_code_preserved_and_downgraded": true,
+    "lower_level_unsupported_code_rejected_by_insert_triggers": true,
+    "trusted_view_excludes_unsupported_code_even_after_test_fixture_bypasses_insert_guards": true,
+    "approved_review_view_filters": {
+      "approved_decision": true,
+      "valid_quality": true,
+      "eligible_unit": true,
+      "point_price_type": true,
+      "verified_identity_state_and_nonnull_key": true
+    },
+    "reproductions": {
+      "supported_code_with_missing_or_contradictory_raw_currency": {
+        "raw_currency": null,
+        "structured_currency": "DZD",
+        "structured_basis": "INDEPENDENTLY_VERIFIED",
+        "reviewer_value": "untrusted-caller",
+        "review_decision": "APPROVED",
+        "trusted_view_result": {"currency_code": "DZD", "currency_basis": "INDEPENDENTLY_VERIFIED"}
+      },
+      "candidate_raw_XYZ_structured_DZD": {
+        "raw_currency": "XYZ",
+        "stored_currency": "DZD",
+        "stored_basis": "SOURCE_CONFIRMED",
+        "trusted_view_currency": "DZD"
+      },
+      "malformed_candidate_amount": {
+        "input": "not-a-number",
+        "stored_value": "not-a-number",
+        "stored_sqlite_type": "text",
+        "returned_by_trusted_view": true
+      }
+    }
+  },
+  "review_d_schema_validator": {
+    "meaningful_schema_drift_rejected_by_validator": [
+      "CHECK string literal",
+      "collation",
+      "default",
+      "foreign-key action",
+      "partial-index predicate",
+      "expression-index expression",
+      "trigger body",
+      "view projection"
+    ],
+    "unique_check_and_foreign_key_constraint_negative_fixtures": "Existing Foundation tests rebuild schemas without each constraint and verify rejection.",
+    "harmless_formatting_comments_and_quoted_delimiters_normalized": true,
+    "actual_validator_comment_only_mutation": "Accepted; zero Foundation problems.",
+    "actual_validator_quoted_identifier_mutation": "Rejected; quoted products spelling was reported as a different Foundation table definition.",
+    "meaningful_false_acceptance_reproduced": false,
+    "false_rejection_reproduced": {
+      "equivalent_identifier": "products renamed to PRODUCTS in an otherwise valid Foundation 001 fixture",
+      "validator_result": "PARTIAL",
+      "reason": "Exact sqlite_master object-name and PRAGMA shape comparisons do not consistently apply SQLite ASCII identifier equivalence; unquoted Foo and quoted \"foo\" also produce different token kinds."
+    },
+    "limitation": "Tokenizer-based canonicalization is not a complete SQLite semantic parser; tested fixtures do not prove completeness."
+  },
+  "review_e_backup_restore": {
+    "direct_helper_wrong_target_rejected": true,
+    "environment_override_and_symlink_alias_checks_passed": true,
+    "manifest_binds": [
+      "backup filename and SHA-256",
+      "canonical intended target path identity",
+      "migration purpose field",
+      "schema and migration registry snapshot",
+      "creation timestamp",
+      "per-user HMAC signature"
+    ],
+    "rejections_verified": {
+      "unsigned_manifest_tampering": true,
+      "backup_content_tampering": true,
+      "target_mismatch": true,
+      "signed_but_false_schema_state": true,
+      "healthy_unmanifested_backup": true,
+      "healthy_signed_backup_for_another_target": true
+    },
+    "writers_stopped": "Explicit acknowledgment required; implementation cannot prove absence of active writers; README documents stopped-writer and WAL checkpoint preconditions.",
+    "wal_shm_sidecar_preservation_test": "Passed on isolated target; sidecars were preserved next to the prior database.",
+    "key_loss": {
+      "fails_closed": true,
+      "replacement_key_created_during_verify": true,
+      "error": "Backup provenance manifest signature is invalid",
+      "documentation": "README directs operator to preserve the per-user key and use offline/manual recovery if unavailable."
+    },
+    "staged_verification_failure": {
+      "target_hash_unchanged": true,
+      "orphan_stage_file_left": true,
+      "severity": "moderate"
+    },
+    "binding_assessment": "Signed canonical target path and verified schema/migration snapshot are checked against backup content. The target identity is path-based, not a persistent filesystem file ID; migration_version_purpose is signed but not semantically cross-validated against the schema snapshot."
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "severity": "high",
+      "title": "Caller-authored Facebook currency and basis can enter the trusted view",
+      "reproduction_steps": [
+        "Use isolated Migration 002/003 tables and create a Facebook FETCHED record with no content/hash.",
+        "Submit a caller-constructed candidate whose raw value has no currency (or says XYZ), while currency_code is DZD and currency_basis is INDEPENDENTLY_VERIFIED or SOURCE_CONFIRMED.",
+        "Call the public review helper with decision APPROVED and a caller-chosen reviewer label; leave review currency fields unset.",
+        "Query trusted_price_evidence for the evidence id."
+      ],
+      "expected_result": "Unknown or contradictory currency/basis remains untrusted unless a separately authorized review records supported evidence.",
+      "actual_result": "Structured DZD and INDEPENDENTLY_VERIFIED passed repository validation and the trusted view returned the candidate; contradictory raw XYZ was also accepted as DZD.",
+      "affected_code_schema_boundary": [
+        "price_evidence.repository.append_facebook_price_evidence",
+        "price_evidence.repository.append_price_evidence_review",
+        "Migration 003 trusted_price_evidence view",
+        "fetch content hash provenance"
+      ],
+      "disposition": "Blocks separate production-migration approval. Establish source-to-extraction provenance and an authorized review boundary, then independently reproduce rejection of these forged fields."
+    },
+    {
+      "id": "F-02",
+      "severity": "moderate",
+      "title": "Nonnumeric text candidate_amount is accepted as trusted evidence",
+      "reproduction_steps": [
+        "Submit a caller-constructed PriceCandidate with candidate_amount='not-a-number' through append_facebook_price_evidence.",
+        "Add an otherwise eligible approved review.",
+        "Query candidate_amount and typeof(candidate_amount) from price_evidence and trusted_price_evidence."
+      ],
+      "expected_result": "Malformed amount rejected or excluded from the trusted view.",
+      "actual_result": "SQLite stored TEXT 'not-a-number' in the REAL-affinity field; the CHECK passed and trusted_price_evidence returned it.",
+      "affected_code_schema_boundary": [
+        "price_evidence.repository.append_facebook_price_evidence",
+        "Migration 002 candidate_amount CHECK",
+        "Migration 003 trusted_price_evidence amount predicates"
+      ],
+      "disposition": "Blocks separate production-migration approval until runtime and schema/view type enforcement close this case and the focused suite is rerun."
+    },
+    {
+      "id": "F-03",
+      "severity": "low",
+      "title": "Foundation schema validator rejects equivalent identifier casing/quoting",
+      "reproduction_steps": [
+        "Create a valid isolated Foundation 001 schema and remove schema_migrations to model an untracked existing schema.",
+        "Rename products through a temporary name to PRODUCTS.",
+        "Inspect Foundation state."
+      ],
+      "expected_result": "Accept the table name as equivalent under SQLite ASCII identifier rules, or clearly constrain the supported schema dialect.",
+      "actual_result": "Validator reports PARTIAL; equivalent quoted/unquoted spellings also canonicalize differently in the tokenizer.",
+      "affected_code_schema_boundary": [
+        "schema_validation.object_types",
+        "schema_validation._foundation_table_shape",
+        "schema_validation._sql_tokens"
+      ],
+      "disposition": "Fix or constrain/document before applying the validator to broad legacy-schema baselining; no data was changed."
+    },
+    {
+      "id": "F-04",
+      "severity": "moderate",
+      "title": "Restore staged-verification exception leaves a full temporary database copy",
+      "reproduction_steps": [
+        "Create a signed isolated backup and target.",
+        "Inject an exception from verify_backup(stage), after the backup is copied but before target replacement.",
+        "Inspect the target hash and target directory."
+      ],
+      "expected_result": "Target remains intact and stage file is removed on every failure path.",
+      "actual_result": "Target hash remained unchanged, but .target.sqlite.restore-stage-*.sqlite remained beside it.",
+      "affected_code_schema_boundary": ["migration_lifecycle.restore_verified_backup staged-copy verification and cleanup"],
+      "disposition": "Fix exception-safe stage cleanup before relying on restore operationally; isolated reproduction only."
+    },
+    {
+      "id": "F-05",
+      "severity": "low",
+      "title": "Missing manifest key is regenerated during verification",
+      "reproduction_steps": [
+        "Create a valid isolated signed backup.",
+        "Point _manifest_key_path at a missing temporary path and call verify_backup(require_manifest=True).",
+        "Inspect the error and temporary key path."
+      ],
+      "expected_result": "Fail closed with explicit key-loss diagnosis without treating a new key as the original.",
+      "actual_result": "A replacement 32-byte key was created, then verification failed with a generic signature-invalid error; the backup was not accepted.",
+      "affected_code_schema_boundary": ["migration_lifecycle._manifest_signing_key", "migration_lifecycle.verify_backup"],
+      "disposition": "Operational limitation; recover original key or follow documented manual recovery. Improve diagnostics and avoid replacement-key creation during verification."
+    }
+  ],
+  "skipped_or_prohibited_checks": [
+    {
+      "check": "Apply Migration 002 or 003 to production",
+      "status": "not performed",
+      "reason": "Explicit absolute restriction in the user-provided review request."
+    },
+    {
+      "check": "Production capture, recovery, rollback, restore, or write-capable operation",
+      "status": "not performed",
+      "reason": "Explicit absolute restriction in the user-provided review request."
+    },
+    {
+      "check": "Production backup creation",
+      "status": "not performed",
+      "reason": "Explicit absolute restriction in the user-provided review request."
+    },
+    {
+      "check": "Live-writer detection during an actual restore",
+      "status": "not performed",
+      "reason": "Restore was exercised only on isolated copies; the documented flag is an operator acknowledgment, and production restore is prohibited."
+    }
+  ],
+  "report_path": "reports/worker_029_independent_review.md"
+}

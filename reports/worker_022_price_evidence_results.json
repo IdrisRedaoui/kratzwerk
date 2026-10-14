@@ -1,0 +1,108 @@
+{
+  "worker": "022",
+  "run_date": "2026-10-11",
+  "timezone": "Asia/Riyadh",
+  "scope": "append-only source-grounded price evidence, conservative Ouedkniss interpretation, and offline Facebook JSON-LD extraction",
+  "production_database": {
+    "path": "data/Database.sqlite",
+    "sha256_before": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "sha256_after": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "sha256_unchanged": true,
+    "counts_before": {
+      "sellers": 3,
+      "marketplace_listings": 17,
+      "marketplace_listing_observations": 51,
+      "facebook_ads": 162,
+      "facebook_ad_observations": 217,
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_advertising_campaigns": 69
+    },
+    "counts_after": {
+      "sellers": 3,
+      "marketplace_listings": 17,
+      "marketplace_listing_observations": 51,
+      "facebook_ads": 162,
+      "facebook_ad_observations": 217,
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_advertising_campaigns": 69
+    }
+  },
+  "isolated_validation": {
+    "database": "data/worker_022_price_evidence_validation.sqlite",
+    "database_sha256": "F61ABFEDE18AB7E5851A23F05689318922D7192EEE4E26BA54AB160AEA3DFE9F",
+    "source_observations_before_after_unchanged": true,
+    "marketplace_observation_fingerprint": "016560f96c1ece55e10abf564521ebc8f5e5da06899bc037fb463aa2945a9dfb",
+    "facebook_observation_fingerprint": "cd0dd2822d2bf4500d33901fab72fdc353f3fe2b28c6eec3e49ee4abdcb63087",
+    "price_evidence_rows": 51,
+    "quality_status_counts": {
+      "SUSPICIOUS_PLACEHOLDER": 16,
+      "MISSING": 35
+    },
+    "extraction_status_counts": {
+      "SUCCESS": 16,
+      "MISSING": 35
+    },
+    "repeat_pass_added_rows": 0,
+    "trusted_price_rows": 0,
+    "integrity_check": "ok",
+    "foreign_key_violations": 0,
+    "products_aliases_mappings_after": {
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0
+    }
+  },
+  "facebook_fixtures": {
+    "synthetic_html_fixture_count": 13,
+    "coverage": [
+      "numeric price",
+      "French/European number format",
+      "explicit DZD/EUR/USD",
+      "missing and ambiguous currency",
+      "sale and regular price",
+      "range",
+      "starting-from",
+      "variants/SKUs",
+      "multiple products",
+      "category/home page without target product",
+      "missing, inaccessible, and malformed content"
+    ],
+    "live_fetches": 0
+  },
+  "verification": {
+    "full_test_suite": {
+      "command": ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "tests": 174,
+      "elapsed_seconds": 50.096
+    },
+    "isolated_migration": "PASS",
+    "production_writes": false,
+    "production_migration": false,
+    "production_capture": false,
+    "landing_page_fetches": 0,
+    "provider_calls": 0,
+    "dependencies_installed": 0,
+    "worker_018_manifest_unchanged": true,
+    "worker_018_manifest_sha256": "7CA5ADBB43E1EAC270D58D03B4CA8292B713D61B125595B039F114179B17E686",
+    "normalization_benchmark_behavior_changed": false
+  },
+  "limitations": [
+    "Migration 002 remains isolated and is not installed on production.",
+    "Facebook extraction supports JSON-LD fixtures only; generic embedded JavaScript and visible-text extraction are deferred.",
+    "Historical assumed-DZD observations are preserved and are not trusted automatically."
+  ]
+}

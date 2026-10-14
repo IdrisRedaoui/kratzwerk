@@ -1,0 +1,220 @@
+{
+  "worker": "023",
+  "run_date": "2026-10-11",
+  "timezone": "Asia/Riyadh",
+  "objective": "Pre-deployment audit of Migration 002 and Ouedkniss capture compatibility; no production migration or capture.",
+  "recommendation": {
+    "decision": "NO-GO",
+    "scope": "Do not deploy Migration 002 with the current runner. The additive SQL passes on isolated copies, but there is no atomic, versioned, backup-aware Migration 002 command or compatible rollback path.",
+    "remediation": "Add Migration 002 to the numbered migration mechanism with pre-migration backup, explicit transaction, migration version recording, preflight checks, and post-apply integrity/foreign-key checks. Use verified backup restoration for rollback."
+  },
+  "safety": {
+    "production_database_modified": false,
+    "production_capture_run": false,
+    "live_facebook_pages_fetched": 0,
+    "external_provider_calls": 0,
+    "dependencies_installed": 0,
+    "only_synthetic_capture_fixtures_used": true,
+    "isolated_database_copies_used": true
+  },
+  "production_database": {
+    "path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+    "sha256_before": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_after": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_unchanged": true,
+    "integrity_check_after": "ok",
+    "foreign_key_violations_after": 0,
+    "counts_before": {
+      "facebook_ad_observations": 217,
+      "facebook_ads": 162,
+      "legacy_advertising_campaigns": 69,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "marketplace_listing_observations": 51,
+      "marketplace_listings": 17,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0,
+      "sellers": 3
+    },
+    "counts_after": {
+      "facebook_ad_observations": 217,
+      "facebook_ads": 162,
+      "legacy_advertising_campaigns": 69,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "marketplace_listing_observations": 51,
+      "marketplace_listings": 17,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0,
+      "sellers": 3
+    }
+  },
+  "implementation_trace": {
+    "raw_query_fields": [
+      "price",
+      "priceUnit",
+      "priceType",
+      "status"
+    ],
+    "source_currency_field_selected": false,
+    "legacy_column_path": [
+      "extract_price parses the numeric source amount and applies any recognized source-unit scale, then returns no currency.",
+      "_validated_price maps absent currency to UNKNOWN and currency_basis=currency_unconfirmed.",
+      "process_and_store_data only writes the legacy observation price when currency_basis=source_response, so absent explicit currency the stored price is NULL.",
+      "The observation payload retains announcement.price, announcement.price_unit, and announcement.price_type."
+    ],
+    "price_evidence_path": [
+      "After source observations are inserted, append_ouedkniss_evidence_for_capture checks whether Migration 002 objects exist.",
+      "When installed, it reads each exact-time observation payload and appends one idempotent evidence row keyed by observation, extractor method/version, and evidence index.",
+      "For price=1 and price_unit=UNIT it records candidate_amount=1, source_unit=UNIT, unit_status=UNRESOLVED, currency_code=NULL, currency_basis=UNKNOWN, and quality/reason codes rather than a trusted DZD price.",
+      "A repeated same-time 1 UNIT pattern across at least three listings is classified SUSPICIOUS_PLACEHOLDER; a single such record is UNIT_OR_CURRENCY_UNCONFIRMED."
+    ],
+    "source_observations_immutable": true,
+    "migration_performs_historical_backfill": false
+  },
+  "migration_test": {
+    "isolated_copy": "data/worker_023_migration_readiness.sqlite",
+    "isolated_copy_sha256_after_migration": "2f508e5d8fe91604d7ad0846e505f77cefc6f0561f3206a39c42aeed579bd84a",
+    "migration_002_applied_successfully": true,
+    "source_table_counts_unchanged": true,
+    "source_row_and_id_fingerprints_unchanged": true,
+    "source_row_fingerprints": {
+      "sellers": "4187fca5cdf984327fba72f029fa09c7ebcffd120d7eb7aee550e74d5e6a2224",
+      "marketplace_listings": "ad261d553bf6cf9fd489f6fa121748eeaa95bc0970621eddb80dfe0428ef13c4",
+      "marketplace_listing_observations": "016560f96c1ece55e10abf564521ebc8f5e5da06899bc037fb463aa2945a9dfb",
+      "facebook_ads": "8c9fe5ae17f506600d8986f38bfcf7d99170e808257d1ac451077b0bea0182d1",
+      "facebook_ad_observations": "cd0dd2822d2bf4500d33901fab72fdc353f3fe2b28c6eec3e49ee4abdcb63087"
+    },
+    "new_evidence_rows_created_by_schema_migration": 0,
+    "complete_helper_rerun_is_noop": true,
+    "indexes_present": [
+      "ix_landing_page_fetch_observation_time",
+      "ix_price_evidence_marketplace_observation",
+      "ix_price_evidence_landing_fetch",
+      "ix_price_evidence_source_time",
+      "ix_price_evidence_reviews_latest"
+    ],
+    "triggers_present": [
+      "trg_price_evidence_platform_guard",
+      "trg_landing_fetch_no_update",
+      "trg_landing_fetch_no_delete",
+      "trg_price_evidence_no_update",
+      "trg_price_evidence_no_delete",
+      "trg_price_evidence_reviews_no_update",
+      "trg_price_evidence_reviews_no_delete"
+    ],
+    "integrity_check": "ok",
+    "foreign_key_violations": 0,
+    "constraint_probes": {
+      "valid_fixture_row_accepted": true,
+      "invalid_candidate_amount_rejected": true,
+      "candidate_max_less_than_candidate_rejected": true,
+      "malformed_reason_codes_json_rejected": true,
+      "verified_identity_without_key_rejected": true,
+      "invalid_extraction_status_rejected": true,
+      "wrong_platform_observation_rejected_by_trigger": true,
+      "source_link_shape_violation_rejected": true,
+      "all_invalid_probes_rejected": true
+    },
+    "empty_fresh_v2_schema_applies": true,
+    "trusted_view": {
+      "unreviewed_candidate_count": 0,
+      "fixture_reviewed_candidate_count": 1,
+      "fixture_review_is_synthetic": true,
+      "append_only_update_rejected": true
+    },
+    "lifecycle_findings": {
+      "numbered_migration_registry_exists": false,
+      "migrate_py_targets_migration": "001_foundation_v2.sql only",
+      "migration_002_has_explicit_transaction": false,
+      "apply_helper_creates_backup": false,
+      "apply_helper_checks_integrity": false,
+      "complete_rerun_safe": true,
+      "partial_failure_atomic": false,
+      "simulated_partial_failure_left_objects": [
+        "facebook_landing_page_fetches",
+        "price_evidence",
+        "price_evidence_reviews"
+      ],
+      "retry_after_partial_failure": "Failed with table facebook_landing_page_fetches already exists.",
+      "migrate_py_rollback_after_002": "Failed on an isolated copy with: error in trigger trg_price_evidence_platform_guard: no such table: main.marketplace_listing_observations."
+    }
+  },
+  "capture_safety": {
+    "without_migration": {
+      "result": "Capture succeeds, but no structured price_evidence row is stored.",
+      "capture_errors": 0,
+      "repeated_same_timestamp_deduplicated": true,
+      "legacy_price": null,
+      "legacy_currency": "UNKNOWN",
+      "source_amount_retained": 1,
+      "source_unit_retained": "UNIT",
+      "source_type_retained": "FIXED",
+      "listing_and_observation_retained": true,
+      "price_evidence_table_present": false
+    },
+    "with_migration": {
+      "result": "Capture and candidate recording passed using synthetic fixtures.",
+      "capture_errors": 0,
+      "repeated_same_timestamp_added_duplicate_observations": 0,
+      "repeated_same_timestamp_added_duplicate_evidence": 0,
+      "repeated_one_unit_candidates_flagged_suspicious": 3,
+      "one_unit_candidate_amount": 1,
+      "one_unit_currency_code": null,
+      "one_unit_currency_basis": "UNKNOWN",
+      "one_unit_unit_status": "UNRESOLVED",
+      "one_unit_reason_codes": [
+        "PAYABLE_PRICE_NOT_ESTABLISHED_BY_SOURCE_TYPE",
+        "SOURCE_UNIT_UNIT_UNRESOLVED",
+        "CURRENCY_NOT_ESTABLISHED_BY_SOURCE",
+        "REPEATED_ONE_UNIT_PATTERN_REVIEW"
+      ],
+      "missing_price_candidate_is_null": true,
+      "missing_price_extraction_status": "MISSING",
+      "missing_price_quality_status": "MISSING",
+      "legacy_prices_null_and_currency_unknown": true,
+      "later_capture_appended_without_overwriting_historical_evidence": true,
+      "suspicious_observations_deleted": false,
+      "trusted_price_count_before_review": 0,
+      "foreign_key_violations": 0,
+      "integrity_check": "ok"
+    },
+    "absent_migration_risk": {
+      "raw_source_amount_unit_and_type_lost": false,
+      "structured_candidate_quality_and_reason_record_lost_for_that_capture": true,
+      "migration_002_backfills_missed_candidates": false,
+      "reconstruction_possible_from_immutable_payload": true,
+      "recommended_minimal_remediation": "Deploy the migration before enabling this sensor version; add an explicit schema-readiness gate so capture cannot silently omit structured evidence. Backfill from immutable observation payloads if any captures occur before the migration."
+    }
+  },
+  "deployment_and_restore": {
+    "executed": false,
+    "sequence": [
+      "Pause capture writers and confirm the exact configured database path.",
+      "Create a SQLite online backup to separate storage; verify its SHA-256, integrity_check=ok, foreign_key_check=0, and baseline table counts/source ID fingerprints.",
+      "Preflight the expected Foundation V2 tables, Migration 002 object-name collisions, JSON support, free space, and absence of a partial Migration 002 schema.",
+      "Use a versioned Migration 002 runner with foreign keys enabled, BEGIN IMMEDIATE/COMMIT, and the backup and schema-version behavior described above; do not use the current migrate.py command for 002.",
+      "After apply, check integrity_check, foreign_key_check, required tables/indexes/triggers/view, source table counts, and source row/ID fingerprints. Expect zero historical evidence rows because 002 does not backfill.",
+      "Run the Ouedkniss price=1 UNIT, missing-price, repeat, and later-capture smoke cases against a separate isolated database copy.",
+      "If validation fails, stop writers and restore the verified pre-migration backup atomically. If post-backup captures occurred, export/reconcile them first because restoring the backup removes those writes. Do not use migrate.py --rollback after 002."
+    ],
+    "rollback_test": {
+      "attempted_only_on_isolated_copy": true,
+      "current_migrate_py_rollback_succeeded_after_002": false,
+      "recommended_rollback": "Restore the verified pre-migration database backup after stopping writers."
+    }
+  },
+  "full_test_suite": {
+    "command": ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests -q",
+    "tests_run": 174,
+    "elapsed_seconds": 51.519,
+    "exit_code": 0,
+    "result": "PASS"
+  }
+}

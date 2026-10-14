@@ -1,0 +1,232 @@
+{
+  "ai_recommendation": {
+    "decision": "NO-GO",
+    "reason": "Current gaps are missing historical evidence, empty catalog coverage, unresolved identity conflicts, or incomplete bundle representation; no residual case has a demonstrated, evaluable AI-only requirement."
+  },
+  "before_after": {
+    "preserved_pre_worker_020_worker_018_baseline": {
+      "confidence": {
+        "HIGH": 21,
+        "NO_MATCH": 12,
+        "PROBABLE": 0,
+        "UNCERTAIN": 6
+      },
+      "outcomes": {
+        "CANDIDATE": 0,
+        "MATCHED": 21,
+        "REJECTED": 0,
+        "REVIEW": 6,
+        "UNMAPPED": 12
+      },
+      "product_mentions": 39,
+      "source_report": "reports/worker_018_benchmark_results.json"
+    },
+    "worker_021_direct_current_pipeline_empty_production_catalog": {
+      "classifications_by_source": {
+        "facebook_ad": {
+          "EDUCATION": 3,
+          "PRODUCT": 7,
+          "SERVICE": 3,
+          "UNKNOWN": 204
+        },
+        "marketplace_listing": {
+          "PRODUCT": 16,
+          "REAL_ESTATE": 14,
+          "SERVICE": 2,
+          "UNKNOWN": 19
+        }
+      },
+      "outcomes": {
+        "UNMAPPED": 23
+      },
+      "product_aliases_in_production": 0,
+      "product_mentions": 23
+    },
+    "worker_021_worker_018_benchmark_synthetic_catalog": {
+      "confidence": {
+        "HIGH": 17,
+        "NO_MATCH": 2,
+        "PROBABLE": 0,
+        "UNCERTAIN": 4
+      },
+      "false_positive_benchmark_matches": 0,
+      "manifest_candidate_retrieval_proxy_denominator": 20,
+      "manifest_candidate_retrieval_proxy_hits": 20,
+      "outcomes": {
+        "CANDIDATE": 0,
+        "MATCHED": 17,
+        "REJECTED": 0,
+        "REVIEW": 4,
+        "UNMAPPED": 2
+      },
+      "product_mentions": 23,
+      "synthetic_catalog_aliases": 17,
+      "synthetic_catalog_products": 11
+    }
+  },
+  "detail_files": {
+    "adjudication": "reports/worker_021_adjudication.md",
+    "direct_measurement": "reports/worker_021_measurement_results.json",
+    "fresh_benchmark": "reports/worker_021_rebenchmark_results.json",
+    "price_integrity_audit": "reports/worker_021_price_integrity_audit.md"
+  },
+  "isolated_databases": {
+    "direct_measurement": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\worker_021_measurement.sqlite",
+    "worker_018_benchmark": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\worker_021_benchmark.sqlite"
+  },
+  "post_fix_mention_delta": {
+    "arabic_crown_mention_recovered": 1,
+    "mutable_marketplace_title_fallback_mentions_suppressed": 8,
+    "net_mentions": -16,
+    "paint_context_mentions_suppressed": 9
+  },
+  "price_integrity": {
+    "facebook": {
+      "ad_entity_count": 162,
+      "ad_library_urls": 162,
+      "entity_payload_landing_url_count": 110,
+      "interpretation": "Ad Library URL is distinct from the JSON landing_url destination candidate; current schemas contain no price fields.",
+      "landing_pages_fetched": 0,
+      "observation_count": 217,
+      "observation_landing_url_count": 110,
+      "observation_url_field_present": 148,
+      "parsed_or_structured_price_fields_found": 0,
+      "unique_observation_landing_urls": 63
+    },
+    "future_storage_proposal": "Append-only page/source price observations keyed to exact source observation and page/offer identity; preserve raw value, parsed amount, currency certainty, fetch and source timestamps, extraction version, evidence hash, quality status, and review reason.",
+    "ouedkniss": {
+      "capture_timestamp_count": 2,
+      "currency_basis_counts": {
+        "assumed_from_Algerian_marketplace": 16
+      },
+      "currency_source_field_present": false,
+      "interpretation": "1 UNIT is parsed as amount 1.0; DZD is assumed by the writer, not provided by source. Treat as suspicious and unconfirmed pending review; preserve raw values.",
+      "null_price_count": 35,
+      "numeric_price_count": 16,
+      "numeric_values_all_equal_1": true,
+      "observation_count": 51,
+      "price_type_counts": {
+        "FIXED": 6,
+        "OFFERED": 10
+      },
+      "source_raw_amounts": [
+        "1"
+      ],
+      "source_unit_all_UNIT": true,
+      "stored_currency_counts": {
+        "DZD": 16
+      },
+      "unique_listing_ids_with_price": 8
+    }
+  },
+  "residual_adjudication": [
+    {
+      "ai_eligible": false,
+      "case": "missing_marketplace_historical_titles",
+      "decision": "NO_MENTION_MISSING_EVIDENCE",
+      "observation_count": 17
+    },
+    {
+      "ai_eligible": false,
+      "case": "LAC A EAU",
+      "decision": "UNMAPPED_PENDING_CATALOG_POLICY",
+      "evidence_observation_ids": [
+        28,
+        39
+      ],
+      "remaining_mentions": 2
+    },
+    {
+      "ai_eligible": false,
+      "benchmark_outcome": "REVIEW_UNCERTAIN_TWO_CANDIDATES",
+      "case": "FIXATEUR",
+      "evidence_observation_ids": [
+        27,
+        37
+      ],
+      "production_catalog_outcome": "UNMAPPED"
+    },
+    {
+      "ai_eligible": false,
+      "benchmark_outcome": "REVIEW_UNCERTAIN_CATEGORY_CONFLICT",
+      "case": "IMPRONTA",
+      "evidence_observation_ids": [
+        34,
+        40
+      ],
+      "production_catalog_outcome": "UNMAPPED"
+    },
+    {
+      "ai_eligible": false,
+      "benchmark_outcome": "MATCHED_TO_SYNTHETIC_KIT_ENTRY",
+      "case": "paint_by_numbers_kit",
+      "composition_structured": false,
+      "evidence_observation_ids": [
+        124,
+        162
+      ],
+      "production_catalog_outcome": "UNMAPPED"
+    }
+  ],
+  "run_date": "2026-10-11",
+  "scope": "measurement, adjudication, and read-only price integrity audit",
+  "source_counts": {
+    "facebook_ad_observations": 217,
+    "facebook_ads": 162,
+    "marketplace_listing_observations": 51,
+    "marketplace_listings": 17,
+    "total_observations": 268
+  },
+  "source_database": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+  "source_evidence": {
+    "facebook_observation_texts_usable": 129,
+    "facebook_observations_without_card_text": 69,
+    "facebook_observations_without_usable_copy": 19,
+    "marketplace_entity_title_fallback_rows": 0,
+    "marketplace_observation_titles_present": 34,
+    "marketplace_observations_without_local_title": 17,
+    "mentions_from_missing_marketplace_title": 0
+  },
+  "timezone": "Asia/Riyadh",
+  "verification": {
+    "benchmark_idempotent": true,
+    "direct_measurement_idempotent": true,
+    "full_test_suite": {
+      "command": ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "tests": 154
+    },
+    "landing_page_fetches": 0,
+    "live_marketplace_or_facebook_collection": false,
+    "production_catalog_counts_after": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    },
+    "production_catalog_counts_before": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    },
+    "production_database_sha256_after": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "production_database_sha256_before": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "production_database_sha256_unchanged": true,
+    "production_products_aliases_mappings_unchanged": true,
+    "production_writes": false,
+    "provider_calls": 0,
+    "schema_or_dependency_changes": false,
+    "source_observation_fingerprints_unchanged": true,
+    "worker_018_manifest_sha256_after": "7CA5ADBB43E1EAC270D58D03B4CA8292B713D61B125595B039F114179B17E686",
+    "worker_018_manifest_sha256_before": "7CA5ADBB43E1EAC270D58D03B4CA8292B713D61B125595B039F114179B17E686",
+    "worker_018_manifest_unchanged": true
+  },
+  "versions": {
+    "classification": "classification_v2",
+    "extraction": "deterministic_extract_v2",
+    "matching": "deterministic_match_v1",
+    "normalization": "deterministic_v1",
+    "selector": "source_text_selector_v2"
+  },
+  "worker": "021"
+}

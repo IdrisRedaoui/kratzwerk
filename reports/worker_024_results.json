@@ -1,0 +1,240 @@
+{
+  "worker": "024",
+  "run_date": "2026-10-13",
+  "timezone": "Asia/Riyadh",
+  "objective": "Harden Migration 002 lifecycle, fail closed before Ouedkniss capture without valid price-evidence schema, and recover historical evidence from exact immutable observations. No production migration or live capture.",
+  "safety": {
+    "production_database_modified": false,
+    "production_migration_002_applied": false,
+    "production_capture_run": false,
+    "live_ouedkniss_requests": 0,
+    "facebook_landing_page_fetches": 0,
+    "provider_or_api_calls": 0,
+    "dependencies_installed": 0,
+    "only_isolated_databases_and_synthetic_capture_fixtures_used": true,
+    "worker_018_019_020_021_reports_changed": false,
+    "worker_018_manifest_changed": false
+  },
+  "production_database": {
+    "path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+    "sha256_before": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_after": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_unchanged": true,
+    "integrity_check_after": "ok",
+    "foreign_key_violations_after": 0,
+    "user_version": 0,
+    "migration_registry_present": false,
+    "migration_002_schema_present": false,
+    "foundation_001_state": "STRUCTURALLY_VERIFIED_BUT_UNTRACKED",
+    "foundation_001_original_applied_at": null,
+    "foundation_001_interpretation": "Complete Foundation V2 and retained legacy schema objects are present; original application time is unknown. Runner records a verified existing baseline with state BASELINED and applied_at NULL.",
+    "counts_before": {
+      "sellers": 3,
+      "marketplace_listings": 17,
+      "marketplace_listing_observations": 51,
+      "facebook_ads": 162,
+      "facebook_ad_observations": 217,
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_advertising_campaigns": 69
+    },
+    "counts_after": {
+      "sellers": 3,
+      "marketplace_listings": 17,
+      "marketplace_listing_observations": 51,
+      "facebook_ads": 162,
+      "facebook_ad_observations": 217,
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_advertising_campaigns": 69
+    }
+  },
+  "migration_lifecycle": {
+    "registry_table": "schema_migrations",
+    "registry_fields": [
+      "version",
+      "filename",
+      "checksum",
+      "applied_at",
+      "recorded_at",
+      "state",
+      "verification"
+    ],
+    "migration_checksums": {
+      "001_foundation_v2.sql": "7444f12dc7941198a06a9e153bf7639f3a1b3c7311bfbd3726cad2dc077306b2",
+      "002_price_evidence.sql": "465a92382c634c45d8422b72ebd81d0c55a661b8d1e6ab86e32471736b201844"
+    },
+    "foreign_keys_enabled_before_begin_immediate": true,
+    "per_migration_explicit_transactions": true,
+    "backup_created_and_independently_verified_before_each_migration": true,
+    "source_table_fingerprints_compared_to_backup_after_write_lock": true,
+    "applied_registry_row_written_after_transactional_validation": true,
+    "checksum_drift_rejected": true,
+    "object_name_collisions_and_partial_schema_fail_safely": true,
+    "partial_schema_objects_deleted_automatically": false,
+    "failure_injection": {
+      "migration": "002_price_evidence.sql",
+      "after_sql_statement": 5,
+      "transaction_rolled_back": true,
+      "partial_migration_002_objects_remaining": [],
+      "registry_after_failure_versions": [1],
+      "retry_succeeded": true
+    },
+    "rollback_after_002": {
+      "ddl_rollback_refused": true,
+      "action": "Restore a verified pre-migration backup after stopping writers."
+    },
+    "migration_002_isolated_cli_apply": {
+      "database": "data/worker_024_cli_validation.sqlite",
+      "preflight_exit_code": 0,
+      "apply_exit_code": 0,
+      "status_exit_code": 0,
+      "migration_001_state": "BASELINED",
+      "migration_001_applied_at": null,
+      "migration_002_state": "APPLIED",
+      "migration_002_integrity_check": "ok",
+      "migration_002_foreign_key_violations": 0,
+      "source_table_fingerprints_unchanged": true
+    }
+  },
+  "backup_restore": {
+    "verified_pre_migration_backup": "data/worker_024_cli_validation.sqlite.pre-migration-v002.20261013T104708.248094Z.bak",
+    "backup_sha256": "76daef695f0088007075b1b3878383caa2c4fc00fd4fd395edfba9ad25d32c70",
+    "backup_integrity_check": "ok",
+    "backup_foreign_key_violations": 0,
+    "backup_source_table_counts_and_fingerprints_verified": true,
+    "restore_exercised_through_cli": true,
+    "restored_sha256_equals_backup": true,
+    "restored_integrity_check": "ok",
+    "restored_foreign_key_violations": 0,
+    "restored_schema_state": {
+      "migration_001": "BASELINED",
+      "migration_002": "ABSENT"
+    },
+    "source_row_counts_and_fingerprints_unchanged": true,
+    "partial_schema_restore_test_passed": true,
+    "wal_shm_restore_handling": "Stop writers, checkpoint with PRAGMA wal_checkpoint(TRUNCATE), close all connections, then restore. Existing sidecars are preserved next to the previous database for review."
+  },
+  "isolated_migration_source_fingerprints": {
+    "before_after_equal": true,
+    "tables": {
+      "sellers": {
+        "count": 3,
+        "row_fingerprint": "4187fca5cdf984327fba72f029fa09c7ebcffd120d7eb7aee550e74d5e6a2224",
+        "id_fingerprint": "a615eeaee21de5179de080de8c3052c8da901138406ba71c38c032845f7d54f4"
+      },
+      "marketplace_listings": {
+        "count": 17,
+        "row_fingerprint": "48cceca1070f58dc139f3b0df5524c134591e2709dbf90254745a3a88eac4bd0",
+        "id_fingerprint": "5d8dca6dec3e54cf7d512cc74f2a9629aba24afc5c8898ae813d02706349afa3"
+      },
+      "marketplace_listing_observations": {
+        "count": 51,
+        "row_fingerprint": "05ffaa36855a774226a253815b9752049c6d285d94a564a405fcb776a957d524",
+        "id_fingerprint": "c331e85759e39947a7591a5b52bab252382637ab99ac844cee79867609389c68"
+      },
+      "facebook_ads": {
+        "count": 162,
+        "row_fingerprint": "e21b06d231b3bc35817396f268cb23d359ecfc39e7b0bdef3b539f63682feb38",
+        "id_fingerprint": "eb85358ab68afb582a1ceefd633d56d27bee6e36135996bb1efc5124ae707cac"
+      },
+      "facebook_ad_observations": {
+        "count": 217,
+        "row_fingerprint": "12a5d0d0d45bc3aacccf4a834de99402fec9dd3817034111a5e8b89b6c0ed77e",
+        "id_fingerprint": "22b37fdbe651161957e151c02f8146e1d6136af6f2068d7d28949dcf41c9ae4c"
+      }
+    }
+  },
+  "capture_readiness_gate": {
+    "configured_path_used": true,
+    "read_only_check_before_fetch": true,
+    "read_only_check_before_write_connection": true,
+    "missing_migration_002_blocks_capture": true,
+    "missing_schema_blocks_fetch": true,
+    "missing_schema_blocks_source_writes": true,
+    "incomplete_schema_fails_closed": true,
+    "valid_schema_allows_existing_capture_path": true,
+    "unit_is_not_confirmed_as_dzd": true,
+    "sensor_automatically_applies_migration": false,
+    "read_only_status_without_migration_002": "PASS",
+    "all_capture_checks_used_synthetic_fixtures": true
+  },
+  "historical_recovery": {
+    "database": "data/worker_024_validation.sqlite",
+    "database_sha256_after_recovery": "5211e5c962706dbced97eb3aec5f9ce10f453e1904ff3e9b02622593293bb56d",
+    "source_observations_examined": 51,
+    "all_observations_have_numeric_source_prices": false,
+    "first_pass": {
+      "imported": 51,
+      "skipped": 0,
+      "ambiguous": 16,
+      "missing": 35,
+      "failed": 0,
+      "eligible_amount_bearing_observations": 16,
+      "successful_candidate_rows": 16,
+      "suspicious_1_UNIT_rows": 16,
+      "missing_evidence_rows": 35,
+      "untrusted_evidence_rows": 51,
+      "trusted_price_rows": 0
+    },
+    "source_semantics": {
+      "amount_bearing_source_observations": 16,
+      "all_numeric_candidates_equal_1": true,
+      "source_unit": "UNIT",
+      "unit_status": "UNRESOLVED",
+      "currency_code": null,
+      "currency_basis": "UNKNOWN",
+      "confirmed_dzd_candidates": 0,
+      "missing_price_records": 35,
+      "missing_breakdown": {
+        "source_payload_price_missing": 18,
+        "migration_001_explicit_unknown_price_snapshot": 17
+      }
+    },
+    "rerun": {
+      "imported": 0,
+      "skipped_existing_idempotency_keys": 51,
+      "failed": 0,
+      "duplicate_evidence_rows_added": 0
+    },
+    "source_observations_unchanged": true,
+    "source_observation_fingerprint_before_after": "05ffaa36855a774226a253815b9752049c6d285d94a564a405fcb776a957d524",
+    "source_observation_id_fingerprint_before_after": "c331e85759e39947a7591a5b52bab252382637ab99ac844cee79867609389c68",
+    "currency_or_url_from_mutable_listing_used_for_price": false,
+    "integrity_check": "ok",
+    "foreign_key_violations": 0
+  },
+  "verification": {
+    "full_test_command": ".\\.venv\\Scripts\\python.exe -m unittest discover -s tests -q",
+    "full_test_count": 187,
+    "full_test_elapsed_seconds": 64.606,
+    "full_test_exit_code": 0,
+    "full_suite_result": "PASS",
+    "normalization_benchmark_behavior_changed": false,
+    "worker_018_manifest_sha256": "7ca5adbb43e1eac270d58d03b4ca8292b713d61b125595b039f114179b17e686"
+  },
+  "deliverables": {
+    "migration_runner": "migrate.py",
+    "migration_lifecycle": "migration_lifecycle.py",
+    "shared_schema_validation": "schema_validation.py",
+    "recovery_cli": "recover_ouedkniss_price_evidence.py",
+    "recovery_implementation": "price_evidence/recovery.py",
+    "migration_tests": "tests/test_migration_lifecycle.py",
+    "sensor_tests": "tests/test_ouedkniss_sensor_v2.py",
+    "price_evidence_tests": "tests/test_price_evidence.py",
+    "isolated_recovery_database": "data/worker_024_validation.sqlite",
+    "isolated_cli_migration_copy_restored_to_pre_002": "data/worker_024_cli_validation.sqlite",
+    "human_report": "reports/worker_024_migration_hardening.md"
+  },
+  "remaining_deployment_condition": "Production Migration 002 remains unapplied by design. The new Ouedkniss capture path blocks until a separately reviewed migration is applied to the configured production database."
+}

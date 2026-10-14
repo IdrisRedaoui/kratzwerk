@@ -1,0 +1,1522 @@
+{
+  "ai_provider_run_count": 0,
+  "benchmark_database_path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\worker_020_benchmark.sqlite",
+  "benchmark_id": "worker_018_representative_catalog_v1",
+  "candidate_generation": {
+    "ambiguous_candidate_rows": 4,
+    "ambiguous_mentions": 2,
+    "benchmark_catalog_coverage_mentions": 20,
+    "candidate_count_distribution": {
+      "0": 2,
+      "1": 19,
+      "2": 2
+    },
+    "candidate_retrieval_proxy": 1.0,
+    "candidate_retrieval_proxy_hits": 20,
+    "candidate_rows": 23,
+    "confidence": {
+      "HIGH": 17,
+      "NO_MATCH": 2,
+      "PROBABLE": 0,
+      "UNCERTAIN": 4
+    },
+    "conflict_mentions": 2,
+    "deterministic_match_rate": 0.8,
+    "evidence_by_type": {
+      "deterministic_rule": 2,
+      "exact_alias": 23
+    },
+    "exact_alias_evidence_count": 23,
+    "mentions_with_candidates": 21,
+    "mentions_with_zero_candidates": 2,
+    "outcomes": {
+      "CANDIDATE": 0,
+      "MATCHED": 17,
+      "REJECTED": 0,
+      "REVIEW": 4,
+      "UNMAPPED": 2
+    },
+    "product_mentions": 23,
+    "review_rate": 0.2,
+    "unmapped_rate_all_mentions": 0.08695652173913043
+  },
+  "catalog": {
+    "alias_count": 17,
+    "alias_roles": {
+      "ambiguous_probe": 2,
+      "arabic_model_probe": 1,
+      "case_whitespace_unicode_probe": 1,
+      "conflict_probe": 1,
+      "dash_normalization_probe": 1,
+      "false_positive_gate": 3,
+      "positive_exact": 7,
+      "unicode_nfkc_probe": 1
+    },
+    "mapping_count": 0,
+    "product_count": 11,
+    "products": [
+      {
+        "benchmark_product_id": 18001,
+        "canonical_name": "Compressor campaign (unidentified model)",
+        "rationale": "A real compressor ad is present, but the text contains no model or capacity. The IMPRONTA and rental aliases are intentionally adversarial controls, not factual product aliases."
+      },
+      {
+        "benchmark_product_id": 18002,
+        "canonical_name": "French white interior paint campaign",
+        "rationale": "The observations contain a real French paint advertisement. The manual real-estate alias is only a negative classification-gate probe."
+      },
+      {
+        "benchmark_product_id": 18003,
+        "canonical_name": "Paint-by-numbers kit",
+        "rationale": "Both real ads describe numbered-painting kits. The production extractor currently records them as mention_kind=product, so the benchmark exposes that bundle wording is not represented as a bundle mention."
+      },
+      {
+        "benchmark_product_id": 18004,
+        "canonical_name": "Peinture SOFFITTO",
+        "rationale": "The corpus uses the Italian word SOFFITTO in repeated paint titles. This is a direct Unicode NFKC equivalence probe."
+      },
+      {
+        "benchmark_product_id": 18005,
+        "canonical_name": "Peinture FIXA-MUR",
+        "rationale": "Both FIXA-MUR and FIXATEUR are real paint titles in the corpus. The shared alias is explicitly adversarial and should not collapse the two products into an automatic match."
+      },
+      {
+        "benchmark_product_id": 18006,
+        "canonical_name": "Peinture ACRYLIQUE Satiné",
+        "rationale": "This repeated real French paint title tests case, whitespace, and Unicode canonical normalization."
+      },
+      {
+        "benchmark_product_id": 18007,
+        "canonical_name": "Peinture ACRYLIQUE MAT ACRYL",
+        "rationale": "One of two near-neighbor acrylic paint titles, included to test exact distinction without fuzzy matching."
+      },
+      {
+        "benchmark_product_id": 18008,
+        "canonical_name": "Peinture ACRYLIQUE BLACK MAT",
+        "rationale": "The exact alias differs from MAT ACRYL and should retrieve only its own canonical product."
+      },
+      {
+        "benchmark_product_id": 18009,
+        "canonical_name": "Peinture FIXATEUR",
+        "rationale": "This deliberately shared alias must generate two candidates and require review."
+      },
+      {
+        "benchmark_product_id": 18010,
+        "canonical_name": "مسدس رش الدهان الكهربائي CROWN CT31012 – 80 واط",
+        "rationale": "This is a corpus-derived Arabic product and model/reference case. The alias exists in the isolated catalog, but deterministic_v1 classifies the observation UNKNOWN and creates no mention to match."
+      },
+      {
+        "benchmark_product_id": 18011,
+        "canonical_name": "Antartica acrylic washable breathable paint",
+        "rationale": "An explicit French paint ad with a named product concept; the source text grounds the canonical name and attributes."
+      }
+    ]
+  },
+  "false_positive_benchmark_matches": [],
+  "idempotency": {
+    "additional_rows": {
+      "candidate_evidence": 0,
+      "candidate_generation_runs": 0,
+      "classification_results": 0,
+      "normalization_decision_events": 0,
+      "normalization_extraction_runs": 0,
+      "normalization_runs": 0,
+      "normalization_source_refs": 0,
+      "product_candidates": 0,
+      "product_mentions": 0
+    },
+    "first_result_count": 268,
+    "first_run_rows": {
+      "candidate_evidence": 25,
+      "candidate_generation_runs": 23,
+      "classification_results": 268,
+      "normalization_decision_events": 23,
+      "normalization_extraction_runs": 268,
+      "normalization_runs": 268,
+      "normalization_source_refs": 268,
+      "product_candidates": 23,
+      "product_mentions": 23
+    },
+    "passed": true,
+    "second_result_count": 268,
+    "second_run_rows": {
+      "candidate_evidence": 25,
+      "candidate_generation_runs": 23,
+      "classification_results": 268,
+      "normalization_decision_events": 23,
+      "normalization_extraction_runs": 268,
+      "normalization_runs": 268,
+      "normalization_source_refs": 268,
+      "product_candidates": 23,
+      "product_mentions": 23
+    }
+  },
+  "input": {
+    "classification_by_source": {
+      "facebook_ad": {
+        "EDUCATION": 3,
+        "PRODUCT": 7,
+        "SERVICE": 3,
+        "UNKNOWN": 204
+      },
+      "marketplace_listing": {
+        "PRODUCT": 16,
+        "REAL_ESTATE": 14,
+        "SERVICE": 2,
+        "UNKNOWN": 19
+      }
+    },
+    "classification_distribution": {
+      "EDUCATION": 3,
+      "PRODUCT": 23,
+      "REAL_ESTATE": 14,
+      "SERVICE": 5,
+      "UNKNOWN": 223
+    },
+    "facebook_usable_text_observations": 129,
+    "facebook_usable_text_rate": 0.5944700460829493,
+    "observations_by_source": {
+      "facebook_ad": 217,
+      "marketplace_listing": 51
+    },
+    "product_mentions_by_source": {
+      "facebook_ad": 7,
+      "marketplace_listing": 16
+    },
+    "source_input_provenance": {
+      "facebook_non_observation_input_rows": 0,
+      "marketplace_entity_title_fallback_observations": 0,
+      "marketplace_observation_local_title_coverage": 34,
+      "marketplace_observation_local_title_missing": 17,
+      "marketplace_product_mentions_from_entity_title_fallback": 0,
+      "selected_field_paths_by_source": {
+        "facebook_ad": {
+          "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text": 129,
+          "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text#missing": 69,
+          "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text#no-copy": 19
+        },
+        "marketplace_listing": {
+          "marketplace_listing_observations.source_payload_json.announcement.raw_title": 34,
+          "marketplace_listing_observations.source_payload_json.announcement.raw_title#missing": 17
+        }
+      }
+    },
+    "total_observations": 268
+  },
+  "manifest_case_results": [
+    {
+      "case_id": "unique_compressor_campaign",
+      "expected_candidate_set": [
+        18001
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [
+            18001
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 3,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 76
+        }
+      ],
+      "rationale": "Unique exact Facebook alias, grounded in the observed compressor ad.",
+      "role": "positive"
+    },
+    {
+      "case_id": "french_white_paint",
+      "expected_candidate_set": [
+        18002
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [
+            18002
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 1,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 70
+        },
+        {
+          "candidate_product_ids": [
+            18002
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 2,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 71
+        }
+      ],
+      "rationale": "Repeated French-language source text has one exact unique alias.",
+      "role": "positive"
+    },
+    {
+      "case_id": "numbered_paint_kit",
+      "expected_candidate_set": [
+        18003
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [
+            18003
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 4,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 124
+        },
+        {
+          "candidate_product_ids": [
+            18003
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 6,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 162
+        }
+      ],
+      "rationale": "Actual kit-oriented French ad text, used as the bundle/accessory-adjacent corpus case.",
+      "role": "positive"
+    },
+    {
+      "case_id": "italian_soffitto",
+      "expected_candidate_set": [
+        18004
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 3
+        },
+        {
+          "candidate_product_ids": [
+            18004
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 13,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 32
+        },
+        {
+          "candidate_product_ids": [
+            18004
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 19,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 38
+        }
+      ],
+      "rationale": "Full-width alias normalizes via deterministic_v1 NFKC and whitespace handling.",
+      "role": "positive"
+    },
+    {
+      "case_id": "dash_normalized_fixa_mur",
+      "expected_candidate_set": [
+        18005
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 4
+        },
+        {
+          "candidate_product_ids": [
+            18005
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 14,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 33
+        },
+        {
+          "candidate_product_ids": [
+            18005
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 17,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 36
+        }
+      ],
+      "rationale": "A typographic en dash normalizes to the ASCII hyphen preserved in the observation title.",
+      "role": "positive"
+    },
+    {
+      "case_id": "unicode_case_whitespace_satine",
+      "expected_candidate_set": [
+        18006
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 5
+        },
+        {
+          "candidate_product_ids": [
+            18006
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 12,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 31
+        },
+        {
+          "candidate_product_ids": [
+            18006
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 16,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 35
+        }
+      ],
+      "rationale": "Case, repeated whitespace, trimming, and canonically equivalent accents normalize to one exact alias.",
+      "role": "positive"
+    },
+    {
+      "case_id": "similar_acrylique_mat_acryl",
+      "expected_candidate_set": [
+        18007
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 6
+        },
+        {
+          "candidate_product_ids": [
+            18007
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 11,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 30
+        },
+        {
+          "candidate_product_ids": [
+            18007
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 23,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 42
+        }
+      ],
+      "rationale": "Exact retrieval of the MAT ACRYL near-neighbor.",
+      "role": "positive"
+    },
+    {
+      "case_id": "similar_acrylique_black_mat",
+      "expected_candidate_set": [
+        18008
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 7
+        },
+        {
+          "candidate_product_ids": [
+            18008
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 10,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 29
+        },
+        {
+          "candidate_product_ids": [
+            18008
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 22,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 41
+        }
+      ],
+      "rationale": "Exact retrieval of the distinct BLACK MAT near-neighbor.",
+      "role": "positive"
+    },
+    {
+      "case_id": "ambiguous_fixateur_alias",
+      "expected_candidate_set": [
+        18005,
+        18009
+      ],
+      "expected_confidence": "UNCERTAIN",
+      "expected_final_state": "REVIEW",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 8
+        },
+        {
+          "candidate_product_ids": [
+            18005,
+            18009
+          ],
+          "classification": "PRODUCT",
+          "confidence": "UNCERTAIN",
+          "decision_method": "ambiguous_exact_alias_v1",
+          "final_state": "REVIEW",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 8,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 27
+        },
+        {
+          "candidate_product_ids": [
+            18005,
+            18009
+          ],
+          "classification": "PRODUCT",
+          "confidence": "UNCERTAIN",
+          "decision_method": "ambiguous_exact_alias_v1",
+          "final_state": "REVIEW",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 18,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 37
+        }
+      ],
+      "rationale": "One normalized alias deliberately identifies two products; the current evaluator should preserve ambiguity.",
+      "role": "ambiguous"
+    },
+    {
+      "case_id": "category_conflict_impronta_alias",
+      "expected_candidate_set": [
+        18001
+      ],
+      "expected_confidence": "UNCERTAIN",
+      "expected_final_state": "REVIEW",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 9
+        },
+        {
+          "candidate_product_ids": [
+            18001
+          ],
+          "classification": "PRODUCT",
+          "confidence": "UNCERTAIN",
+          "decision_method": "conflict_review_v1",
+          "final_state": "REVIEW",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 15,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 34
+        },
+        {
+          "candidate_product_ids": [
+            18001
+          ],
+          "classification": "PRODUCT",
+          "confidence": "UNCERTAIN",
+          "decision_method": "conflict_review_v1",
+          "final_state": "REVIEW",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 21,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 40
+        }
+      ],
+      "rationale": "A real marketplace paint alias is deliberately attached to a compressor; explicit category mismatch should force review.",
+      "role": "conflict"
+    },
+    {
+      "case_id": "no_catalog_lac_a_eau",
+      "expected_candidate_set": [],
+      "expected_confidence": "NO_MATCH",
+      "expected_final_state": "UNMAPPED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 10
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "PRODUCT",
+          "confidence": "NO_MATCH",
+          "decision_method": "no_exact_alias_v1",
+          "final_state": "UNMAPPED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 9,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 28
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "PRODUCT",
+          "confidence": "NO_MATCH",
+          "decision_method": "no_exact_alias_v1",
+          "final_state": "UNMAPPED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 20,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 39
+        }
+      ],
+      "rationale": "Real product mentions intentionally have no matching benchmark alias.",
+      "role": "negative"
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "expected_candidate_set": [],
+      "expected_confidence": "NO_MATCH",
+      "expected_final_state": "UNMAPPED",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 103
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 107
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 113
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 134
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 137
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 164
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 165
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 207
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "paint context rules suppress the known non-product mention",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 211
+        }
+      ],
+      "rationale": "These real source texts contain paint vocabulary in metaphor, inspiration, repair, or career contexts; exact aliases must not make them product matches.",
+      "role": "negative"
+    },
+    {
+      "case_id": "non_product_gate_probes",
+      "expected_candidate_set": [],
+      "expected_confidence": null,
+      "expected_final_state": "NO_MENTION",
+      "observations": [
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 2
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "UNKNOWN",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": "historical marketplace title is absent from the observation payload",
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "marketplace_listing",
+          "source_observation_id": 11
+        },
+        {
+          "candidate_product_ids": [],
+          "classification": "EDUCATION",
+          "confidence": null,
+          "decision_method": null,
+          "final_state": "NO_MENTION",
+          "manifest_delta": null,
+          "mention_index": null,
+          "product_mention_id": null,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 102
+        }
+      ],
+      "rationale": "Exact manual aliases for these source texts exist in the benchmark catalog, but SERVICE, REAL_ESTATE, and EDUCATION records must be gated before matching.",
+      "role": "negative"
+    },
+    {
+      "case_id": "arabic_model_product_not_extracted",
+      "expected_candidate_set": [],
+      "expected_confidence": null,
+      "expected_final_state": "NO_MENTION",
+      "observations": [
+        {
+          "candidate_product_ids": [
+            18010
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": "Arabic CROWN product evidence now emits and matches a mention",
+          "mention_index": 0,
+          "product_mention_id": 5,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 128
+        }
+      ],
+      "rationale": "Arabic text includes a real model/specification and a catalog alias, but current classification emits no product mention.",
+      "role": "negative"
+    },
+    {
+      "case_id": "antartica_acrylic_paint",
+      "expected_candidate_set": [
+        18011
+      ],
+      "expected_confidence": "HIGH",
+      "expected_final_state": "MATCHED",
+      "observations": [
+        {
+          "candidate_product_ids": [
+            18011
+          ],
+          "classification": "PRODUCT",
+          "confidence": "HIGH",
+          "decision_method": "unique_exact_alias_v1",
+          "final_state": "MATCHED",
+          "manifest_delta": null,
+          "mention_index": 0,
+          "product_mention_id": 7,
+          "source_entity_type": "facebook_ad",
+          "source_observation_id": 212
+        }
+      ],
+      "rationale": "Named French-language paint ad with an exact unique alias.",
+      "role": "positive"
+    }
+  ],
+  "manifest_expectation_deltas": [
+    {
+      "case_id": "italian_soffitto",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18004
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "HIGH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "MATCHED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 3
+    },
+    {
+      "case_id": "dash_normalized_fixa_mur",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18005
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "HIGH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "MATCHED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 4
+    },
+    {
+      "case_id": "unicode_case_whitespace_satine",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18006
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "HIGH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "MATCHED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 5
+    },
+    {
+      "case_id": "similar_acrylique_mat_acryl",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18007
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "HIGH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "MATCHED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 6
+    },
+    {
+      "case_id": "similar_acrylique_black_mat",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18008
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "HIGH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "MATCHED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 7
+    },
+    {
+      "case_id": "ambiguous_fixateur_alias",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18005,
+            18009
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "UNCERTAIN"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "REVIEW"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 8
+    },
+    {
+      "case_id": "category_conflict_impronta_alias",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [],
+          "manifest": [
+            18001
+          ]
+        },
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "UNCERTAIN"
+        },
+        "decision_method": {
+          "actual": null,
+          "manifest": "conflict_review_v1"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "REVIEW"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 9
+    },
+    {
+      "case_id": "no_catalog_lac_a_eau",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 10
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 103
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 107
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 113
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 134
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 137
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 164
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 165
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 207
+    },
+    {
+      "case_id": "semantic_paint_false_positive",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "PRODUCT"
+        },
+        "confidence": {
+          "actual": null,
+          "manifest": "NO_MATCH"
+        },
+        "final_state": {
+          "actual": "NO_MENTION",
+          "manifest": "UNMAPPED"
+        },
+        "mention_index": {
+          "actual": null,
+          "manifest": 0
+        }
+      },
+      "reason": "paint context rules suppress the known non-product mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 211
+    },
+    {
+      "case_id": "non_product_gate_probes",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "SERVICE"
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 2
+    },
+    {
+      "case_id": "non_product_gate_probes",
+      "differences": {
+        "classification": {
+          "actual": "UNKNOWN",
+          "manifest": "REAL_ESTATE"
+        }
+      },
+      "reason": "historical marketplace title is absent from the observation payload",
+      "source_entity_type": "marketplace_listing",
+      "source_observation_id": 11
+    },
+    {
+      "case_id": "arabic_model_product_not_extracted",
+      "differences": {
+        "candidate_product_ids": {
+          "actual": [
+            18010
+          ],
+          "manifest": []
+        },
+        "classification": {
+          "actual": "PRODUCT",
+          "manifest": "UNKNOWN"
+        },
+        "confidence": {
+          "actual": "HIGH",
+          "manifest": null
+        },
+        "final_state": {
+          "actual": "MATCHED",
+          "manifest": "NO_MENTION"
+        },
+        "mention_index": {
+          "actual": 0,
+          "manifest": null
+        }
+      },
+      "reason": "Arabic CROWN product evidence now emits and matches a mention",
+      "source_entity_type": "facebook_ad",
+      "source_observation_id": 128
+    }
+  ],
+  "manifest_path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\normalization\\worker_018_manifest.json",
+  "mention_attributes": {
+    "brand_present": 1,
+    "capacity_present": 0,
+    "mention_kind_distribution": {
+      "product": 23
+    },
+    "model_present": 1,
+    "product_mentions": 23,
+    "variant_present": 1
+  },
+  "normalization_schema_applied_to_production": false,
+  "performance": {
+    "candidate_lookup_candidate_rows": 23,
+    "candidate_lookup_mentions": 23,
+    "candidate_lookup_seconds": 0.009102399810217321,
+    "mentions_per_second": 7.623923899682873,
+    "observations_per_second": 88.83528717891348,
+    "processing_seconds": 3.016819200012833
+  },
+  "production_catalog_counts": {
+    "after": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    },
+    "before": {
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "products": 0
+    }
+  },
+  "production_database_hash": {
+    "after": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "before": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+    "unchanged": true
+  },
+  "provenance": {
+    "alias_product_link_violations": 0,
+    "candidate_evidence_rows": 25,
+    "candidate_evidence_rows_traced": 25,
+    "candidate_rows": 23,
+    "candidate_rows_traced": 23,
+    "decision_events": 23,
+    "decision_events_traced": 23,
+    "exact_alias_evidence_rows": 23,
+    "facebook_alias_evidence_traced": 7,
+    "foreign_key_violations": 0,
+    "marketplace_alias_evidence_traced": 16
+  },
+  "run_date": "2026-10-07",
+  "scope_confirmations": {
+    "no_ai_provider_calls": true,
+    "no_dependencies_installed": true,
+    "no_facebook_capture": true,
+    "no_production_catalog_rows": true,
+    "no_production_mappings": true,
+    "no_production_writes": true
+  },
+  "source_database_path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+  "source_observations_unchanged": true,
+  "test_result": "Full suite: `python -m unittest discover -s tests -q` - 154 tests passed in 54.178 seconds.",
+  "versions": {
+    "classification": "classification_v2",
+    "extraction": "deterministic_extract_v2",
+    "matching": "deterministic_match_v1",
+    "normalization": "deterministic_v1",
+    "selector": "source_text_selector_v2"
+  },
+  "weak_product_classification_mentions": 0
+}

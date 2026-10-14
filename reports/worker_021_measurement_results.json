@@ -1,0 +1,126 @@
+{
+  "ai_provider_run_count": 0,
+  "candidate_rows_with_empty_production_catalog": 0,
+  "classification_by_source": {
+    "facebook_ad": {
+      "EDUCATION": 3,
+      "PRODUCT": 7,
+      "SERVICE": 3,
+      "UNKNOWN": 204
+    },
+    "marketplace_listing": {
+      "PRODUCT": 16,
+      "REAL_ESTATE": 14,
+      "SERVICE": 2,
+      "UNKNOWN": 19
+    }
+  },
+  "classification_totals": {
+    "EDUCATION": 3,
+    "PRODUCT": 23,
+    "REAL_ESTATE": 14,
+    "SERVICE": 5,
+    "UNKNOWN": 223
+  },
+  "derived_rows_after_first_replay": {
+    "candidate_evidence": 0,
+    "candidate_generation_runs": 23,
+    "classification_results": 268,
+    "normalization_decision_events": 23,
+    "normalization_extraction_runs": 268,
+    "normalization_runs": 268,
+    "normalization_source_refs": 268,
+    "product_candidates": 0,
+    "product_mentions": 23
+  },
+  "derived_rows_after_second_replay": {
+    "candidate_evidence": 0,
+    "candidate_generation_runs": 23,
+    "classification_results": 268,
+    "normalization_decision_events": 23,
+    "normalization_extraction_runs": 268,
+    "normalization_runs": 268,
+    "normalization_source_refs": 268,
+    "product_candidates": 0,
+    "product_mentions": 23
+  },
+  "derived_rows_before_replay": {
+    "candidate_evidence": 0,
+    "candidate_generation_runs": 23,
+    "classification_results": 268,
+    "normalization_decision_events": 23,
+    "normalization_extraction_runs": 268,
+    "normalization_runs": 268,
+    "normalization_source_refs": 268,
+    "product_candidates": 0,
+    "product_mentions": 23
+  },
+  "field_selection_counts": {
+    "facebook_ad": {
+      "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text": 129,
+      "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text#missing": 69,
+      "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text#no-copy": 19
+    },
+    "marketplace_listing": {
+      "marketplace_listing_observations.source_payload_json.announcement.raw_title": 34,
+      "marketplace_listing_observations.source_payload_json.announcement.raw_title#missing": 17
+    }
+  },
+  "idempotency": {
+    "additional_derived_rows_on_second_replay": {
+      "candidate_evidence": 0,
+      "candidate_generation_runs": 0,
+      "classification_results": 0,
+      "normalization_decision_events": 0,
+      "normalization_extraction_runs": 0,
+      "normalization_runs": 0,
+      "normalization_source_refs": 0,
+      "product_candidates": 0,
+      "product_mentions": 0
+    },
+    "first_replay_observations": 268,
+    "passed": true,
+    "second_replay_observations": 268
+  },
+  "isolated_database_foreign_key_violation_count": 0,
+  "isolated_database_integrity": "ok",
+  "isolated_measurement_database": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\worker_021_measurement.sqlite",
+  "marketplace_source_provenance": {
+    "entity_title_fallback_rows": 0,
+    "mentions_from_missing_title": 0,
+    "missing_observation_local_title": 17,
+    "observation_local_title_coverage": 34
+  },
+  "outcomes_with_empty_production_catalog": {
+    "UNMAPPED": 23
+  },
+  "product_mentions": 23,
+  "production_catalog_counts_after": {
+    "product_aliases": 0,
+    "product_mappings": 0,
+    "products": 0
+  },
+  "production_catalog_counts_before": {
+    "product_aliases": 0,
+    "product_mappings": 0,
+    "products": 0
+  },
+  "production_schema_or_source_mutation": false,
+  "run_timestamp_utc": "2026-10-11T16:27:39+00:00",
+  "source_database": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+  "source_observation_fingerprints_unchanged": true,
+  "source_observations": {
+    "facebook_ad_observations": 217,
+    "marketplace_listing_observations": 51
+  },
+  "source_sha256_after": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+  "source_sha256_before": "5CA539EB7A03D84AAD54B79C353961E78EFC594DF54EB6AA13410CF574AA0AFF",
+  "source_sha256_unchanged": true,
+  "versions": {
+    "classification": "classification_v2",
+    "extraction": "deterministic_extract_v2",
+    "matching": "deterministic_match_v1",
+    "normalization": "deterministic_v1",
+    "selector": "source_text_selector_v2"
+  }
+}

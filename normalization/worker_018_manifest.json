@@ -1,0 +1,196 @@
+{
+  "benchmark_id": "worker_018_representative_catalog_v1",
+  "source_contract": "facebook_ad_observations are historical source of truth; current Facebook entity fields are not used as historical evidence.",
+  "normalization_version": "deterministic_v1",
+  "matching_version": "deterministic_match_v1",
+  "products": [
+    {
+      "benchmark_product_id": 18001,
+      "canonical_name": "Compressor campaign (unidentified model)",
+      "category": "compressor",
+      "attributes": {},
+      "aliases": [
+        {"benchmark_alias_id": 18101, "source_type": "facebook", "raw_alias": "🎉 LE COMPRESSEUR QUI CHANGE TOUT ! 🔧", "expected_normalized_alias": "🎉 le compresseur qui change tout ! 🔧", "role": "positive_exact", "rationale": "Exact copy from Facebook observation 76."},
+        {"benchmark_alias_id": 18102, "source_type": "manual", "raw_alias": "Peinture IMPRONTA", "expected_normalized_alias": "peinture impronta", "role": "conflict_probe", "rationale": "Deliberately attaches a real marketplace mention to the compressor concept; the category conflict should force REVIEW."},
+        {"benchmark_alias_id": 18103, "source_type": "manual", "raw_alias": "LOCATION DE VOITURE AEROPORT (ALGER ORAN TLEMCEN)", "expected_normalized_alias": "location de voiture aeroport (alger oran tlemcen)", "role": "false_positive_gate", "rationale": "Exact service text from marketplace observation 2; classification must prevent a product match."}
+      ],
+      "intended_source_observations": ["facebook_ad:76", "marketplace_listing:9", "marketplace_listing:34", "marketplace_listing:40", "marketplace_listing:2"],
+      "expected_candidate_set": [18001],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["unique_compressor_campaign", "category_conflict_impronta_alias", "non_product_gate_probes"],
+      "rationale": "A real compressor ad is present, but the text contains no model or capacity. The IMPRONTA and rental aliases are intentionally adversarial controls, not factual product aliases."
+    },
+    {
+      "benchmark_product_id": 18002,
+      "canonical_name": "French white interior paint campaign",
+      "category": "paint",
+      "attributes": {},
+      "aliases": [
+        {"benchmark_alias_id": 18104, "source_type": "facebook", "raw_alias": "La peinture blanche qui sublime vos intérieurs.", "expected_normalized_alias": "la peinture blanche qui sublime vos intérieurs.", "role": "positive_exact", "rationale": "Exact French-language copy repeated in Facebook observations 70 and 71."},
+        {"benchmark_alias_id": 18105, "source_type": "manual", "raw_alias": "Vente Appartement F3 Boumerdès Dellys", "expected_normalized_alias": "vente appartement f3 boumerdès dellys", "role": "false_positive_gate", "rationale": "Exact real-estate title from marketplace observation 11; classification must prevent a product match."}
+      ],
+      "intended_source_observations": ["facebook_ad:70", "facebook_ad:71", "marketplace_listing:11"],
+      "expected_candidate_set": [18002],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["french_white_paint", "non_product_gate_probes"],
+      "rationale": "The observations contain a real French paint advertisement. The manual real-estate alias is only a negative classification-gate probe."
+    },
+    {
+      "benchmark_product_id": 18003,
+      "canonical_name": "Paint-by-numbers kit",
+      "category": "paint",
+      "attributes": {"bundle_type": "numbered_painting_kit"},
+      "aliases": [
+        {"benchmark_alias_id": 18106, "source_type": "facebook", "raw_alias": "Toile qui gondole, peinture séchée, pinceaux qui perdent leurs poils… Ça vous parle ? Un kit de peinture par numéros bas de gamme peut ruiner tout le plaisir avant même le premier coup de pinceau. Davincified règle ça", "expected_normalized_alias": "toile qui gondole, peinture séchée, pinceaux qui perdent leurs poils... ça vous parle ? un kit de peinture par numéros bas de gamme peut ruiner tout le plaisir avant même le premier coup de pinceau. davincified règle ça", "role": "positive_exact", "rationale": "Exact kit-ad copy from Facebook observation 162."},
+        {"benchmark_alias_id": 18107, "source_type": "manual", "raw_alias": "✨ Programme du Summer Camp – Élan School 🌞", "expected_normalized_alias": "✨ programme du summer camp - élan school 🌞", "role": "false_positive_gate", "rationale": "Exact education text from Facebook observation 102; classification must prevent a product match."},
+        {"benchmark_alias_id": 18117, "source_type": "facebook", "raw_alias": "20 minutes de peinture reduisent le stress. Des fleurs delicates aux tons pastel, chaque zone numerotee, chaque couleur pre-melangee.", "expected_normalized_alias": "20 minutes de peinture reduisent le stress. des fleurs delicates aux tons pastel, chaque zone numerotee, chaque couleur pre-melangee.", "role": "positive_exact", "rationale": "Exact French-language numbered-art kit text from Facebook observation 124."}
+      ],
+      "intended_source_observations": ["facebook_ad:124", "facebook_ad:162", "facebook_ad:102"],
+      "expected_candidate_set": [18003],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["numbered_paint_kit", "non_product_gate_probes"],
+      "rationale": "Both real ads describe numbered-painting kits. The production extractor currently records them as mention_kind=product, so the benchmark exposes that bundle wording is not represented as a bundle mention."
+    },
+    {
+      "benchmark_product_id": 18004,
+      "canonical_name": "Peinture SOFFITTO",
+      "category": "paint",
+      "attributes": {"wording": "French label with Italian product word soffitto"},
+      "aliases": [
+        {"benchmark_alias_id": 18108, "source_type": "marketplace", "raw_alias": "ＰＥＩＮＴＵＲＥ　ＳＯＦＦＩＴＴＯ", "expected_normalized_alias": "peinture soffitto", "role": "unicode_nfkc_probe", "rationale": "Full-width letters and ideographic whitespace normalize to the exact observed title in marketplace observations 3, 32, and 38."}
+      ],
+      "intended_source_observations": ["marketplace_listing:3", "marketplace_listing:32", "marketplace_listing:38"],
+      "expected_candidate_set": [18004],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["italian_soffitto"],
+      "rationale": "The corpus uses the Italian word SOFFITTO in repeated paint titles. This is a direct Unicode NFKC equivalence probe."
+    },
+    {
+      "benchmark_product_id": 18005,
+      "canonical_name": "Peinture FIXA-MUR",
+      "category": "paint",
+      "attributes": {},
+      "aliases": [
+        {"benchmark_alias_id": 18109, "source_type": "marketplace", "raw_alias": "PEINTURE FIXA–MUR", "expected_normalized_alias": "peinture fixa-mur", "role": "dash_normalization_probe", "rationale": "The typographic en dash maps to the ASCII hyphen used in marketplace observations 4, 33, and 36."},
+        {"benchmark_alias_id": 18110, "source_type": "manual", "raw_alias": "Peinture FIXATEUR", "expected_normalized_alias": "peinture fixateur", "role": "ambiguous_probe", "rationale": "Intentionally shared with the FIXATEUR product to require REVIEW for marketplace observations 8, 27, and 37."}
+      ],
+      "intended_source_observations": ["marketplace_listing:4", "marketplace_listing:33", "marketplace_listing:36", "marketplace_listing:8", "marketplace_listing:27", "marketplace_listing:37"],
+      "expected_candidate_set": [18005],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["dash_normalized_fixa_mur", "ambiguous_fixateur_alias"],
+      "rationale": "Both FIXA-MUR and FIXATEUR are real paint titles in the corpus. The shared alias is explicitly adversarial and should not collapse the two products into an automatic match."
+    },
+    {
+      "benchmark_product_id": 18006,
+      "canonical_name": "Peinture ACRYLIQUE Satiné",
+      "category": "paint",
+      "attributes": {"finish": "satiné"},
+      "aliases": [
+        {"benchmark_alias_id": 18111, "source_type": "marketplace", "raw_alias": "  PEINTURE   ACRYLIQUE SATINÉ  ", "expected_normalized_alias": "peinture acrylique satiné", "role": "case_whitespace_unicode_probe", "rationale": "Case folding, repeated whitespace, trimming, and decomposed accent compose to the observed title in marketplace observations 5, 31, and 35."}
+      ],
+      "intended_source_observations": ["marketplace_listing:5", "marketplace_listing:31", "marketplace_listing:35"],
+      "expected_candidate_set": [18006],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["unicode_case_whitespace_satine"],
+      "rationale": "This repeated real French paint title tests case, whitespace, and Unicode canonical normalization."
+    },
+    {
+      "benchmark_product_id": 18007,
+      "canonical_name": "Peinture ACRYLIQUE MAT ACRYL",
+      "category": "paint",
+      "attributes": {"finish": "mat"},
+      "aliases": [
+        {"benchmark_alias_id": 18112, "source_type": "marketplace", "raw_alias": "Peinture ACRYLIQUE MAT ACRYL", "expected_normalized_alias": "peinture acrylique mat acryl", "role": "positive_exact", "rationale": "Exact alias for marketplace observations 6, 30, and 42; similar to, but distinct from, the BLACK MAT title."}
+      ],
+      "intended_source_observations": ["marketplace_listing:6", "marketplace_listing:30", "marketplace_listing:42"],
+      "expected_candidate_set": [18007],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["similar_acrylique_mat_acryl"],
+      "rationale": "One of two near-neighbor acrylic paint titles, included to test exact distinction without fuzzy matching."
+    },
+    {
+      "benchmark_product_id": 18008,
+      "canonical_name": "Peinture ACRYLIQUE BLACK MAT",
+      "category": "paint",
+      "attributes": {"finish": "black mat"},
+      "aliases": [
+        {"benchmark_alias_id": 18113, "source_type": "marketplace", "raw_alias": "Peinture ACRYLIQUE BLACK MAT", "expected_normalized_alias": "peinture acrylique black mat", "role": "positive_exact", "rationale": "Exact alias for marketplace observations 7, 29, and 41; similar to, but distinct from, the MAT ACRYL title."}
+      ],
+      "intended_source_observations": ["marketplace_listing:7", "marketplace_listing:29", "marketplace_listing:41"],
+      "expected_candidate_set": [18008],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["similar_acrylique_black_mat"],
+      "rationale": "The exact alias differs from MAT ACRYL and should retrieve only its own canonical product."
+    },
+    {
+      "benchmark_product_id": 18009,
+      "canonical_name": "Peinture FIXATEUR",
+      "category": "paint",
+      "attributes": {},
+      "aliases": [
+        {"benchmark_alias_id": 18114, "source_type": "marketplace", "raw_alias": "Peinture FIXATEUR", "expected_normalized_alias": "peinture fixateur", "role": "ambiguous_probe", "rationale": "Exact observed title in marketplace observations 8, 27, and 37; the same normalized alias is also assigned to FIXA-MUR."}
+      ],
+      "intended_source_observations": ["marketplace_listing:8", "marketplace_listing:27", "marketplace_listing:37"],
+      "expected_candidate_set": [18005, 18009],
+      "expected_final_state": "REVIEW",
+      "expected_confidence": "UNCERTAIN",
+      "expected_examples": ["ambiguous_fixateur_alias"],
+      "rationale": "This deliberately shared alias must generate two candidates and require review."
+    },
+    {
+      "benchmark_product_id": 18010,
+      "canonical_name": "مسدس رش الدهان الكهربائي CROWN CT31012 – 80 واط",
+      "category": "power_tool",
+      "attributes": {"brand": "CROWN", "model": "CT31012", "power": "80 W"},
+      "aliases": [
+        {"benchmark_alias_id": 18115, "source_type": "facebook", "raw_alias": "مسدس رش الدهان الكهربائي CROWN CT31012 – 80 واط", "expected_normalized_alias": "مسدس رش الدهان الكهربائي crown ct31012 - 80 واط", "role": "arabic_model_probe", "rationale": "Exact Arabic source text from Facebook observation 128, including reference CT31012 and 80-watt specification. The current classifier emits no product mention for it."}
+      ],
+      "intended_source_observations": ["facebook_ad:128"],
+      "expected_candidate_set": [],
+      "expected_final_state": "NO_MENTION",
+      "expected_confidence": null,
+      "expected_examples": ["arabic_model_product_not_extracted"],
+      "rationale": "This is a corpus-derived Arabic product and model/reference case. The alias exists in the isolated catalog, but deterministic_v1 classifies the observation UNKNOWN and creates no mention to match."
+    },
+    {
+      "benchmark_product_id": 18011,
+      "canonical_name": "Antartica acrylic washable breathable paint",
+      "category": "paint",
+      "attributes": {"brand": "Antartica", "finish": "acrylic washable breathable"},
+      "aliases": [
+        {"benchmark_alias_id": 18116, "source_type": "facebook", "raw_alias": "Sûre, simple à utiliser et sèche en seulement 30 minutes : Antartica est la peinture acrylique lavable et respirante sur laquelle vous pouvez compter même lorsque la température baisse, pour renouveler murs et plafonds de manière impeccable.", "expected_normalized_alias": "sûre, simple à utiliser et sèche en seulement 30 minutes : antartica est la peinture acrylique lavable et respirante sur laquelle vous pouvez compter même lorsque la température baisse, pour renouveler murs et plafonds de manière impeccable.", "role": "positive_exact", "rationale": "Exact named-brand French paint ad from Facebook observation 212."}
+      ],
+      "intended_source_observations": ["facebook_ad:212"],
+      "expected_candidate_set": [18011],
+      "expected_final_state": "MATCHED",
+      "expected_confidence": "HIGH",
+      "expected_examples": ["antartica_acrylic_paint"],
+      "rationale": "An explicit French paint ad with a named product concept; the source text grounds the canonical name and attributes."
+    }
+  ],
+  "cases": [
+    {"case_id": "unique_compressor_campaign", "role": "positive", "observations": [{"source_entity_type": "facebook_ad", "observation_id": 76, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18001], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Unique exact Facebook alias, grounded in the observed compressor ad."},
+    {"case_id": "french_white_paint", "role": "positive", "observations": [{"source_entity_type": "facebook_ad", "observation_id": 70, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 71, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18002], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Repeated French-language source text has one exact unique alias."},
+    {"case_id": "numbered_paint_kit", "role": "positive", "observations": [{"source_entity_type": "facebook_ad", "observation_id": 124, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 162, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18003], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Actual kit-oriented French ad text, used as the bundle/accessory-adjacent corpus case."},
+    {"case_id": "italian_soffitto", "role": "positive", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 3, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 32, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 38, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18004], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Full-width alias normalizes via deterministic_v1 NFKC and whitespace handling."},
+    {"case_id": "dash_normalized_fixa_mur", "role": "positive", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 4, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 33, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 36, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18005], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "A typographic en dash normalizes to the ASCII hyphen preserved in the observation title."},
+    {"case_id": "unicode_case_whitespace_satine", "role": "positive", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 5, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 31, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 35, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18006], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Case, repeated whitespace, trimming, and canonically equivalent accents normalize to one exact alias."},
+    {"case_id": "similar_acrylique_mat_acryl", "role": "positive", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 6, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 30, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 42, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18007], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Exact retrieval of the MAT ACRYL near-neighbor."},
+    {"case_id": "similar_acrylique_black_mat", "role": "positive", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 7, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 29, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 41, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18008], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Exact retrieval of the distinct BLACK MAT near-neighbor."},
+    {"case_id": "ambiguous_fixateur_alias", "role": "ambiguous", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 8, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 27, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 37, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18005, 18009], "expected_final_state": "REVIEW", "expected_confidence": "UNCERTAIN", "rationale": "One normalized alias deliberately identifies two products; the current evaluator should preserve ambiguity."},
+    {"case_id": "category_conflict_impronta_alias", "role": "conflict", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 9, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 34, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 40, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18001], "expected_final_state": "REVIEW", "expected_confidence": "UNCERTAIN", "expected_decision_method": "conflict_review_v1", "rationale": "A real marketplace paint alias is deliberately attached to a compressor; explicit category mismatch should force review."},
+    {"case_id": "no_catalog_lac_a_eau", "role": "negative", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 10, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 28, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "marketplace_listing", "observation_id": 39, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [], "expected_final_state": "UNMAPPED", "expected_confidence": "NO_MATCH", "rationale": "Real product mentions intentionally have no matching benchmark alias."},
+    {"case_id": "semantic_paint_false_positive", "role": "negative", "observations": [{"source_entity_type": "facebook_ad", "observation_id": 103, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 107, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 113, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 134, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 137, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 164, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 165, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 207, "mention_index": 0, "expected_classification": "PRODUCT"}, {"source_entity_type": "facebook_ad", "observation_id": 211, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [], "expected_final_state": "UNMAPPED", "expected_confidence": "NO_MATCH", "rationale": "These real source texts contain paint vocabulary in metaphor, inspiration, repair, or career contexts; exact aliases must not make them product matches."},
+    {"case_id": "non_product_gate_probes", "role": "negative", "observations": [{"source_entity_type": "marketplace_listing", "observation_id": 2, "mention_index": null, "expected_classification": "SERVICE"}, {"source_entity_type": "marketplace_listing", "observation_id": 11, "mention_index": null, "expected_classification": "REAL_ESTATE"}, {"source_entity_type": "facebook_ad", "observation_id": 102, "mention_index": null, "expected_classification": "EDUCATION"}], "expected_candidate_set": [], "expected_final_state": "NO_MENTION", "expected_confidence": null, "rationale": "Exact manual aliases for these source texts exist in the benchmark catalog, but SERVICE, REAL_ESTATE, and EDUCATION records must be gated before matching."},
+    {"case_id": "arabic_model_product_not_extracted", "role": "negative", "observations": [{"source_entity_type": "facebook_ad", "observation_id": 128, "mention_index": null, "expected_classification": "UNKNOWN"}], "expected_candidate_set": [], "expected_final_state": "NO_MENTION", "expected_confidence": null, "rationale": "Arabic text includes a real model/specification and a catalog alias, but current classification emits no product mention."},
+    {"case_id": "antartica_acrylic_paint", "role": "positive", "observations": [{"source_entity_type": "facebook_ad", "observation_id": 212, "mention_index": 0, "expected_classification": "PRODUCT"}], "expected_candidate_set": [18011], "expected_final_state": "MATCHED", "expected_confidence": "HIGH", "rationale": "Named French-language paint ad with an exact unique alias."}
+  ]
+}

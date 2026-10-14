@@ -1,0 +1,153 @@
+{
+  "worker": 28,
+  "reviewed_worker": 27,
+  "date": "2026-10-13",
+  "verdict": "READY FOR INDEPENDENT REVIEW",
+  "production_migration_performed": false,
+  "production_operator_backup_performed": false,
+  "production_write_capable_operations_performed": false,
+  "read_only_temporary_benchmark_snapshot_created": true,
+  "source_inspection": {
+    "currency_trust_boundary": {
+      "repository_validates_caller_supplied_models": true,
+      "supported_currency_codes": ["DZD", "EUR", "USD"],
+      "unsupported_currency_policy": "Preserve raw evidence; store NULL code and UNKNOWN basis; database triggers reject unsupported non-NULL codes; trusted view independently allowlists codes and eligible bases.",
+      "trusted_view_requires": [
+        "approved latest review",
+        "supported currency code",
+        "SOURCE_CONFIRMED or INDEPENDENTLY_VERIFIED currency basis",
+        "VALID quality",
+        "CONFIRMED or NOT_APPLICABLE unit",
+        "verified product identity and non-NULL key",
+        "single point amount",
+        "REGULAR or SALE price type"
+      ]
+    },
+    "foundation_schema_validation": {
+      "comparison": "Token-aware SQLite DDL canonicalization; ignores whitespace and comments; preserves string literal spelling; uses ASCII-only identifier case normalization; checks table_xinfo, foreign keys, explicit and automatic index layouts and migration-defined SQL.",
+      "unexpected_managed_table_indexes_and_triggers_rejected": true,
+      "baseline_write_order": "Reject drift during read-only preflight before backup or registry write; exact untracked Foundation schema may be baselined with applied_at NULL.",
+      "retained_legacy_tables": "Expected to remain; rows are not rewritten."
+    },
+    "backup_restore": {
+      "public_backup_helper_enforces_target_policy": true,
+      "isolated_mode_requires_explicit_argument": true,
+      "manifest_binds": [
+        "unique backup ID",
+        "backup filename and SHA-256",
+        "canonical intended target identity",
+        "migration purpose",
+        "verified schema and registry state",
+        "creation timestamp",
+        "local per-user HMAC signature"
+      ],
+      "restore_requires_writers_stopped_acknowledgment": true,
+      "staged_verification_and_previous_database_sidecar_preservation": true,
+      "unknown_provenance_policy": "Fail closed; use documented offline/manual recovery reviewed against intended target and source fingerprints."
+    },
+    "migration_compatibility": {
+      "migration_001_modified": false,
+      "migration_002_modified": false,
+      "migration_003_added": "migrations/003_price_evidence_trust_policy.sql",
+      "supported_sequence": [1, 2, 3],
+      "legacy_positive_amount": "Preserved; exposed by the Migration 003 uncertainty view as raw_legacy_amount with NULL currency and UNKNOWN basis; no trusted price absent an approved independently verified supported-currency review.",
+      "production_target_version": 0,
+      "production_migrations_002_and_003": "ABSENT"
+    }
+  },
+  "executed_tests": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest tests.test_foundation_v2 tests.test_migration_lifecycle tests.test_migration_cli_safety tests.test_price_evidence tests.test_ouedkniss_sensor_v2 -q",
+      "exit_code": 0,
+      "test_count": 85,
+      "unittest_duration_seconds": 31.150,
+      "isolation": "Mutation, restore, baseline corruption, and failure-injection cases use temporary databases."
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -q",
+      "exit_code": 0,
+      "test_count": 211,
+      "unittest_duration_seconds": 91.901,
+      "isolation": "Full suite's normalization benchmark opens production read-only and writes only to a temporary backup copy."
+    }
+  ],
+  "regression_evidence": {
+    "worker_027_forged_xyz_facebook_candidate": "No trusted view result; API downgrades unsupported code and basis, and lower-level forged rows remain excluded.",
+    "check_literal_deleted_to_DELETED": "Rejected before baseline registry or backup creation.",
+    "unexpected_insert_blocking_trigger": "Rejected before baseline registry or backup creation.",
+    "direct_backup_helper_wrong_target": "Rejected before creating backup files or changing database bytes; environment override and path alias cases covered.",
+    "restore_provenance": [
+      "valid manifest-bound restore",
+      "unrelated healthy backup rejected",
+      "unmanifested backup rejected",
+      "altered content rejected",
+      "mismatched target/manifest rejected",
+      "wrong target rejected",
+      "missing writer-stop acknowledgment rejected",
+      "prior WAL and SHM sidecars preserved beside prior database"
+    ],
+    "schema_negative_cases_retained": [
+      "missing index",
+      "missing foreign key",
+      "missing UNIQUE constraint",
+      "missing CHECK constraint",
+      "altered table definition",
+      "altered index definition",
+      "missing required trigger"
+    ],
+    "migration_failure_retry_source_fingerprints": "Unchanged across injected Migration 003 failure and successful retry.",
+    "capture_fail_closed": "Absent or incomplete Migration 002/003 schema refuses capture before source writes.",
+    "positive_legacy_price_fixture": "Legacy amount 72000 is retained and exposed as currency unknown; recovery does not reconstruct from mutable legacy row; no trusted price until independent supported-currency review."
+  },
+  "production_audit": {
+    "path": "C:\\Users\\Idris\\Documents\\ChatGPT\\Kratzwerk\\data\\Database.sqlite",
+    "connection_mode": "SQLite mode=ro with PRAGMA query_only=ON; lifecycle inspection also opens mode=ro.",
+    "expected_sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_before": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_after": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "integrity_check": "ok",
+    "foreign_key_violations": 0,
+    "foundation_001": "APPLIED",
+    "foundation_problems": [],
+    "migration_002": "ABSENT",
+    "migration_003": "ABSENT",
+    "schema_migrations_present": false,
+    "user_version": 0,
+    "migration_001_marked_observations": 17,
+    "migration_001_marked_prices_nonnull": 0,
+    "migration_001_marked_historical_currency": ["DZD"],
+    "row_counts": {
+      "sellers": 3,
+      "marketplace_listings": 17,
+      "marketplace_listing_observations": 51,
+      "facebook_ads": 162,
+      "facebook_ad_observations": 217,
+      "products": 0,
+      "product_aliases": 0,
+      "product_mappings": 0,
+      "legacy_products": 18,
+      "legacy_sellers": 3,
+      "legacy_marketplace_listings": 17,
+      "legacy_price_history": 0,
+      "legacy_advertising_campaigns": 69
+    },
+    "wal_exists_after": false,
+    "shm_exists_after": false,
+    "legacy_database_modified": false
+  },
+  "preservation": {
+    "dependencies_installed": false,
+    "normalization_manifest_modified": false,
+    "historical_reports_modified": false,
+    "observed_normalization_manifest_sha256": "7CA5ADBB43E1EAC270D58D03B4CA8292B713D61B125595B039F114179B17E686",
+    "observed_worker_027_results_sha256": "D7762BE19A07A5350680D2511933712B3BE6238E74454C21D398005D292D69C7",
+    "observed_worker_027_review_sha256": "E8C80827249BEF9AA76A6569F79968548DBD01ADD4FFA7947BEE11D7394AE95C"
+  },
+  "unresolved_risks": [
+    "Migration 003 has not been independently reviewed or applied to production.",
+    "The per-user manifest signing key must be preserved; key loss makes automated restore fail closed, and key compromise weakens manifest provenance.",
+    "The writers-stopped flag is an operator acknowledgment, not proof of zero active writers.",
+    "Backups created before manifest signing cannot gain provenance retroactively and require the documented manual recovery procedure."
+  ],
+  "report_path": "reports/worker_028_migration_safety_remediation.md"
+}
