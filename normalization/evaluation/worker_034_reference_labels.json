@@ -1,0 +1,27 @@
+{
+  "reference_set_id": "worker_034_inherited_adjudication_controls_v1",
+  "label_source": "reports/worker_021_adjudication.md",
+  "label_provenance": "Prior curated residual-case adjudication carried forward for bounded regression checks; not a random or independent Worker 034 annotation sample.",
+  "identity_labels_included": false,
+  "exact_span_labels_included": false,
+  "examples": [
+    {"example_id":"facebook_ad_observation_000103","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000107","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000113","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000134","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000137","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000164","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000165","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000207","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000211","expected_classification":"UNKNOWN","expected_mention_present":false,"case":"paint-context control","note":"Prior adjudication identifies metaphor/inspiration/repair/career copy rather than an offer for paint."},
+    {"example_id":"facebook_ad_observation_000124","expected_classification":"PRODUCT","expected_mention_present":true,"case":"paint-by-numbers kit","note":"Prior adjudication says the local ad describes a numbered-painting kit; component inventory and exact SKU remain unknown."},
+    {"example_id":"facebook_ad_observation_000162","expected_classification":"PRODUCT","expected_mention_present":true,"case":"paint-by-numbers kit","note":"Prior adjudication says the local ad describes a numbered-painting kit; component inventory and exact SKU remain unknown."},
+    {"example_id":"facebook_ad_observation_000128","expected_classification":"PRODUCT","expected_mention_present":true,"case":"Arabic CROWN electric sprayer","note":"Prior adjudication confirms explicit Arabic sprayer, CROWN, CT31012 and 80 W evidence; no production identity exists."},
+    {"example_id":"marketplace_listing_observation_000028","expected_classification":"PRODUCT","expected_mention_present":true,"case":"LAC A EAU","note":"Prior adjudication confirms the observation-local paint title is a product mention; canonical product level is unresolved."},
+    {"example_id":"marketplace_listing_observation_000039","expected_classification":"PRODUCT","expected_mention_present":true,"case":"LAC A EAU","note":"Prior adjudication confirms the observation-local paint title is a product mention; canonical product level is unresolved."},
+    {"example_id":"marketplace_listing_observation_000027","expected_classification":"PRODUCT","expected_mention_present":true,"case":"FIXATEUR ambiguity","note":"Prior adjudication confirms a product title while leaving canonical identity unresolved because the shared alias is ambiguous in the synthetic benchmark."},
+    {"example_id":"marketplace_listing_observation_000037","expected_classification":"PRODUCT","expected_mention_present":true,"case":"FIXATEUR ambiguity","note":"Prior adjudication confirms a product title while leaving canonical identity unresolved because the shared alias is ambiguous in the synthetic benchmark."},
+    {"example_id":"marketplace_listing_observation_000034","expected_classification":"PRODUCT","expected_mention_present":true,"case":"IMPRONTA category conflict","note":"Prior adjudication confirms a product title; the synthetic benchmark alias conflicts with category and production identity remains unmapped."},
+    {"example_id":"marketplace_listing_observation_000040","expected_classification":"PRODUCT","expected_mention_present":true,"case":"IMPRONTA category conflict","note":"Prior adjudication confirms a product title; the synthetic benchmark alias conflicts with category and production identity remains unmapped."}
+  ]
+}

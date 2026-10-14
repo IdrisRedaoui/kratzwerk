@@ -1,0 +1,3506 @@
+{
+  "template_id": "worker_034_human_annotation_v1",
+  "manifest_id": "worker_034_normalization_real_observations_v1",
+  "instructions": {
+    "review_unit": "one observation and its exact observation-local text from the manifest",
+    "classification_labels": [
+      "PRODUCT",
+      "SERVICE",
+      "REAL_ESTATE",
+      "EDUCATION",
+      "UNKNOWN"
+    ],
+    "evidence_rule": "Use only the observation_local_text and evidence_provenance in the manifest. Do not use current entity fields to fill historical gaps.",
+    "missing_text_rule": "Mark source_evidence_sufficient=false and leave classification.label null when no usable local text is present; do not guess from an empty input.",
+    "mention_rule": "List each product mention once. Span offsets are zero-based Python Unicode code-point indexes with an exclusive end, measured against the exact observation_local_text. Keep the span to the shortest evidenced identifying phrase; do not include unrelated marketing copy or UI text.",
+    "sufficiency_rule": "Set sufficiently_evidenced=false when the text does not support that mention; use UNKNOWN classification if the record type itself is not defensible.",
+    "identity_rule": "Only enter known_alias or canonical_product_identity when independently verifiable. Use REVIEW for unresolved ambiguity/conflict and UNMAPPED when no defensible catalog identity is available. Never invent a canonical ID.",
+    "unreviewed_values": "Null means not reviewed. After review, mentions=[] means reviewed and no product mention was found."
+  },
+  "examples": [
+    {
+      "example_id": "facebook_ad_observation_000001",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000002",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000003",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000004",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000005",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000006",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000007",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000008",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000009",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000010",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000011",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000012",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000013",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000014",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000015",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000016",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000017",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000018",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000019",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000020",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000021",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000022",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000023",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000024",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000025",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000026",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000027",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000028",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000029",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000030",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000031",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000032",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000033",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000034",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000035",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000036",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000037",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000038",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000039",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000040",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000041",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000042",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000043",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000044",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000045",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000046",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000047",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000048",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000049",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000050",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000051",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000052",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000053",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000054",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000055",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000056",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000057",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000058",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000059",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000060",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000061",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000062",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000063",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000064",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000065",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000066",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000067",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000068",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000069",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000070",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000071",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000072",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000073",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000074",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000075",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000076",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000077",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000078",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000079",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000080",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000081",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000082",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000083",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000084",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000085",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000086",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000087",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000088",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000089",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000090",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000091",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000092",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000093",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000094",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000095",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000096",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000097",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000098",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000099",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000100",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000101",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000102",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000103",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000104",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000105",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000106",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000107",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000108",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000109",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000110",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000111",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000112",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000113",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000114",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000115",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000116",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000117",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000118",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000119",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000120",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000121",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000122",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000123",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000124",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000125",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000126",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000127",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000128",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000129",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000130",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000131",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000132",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000133",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000134",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000135",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000136",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000137",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000138",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000139",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000140",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000141",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000142",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000143",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000144",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000145",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000146",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000147",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000148",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000149",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000150",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000151",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000152",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000153",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000154",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000155",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000156",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000157",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000158",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000159",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000160",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000161",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000162",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000163",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000164",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000165",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000166",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000167",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000168",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000169",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000170",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000171",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000172",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000173",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000174",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000175",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000176",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000177",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000178",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000179",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000180",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000181",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000182",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000183",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000184",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000185",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000186",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000187",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000188",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000189",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000190",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000191",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000192",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000193",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000194",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000195",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000196",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000197",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000198",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000199",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000200",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000201",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000202",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000203",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000204",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000205",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000206",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000207",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000208",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000209",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000210",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000211",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000212",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000213",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000214",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000215",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000216",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "facebook_ad_observation_000217",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000001",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000002",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000003",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000004",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000005",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000006",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000007",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000008",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000009",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000010",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000011",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000012",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000013",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000014",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000015",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000016",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000017",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000018",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000019",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000020",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000021",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000022",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000023",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000024",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000025",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000026",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000027",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000028",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000029",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000030",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000031",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000032",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000033",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000034",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000035",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000036",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000037",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000038",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000039",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000040",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000041",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000042",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000043",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000044",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000045",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000046",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000047",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000048",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000049",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000050",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    },
+    {
+      "example_id": "marketplace_listing_observation_000051",
+      "review_status": "NOT_REVIEWED",
+      "annotator_id": null,
+      "reviewed_at": null,
+      "source_evidence_sufficient": null,
+      "classification": {
+        "label": null,
+        "rationale": null
+      },
+      "mentions": null,
+      "notes": null
+    }
+  ]
+}

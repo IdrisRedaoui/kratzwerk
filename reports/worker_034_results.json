@@ -1,0 +1,510 @@
+{
+  "report_id": "worker_034_normalization_evaluation_v1",
+  "manifest_id": "worker_034_normalization_real_observations_v1",
+  "source_database_sha256_before": "sha256:5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+  "source_database_sha256_after": "sha256:5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+  "source_database_unchanged": true,
+  "production_writes": false,
+  "source_counts": {
+    "facebook_ad": 217,
+    "marketplace_listing": 51
+  },
+  "catalog_counts": {
+    "products": 0,
+    "product_aliases": 0,
+    "product_mappings": 0
+  },
+  "isolated_persistence_engine_replay": {
+    "temporary_clone_only": true,
+    "production_database_writes": false,
+    "schema_applied_to_clone_only": true,
+    "first_pass_observations": 268,
+    "first_pass_product_mentions": 23,
+    "classification_by_source": {
+      "facebook_ad": {
+        "UNKNOWN": 204,
+        "PRODUCT": 7,
+        "SERVICE": 3,
+        "EDUCATION": 3
+      },
+      "marketplace_listing": {
+        "UNKNOWN": 19,
+        "SERVICE": 2,
+        "REAL_ESTATE": 14,
+        "PRODUCT": 16
+      }
+    },
+    "decision_state_counts": {
+      "UNMAPPED": 23
+    },
+    "derived_rows_after_first_pass": {
+      "normalization_runs": 268,
+      "classification_results": 268,
+      "product_mentions": 23,
+      "normalization_decision_events": 23
+    },
+    "integrity_check": "ok",
+    "foreign_key_violation_count": 0,
+    "pure_pipeline_outputs_match": true
+  },
+  "pure_pipeline_outputs_match_isolated_replay": true,
+  "classification_all_observations_by_source": {
+    "facebook_ad": {
+      "UNKNOWN": 204,
+      "PRODUCT": 7,
+      "SERVICE": 3,
+      "EDUCATION": 3
+    },
+    "marketplace_listing": {
+      "UNKNOWN": 19,
+      "SERVICE": 2,
+      "REAL_ESTATE": 14,
+      "PRODUCT": 16
+    }
+  },
+  "classification_text_eligible_by_source": {
+    "facebook_ad": {
+      "PRODUCT": 7,
+      "UNKNOWN": 116,
+      "SERVICE": 3,
+      "EDUCATION": 3
+    },
+    "marketplace_listing": {
+      "UNKNOWN": 2,
+      "SERVICE": 2,
+      "REAL_ESTATE": 14,
+      "PRODUCT": 16
+    }
+  },
+  "evidence_availability_by_source": {
+    "facebook_ad": {
+      "missing_observation_local_text": 69,
+      "usable_observation_local_text": 129,
+      "observation_local_field_present_but_no_usable_copy": 19
+    },
+    "marketplace_listing": {
+      "missing_observation_local_text": 17,
+      "usable_observation_local_text": 34
+    }
+  },
+  "mention_counts_by_source": {
+    "facebook_ad": {
+      "observations_with_mentions": 7,
+      "product_mentions": 7
+    },
+    "marketplace_listing": {
+      "observations_with_mentions": 16,
+      "product_mentions": 16
+    }
+  },
+  "final_match_state_counts_by_source": {
+    "facebook_ad": {
+      "NO_MENTION": 210,
+      "UNMAPPED": 7
+    },
+    "marketplace_listing": {
+      "NO_MENTION": 35,
+      "UNMAPPED": 16
+    }
+  },
+  "ground_truth_metrics": {
+    "worker_034_independent_labels": 0,
+    "production_census_classification_precision_recall_f1": null,
+    "inherited_control_subset": {
+      "reference_set_id": "worker_034_inherited_adjudication_controls_v1",
+      "label_source": "reports/worker_021_adjudication.md",
+      "label_provenance": "Prior curated residual-case adjudication carried forward for bounded regression checks; not a random or independent Worker 034 annotation sample.",
+      "sample_size": 18,
+      "sampling_note": "Purposive inherited case controls; not a random production sample or independent Worker 034 annotation.",
+      "classification": {
+        "accuracy": 1.0,
+        "correct": 18,
+        "total": 18,
+        "confusion_matrix_actual_rows_predicted_columns": {
+          "PRODUCT": {
+            "PRODUCT": 9,
+            "SERVICE": 0,
+            "REAL_ESTATE": 0,
+            "EDUCATION": 0,
+            "UNKNOWN": 0
+          },
+          "SERVICE": {
+            "PRODUCT": 0,
+            "SERVICE": 0,
+            "REAL_ESTATE": 0,
+            "EDUCATION": 0,
+            "UNKNOWN": 0
+          },
+          "REAL_ESTATE": {
+            "PRODUCT": 0,
+            "SERVICE": 0,
+            "REAL_ESTATE": 0,
+            "EDUCATION": 0,
+            "UNKNOWN": 0
+          },
+          "EDUCATION": {
+            "PRODUCT": 0,
+            "SERVICE": 0,
+            "REAL_ESTATE": 0,
+            "EDUCATION": 0,
+            "UNKNOWN": 0
+          },
+          "UNKNOWN": {
+            "PRODUCT": 0,
+            "SERVICE": 0,
+            "REAL_ESTATE": 0,
+            "EDUCATION": 0,
+            "UNKNOWN": 9
+          }
+        },
+        "per_class": {
+          "PRODUCT": {
+            "support": 9,
+            "tp": 9,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          "SERVICE": {
+            "support": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "REAL_ESTATE": {
+            "support": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "EDUCATION": {
+            "support": 0,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "precision": null,
+            "recall": null,
+            "f1": null
+          },
+          "UNKNOWN": {
+            "support": 9,
+            "tp": 9,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        },
+        "by_source_confusion_matrix_actual_rows_predicted_columns": {
+          "facebook_ad": {
+            "PRODUCT": {
+              "PRODUCT": 3,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "SERVICE": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "REAL_ESTATE": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "EDUCATION": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "UNKNOWN": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 9
+            }
+          },
+          "marketplace_listing": {
+            "PRODUCT": {
+              "PRODUCT": 6,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "SERVICE": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "REAL_ESTATE": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "EDUCATION": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            },
+            "UNKNOWN": {
+              "PRODUCT": 0,
+              "SERVICE": 0,
+              "REAL_ESTATE": 0,
+              "EDUCATION": 0,
+              "UNKNOWN": 0
+            }
+          }
+        }
+      },
+      "mention_presence_at_observation_level": {
+        "tp": 9,
+        "fp": 0,
+        "fn": 0,
+        "tn": 9,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "by_source": {
+          "facebook_ad": {
+            "tp": 3,
+            "fp": 0,
+            "fn": 0,
+            "tn": 9
+          },
+          "marketplace_listing": {
+            "tp": 6,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          }
+        },
+        "scope_note": "Observation-level presence only. Exact span precision/recall/F1 are unavailable because this inherited label set does not contain independently annotated gold spans."
+      },
+      "examples": [
+        {
+          "example_id": "facebook_ad_observation_000103",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000107",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000113",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000134",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000137",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000164",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000165",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000207",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000211",
+          "source_type": "facebook_ad",
+          "expected_classification": "UNKNOWN",
+          "predicted_classification": "UNKNOWN",
+          "expected_mention_present": false,
+          "predicted_mention_present": false,
+          "case": "paint-context control"
+        },
+        {
+          "example_id": "facebook_ad_observation_000124",
+          "source_type": "facebook_ad",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "paint-by-numbers kit"
+        },
+        {
+          "example_id": "facebook_ad_observation_000162",
+          "source_type": "facebook_ad",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "paint-by-numbers kit"
+        },
+        {
+          "example_id": "facebook_ad_observation_000128",
+          "source_type": "facebook_ad",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "Arabic CROWN electric sprayer"
+        },
+        {
+          "example_id": "marketplace_listing_observation_000028",
+          "source_type": "marketplace_listing",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "LAC A EAU"
+        },
+        {
+          "example_id": "marketplace_listing_observation_000039",
+          "source_type": "marketplace_listing",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "LAC A EAU"
+        },
+        {
+          "example_id": "marketplace_listing_observation_000027",
+          "source_type": "marketplace_listing",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "FIXATEUR ambiguity"
+        },
+        {
+          "example_id": "marketplace_listing_observation_000037",
+          "source_type": "marketplace_listing",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "FIXATEUR ambiguity"
+        },
+        {
+          "example_id": "marketplace_listing_observation_000034",
+          "source_type": "marketplace_listing",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "IMPRONTA category conflict"
+        },
+        {
+          "example_id": "marketplace_listing_observation_000040",
+          "source_type": "marketplace_listing",
+          "expected_classification": "PRODUCT",
+          "predicted_classification": "PRODUCT",
+          "expected_mention_present": true,
+          "predicted_mention_present": true,
+          "case": "IMPRONTA category conflict"
+        }
+      ]
+    },
+    "span_level_mention_extraction_precision_recall_f1": null,
+    "exact_alias_accuracy": null,
+    "reason": "The inherited adjudication controls support limited classification and mention-presence checks only. Full-census accuracy, exact span scoring, and production identity accuracy require new independent annotations/catalog evidence."
+  },
+  "synthetic_benchmark": {
+    "worker_018_manifest_is_not_scored_as_production_accuracy": true,
+    "worker_021_direct_current_pipeline_reference": "reports/worker_021_measurement_results.json",
+    "worker_021_adjudication_reference": "reports/worker_021_adjudication.md"
+  },
+  "offline_ai": {
+    "run": false,
+    "decision": "NO AI YET",
+    "proposed_experiment_design": {
+      "task": "Five-way classification on observation-local text only.",
+      "comparison": "Freeze the deterministic_v2 outputs and compare one offline model pass on the same independently labeled examples.",
+      "output_schema": {
+        "classification": [
+          "PRODUCT",
+          "SERVICE",
+          "REAL_ESTATE",
+          "EDUCATION",
+          "UNKNOWN"
+        ],
+        "evidence_quotes": "short exact substrings from the supplied text",
+        "abstain": "boolean"
+      },
+      "evaluation": "Per-class precision/recall/F1, macro F1, abstentions, failures, and a reviewed error table; keep the exact source-observation split fixed.",
+      "split_rule": "Use a source-stratified held-out split only after enough independent labels exist to support it; otherwise report a single-pass exploratory result with no statistical claim.",
+      "isolation": "Local/offline execution on a frozen subset; no production DB connection, no writes, no price task, and no identity approval.",
+      "required_run_record": "Provider/model and version, prompt/config version, input/output schema, settings, failures, cost if available, and reproducibility limits."
+    },
+    "blockers": [
+      "No offline model/provider integration is configured in this repository/runtime.",
+      "No adequately sized held-out, independently labeled production subset exists.",
+      "Identity evaluation is blocked by zero production products, aliases, and mappings."
+    ]
+  }
+}
