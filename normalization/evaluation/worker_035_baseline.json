@@ -1,0 +1,1771 @@
+{
+  "baseline_id": "worker_035_deterministic_baseline_v1",
+  "source_manifest_id": "worker_034_normalization_real_observations_v1",
+  "engine_versions": {
+    "command": ".\\.venv\\Scripts\\python.exe normalization\\worker_034_evaluate.py",
+    "git_revision": "40c9addb0aaeb871d93ba0d0df86104e1ca86cb7",
+    "python_version": "3.11.0",
+    "normalization": "deterministic_v1",
+    "selector": "source_text_selector_v2",
+    "classification": "classification_v2",
+    "extraction": "deterministic_extract_v2",
+    "matching": "deterministic_match_v1",
+    "script_sha256": "sha256:0eeea371860b13eabc6638c366fbf70ddaacac200bc25f043b3201411f80001b",
+    "example_set_sha256": "sha256:dd1c4cb255b94239ed9866e75ffde73e4cb79eb9a311b20c71ca02c746fb8323"
+  },
+  "is_read_only_baseline": true,
+  "ground_truth": false,
+  "sample_size": 59,
+  "sampling_seed": "worker035-2026-10-17-v1",
+  "sample_set_sha256": "sha256:10c6803ffc119ad977871e519379c4e7d389c84f42a91e2c4805e4a270be3c43",
+  "summary": {
+    "source_counts": {
+      "facebook_ad": 47,
+      "marketplace_listing": 12
+    },
+    "observations_with_current_deterministic_mentions_by_source": {
+      "facebook_ad": 3,
+      "marketplace_listing": 5
+    },
+    "baseline_classification_counts_by_source": {
+      "facebook_ad": {
+        "EDUCATION": 3,
+        "PRODUCT": 3,
+        "SERVICE": 3,
+        "UNKNOWN": 38
+      },
+      "marketplace_listing": {
+        "PRODUCT": 5,
+        "REAL_ESTATE": 5,
+        "SERVICE": 1,
+        "UNKNOWN": 1
+      }
+    },
+    "interpretation": "These are frozen deterministic system outputs for comparison; they are not human labels or accuracy estimates."
+  },
+  "examples": [
+    {
+      "sample_id": "W035-001",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000070",
+        "observation_id": 70,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:21764c6dd27b1ee6362a3d954ab689b1138792efbd2f9b6a097aa4a102cfea2a",
+      "reviewer_display_text_sha256": "sha256:fd61d52af7609fdae1a3741bc84a6db36475ccdab85ca981f11a09e9d2abb950",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "peinture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 47,
+            "source_text_span": "La peinture blanche qui sublime vos intérieurs.",
+            "normalized_text": "la peinture blanche qui sublime vos intérieurs.",
+            "language_code": "fr",
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-002",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000073",
+        "observation_id": 73,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:c5ba31840ccf6db22be1cf3910fed36a8cdff8eb4250174db0271667900f176b",
+      "reviewer_display_text_sha256": "sha256:13a2dcc3318af6e6feee3e49535a402c3bef663d8d4e52de1f16b22b34aa47a7",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "SERVICE",
+        "rule_id": "service_terms_v1",
+        "matched_terms": [
+          "service"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-003",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000074",
+        "observation_id": 74,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:77ba0e3e81fe187b9bce2c508ce933c3730d69309c95cced470fadf11c41f4da",
+      "reviewer_display_text_sha256": "sha256:c58917c8ce29b9e533f4bb3a7c29559f086b6892b4a99014414b7ee2324e2abd",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-004",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000076",
+        "observation_id": 76,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:cccfea5fbb3517692e9600a9c935544fe4f409d3a87893cf929d20d5855031ba",
+      "reviewer_display_text_sha256": "sha256:878bdf7a9fda980091aeb7f41a19e45739348f27877f992096f3b55112a01e7a",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "compresseur"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 36,
+            "source_text_span": "🎉 LE COMPRESSEUR QUI CHANGE TOUT ! 🔧",
+            "normalized_text": "🎉 le compresseur qui change tout ! 🔧",
+            "language_code": null,
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "compressor",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-005",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000077",
+        "observation_id": 77,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:256b9e2d0a839badc4ed4f372a8e74ed7183a8462c7145a942388ea0047868a2",
+      "reviewer_display_text_sha256": "sha256:232704ed3d1911b879f3049df6c5274ce54ed84372bbeb9860669f00f03763a0",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-006",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000078",
+        "observation_id": 78,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:99de9866db66b7a77374e72b5deb3c494520d4b2a1dfa07d52729d6aed599088",
+      "reviewer_display_text_sha256": "sha256:f5e0410275af6e8372f3a914e867b01b30159200be9c08958e9d32d82bb40f2c",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-007",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000082",
+        "observation_id": 82,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:e18f02f832529de62c209614066084c82486e43345f1b0814912a602790eb752",
+      "reviewer_display_text_sha256": "sha256:f501f2d07f20fbd69247fa0764d9f96693d15b947cf6a7910f824c480c62eddc",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-008",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000083",
+        "observation_id": 83,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:789bc9d873e5a9caedffe802e1ba62cb3e6b03857c2f08d25bef43f90d8b7a24",
+      "reviewer_display_text_sha256": "sha256:e88b08fd64f532ddc0fef63d36b22a34cdd5eed87da698da2941cd1844037f34",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-009",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000084",
+        "observation_id": 84,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:6d3e0d2f2348c4a004c28290c0258ce49a741db7037713ad3aa6c545dbfa837f",
+      "reviewer_display_text_sha256": "sha256:071a87bdd15d8ee57f87f91c8269160b95b85608acd3dee84fe988690f65f7a5",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-010",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000087",
+        "observation_id": 87,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:2e022b7dac0100b12496fbb036c2935b51e7b85f36e51195250afc5b53d69b47",
+      "reviewer_display_text_sha256": "sha256:3543610ad2534f59abf655fbc69b01609c11d3975c3b7675855edcf391568b3a",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-011",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000088",
+        "observation_id": 88,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:c168f26ec4a688eca8f6e7dbfff07604ad98d83e83c136a09d820cfbb5945502",
+      "reviewer_display_text_sha256": "sha256:c85edf14c6471c9e621278e867918ad5323bb02c7e77406e2b8b796d70bebc84",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "EDUCATION",
+        "rule_id": "education_terms_v1",
+        "matched_terms": [
+          "cours"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-012",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000089",
+        "observation_id": 89,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:8b033f68cadd2f2218d26b65d40610e2006678b80940fdfb3609f8ea0f5f33d7",
+      "reviewer_display_text_sha256": "sha256:cd3e443e82f9c15ec6207cabe8ee900eb3fde5484538b2a63405cc6dd8030b81",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-013",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000090",
+        "observation_id": 90,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:181b4e2160b07e3c741812f92016a1434f847915652f7037b16544226a750b40",
+      "reviewer_display_text_sha256": "sha256:00585727a56d8c915b2f6988086c393a79aad6e6ca033ebf73457a6bcfbbd986",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-014",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000093",
+        "observation_id": 93,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:f77107c87937ee97379f93158ba332da049fc6118bb6d330ded0d988bed3627f",
+      "reviewer_display_text_sha256": "sha256:b752989f34d4a4f49b54004e4851982abb729a72be11507e7067cf15f67edf0b",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-015",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000096",
+        "observation_id": 96,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:e242b60ee302cf1ffc85c8c1c8beee81d3f96c03b895358a347d795413274e58",
+      "reviewer_display_text_sha256": "sha256:9ddfaebc37aa56dacbf69125b6cb26357383e6f319070b23faf1bed0243bfebc",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-016",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000097",
+        "observation_id": 97,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:6858a24556255d71ab516d88b83e7d60772fda9b78ea0ed9d986a23253695fcf",
+      "reviewer_display_text_sha256": "sha256:0e56cb3adc5e0d2fcd9088001948b8e012f4a816d001a444096f63780ab85edc",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-017",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000102",
+        "observation_id": 102,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:878e788ee07080d5dc9125a7fd4a9c18591436fcd54df79ed441581f5f02df31",
+      "reviewer_display_text_sha256": "sha256:638476b90dec30e2895dbe436363d49fdb061ede99ca51d15f4c6cbe07711e9d",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "EDUCATION",
+        "rule_id": "education_terms_v1",
+        "matched_terms": [
+          "school",
+          "summer camp"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-018",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000110",
+        "observation_id": 110,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:c09a578fc8104f50e3a7297c1ed41e561991fe504101a8f80db17ddf7970cbb1",
+      "reviewer_display_text_sha256": "sha256:36ed91ea2a2befc1ad5e6793d0a2c764db234d2ac5bf0811a28f1d056578cc99",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-019",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000126",
+        "observation_id": 126,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:5c83abd862eee628e6c7a812f46290d2ecefcf36b2923702f451756a0e6c9d01",
+      "reviewer_display_text_sha256": "sha256:57f341a2e3daa0ff01e38dd1f5da4687c17767bda185763cf1c33b873c3b2d95",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-020",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000127",
+        "observation_id": 127,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:7d6a059d5b9a3117ab69faf8ade31f9f9c648985e042d1daf229596d2cde7568",
+      "reviewer_display_text_sha256": "sha256:f614fb951d7fa9da5826fae3c4a9871f74b62797208335999e030339e9f8d474",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-021",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000130",
+        "observation_id": 130,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:a040c7677d242b4285a96c954060864ec0bb9c8cdec91bfc3884f7cf7ced8d31",
+      "reviewer_display_text_sha256": "sha256:3ff831ed742f1318e0e7735046a5e3be9ab9b79910c414f9dc3e15ca90f0c3e2",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-022",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000132",
+        "observation_id": 132,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:151866d77f1a6058e5efe71ba3694171a91982f7239b64fb1e2f50ec44c8c27d",
+      "reviewer_display_text_sha256": "sha256:beddcd6d14864a917bc6e8bb980c5f80ad3b66dc3b7e1b9d2f2f49b0f9b04dbd",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-023",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000135",
+        "observation_id": 135,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:703cbcd61891d61ca4f2b008f337fa36832efb71e0c02bbf6d806a5ef0377346",
+      "reviewer_display_text_sha256": "sha256:1192b0566fd59eff0a655b392a0ae9d689efb67ca5207cfa3e1c6e14eddc35de",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-024",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000136",
+        "observation_id": 136,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:8284297524c8d47217c0db5b1a2f4037d14493bb37dfe0c82ca82c6af3d70616",
+      "reviewer_display_text_sha256": "sha256:ab11d3d40535a7d746038800621b4b48b326de7d288d83d92f78eb5e574814e3",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-025",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000144",
+        "observation_id": 144,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:bf61ea00d38d654c467c8b53e4ae8050e9c5f6b20693524f00791874481ffbb9",
+      "reviewer_display_text_sha256": "sha256:cd0a5eb8c6f11ef5b0cc3c7323578498bf756f3994488c895a9e2277fa6b5dad",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-026",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000145",
+        "observation_id": 145,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:3698f8b5812cf208a4c893fcfc6f1406deee88de159ab72b3c814de75f2263c3",
+      "reviewer_display_text_sha256": "sha256:6aff2317b0f8e3240ebcb494f20d35c59d8daaabe707cf7ac35d0b0295532e87",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "EDUCATION",
+        "rule_id": "education_terms_v1",
+        "matched_terms": [
+          "cours"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-027",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000147",
+        "observation_id": 147,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:4c4ecf9512df3fbddc950ff21306d7a0c76c0be429810998772a4ce1ec508e94",
+      "reviewer_display_text_sha256": "sha256:3a7b923472478b040cc64e2478908abac96da298741d8a8115e46d825adbb957",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-028",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000149",
+        "observation_id": 149,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:6ccaf616ba1f468ce6d887157932164a99d9a0e73c3c69176eca6f86b2c5530e",
+      "reviewer_display_text_sha256": "sha256:67d715daefeadf346b2af7b1084087fe2ad32a120b209a19dc065c5cb6db0f15",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "SERVICE",
+        "rule_id": "service_terms_v1",
+        "matched_terms": [
+          "emploi"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-029",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000161",
+        "observation_id": 161,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:82371403fa362b2913f6b247a876f1dc51893a23d580635bdf98b53862065eea",
+      "reviewer_display_text_sha256": "sha256:5093b04db607fd37839dcfad0c082a68a89fd1c9f557af87853ed7143be23d88",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-030",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000166",
+        "observation_id": 166,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:910a13c4b2d79bf888b1ff1e9fc4d8ed084bfc8bf817465ca2f282b4b689b3b5",
+      "reviewer_display_text_sha256": "sha256:42bb68facaa83003439b1be394355b90909e3b5355b6c77f00ad28859d4b3411",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-031",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000170",
+        "observation_id": 170,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:c471379f67070393cb3cdfbb069e6a59f9d0eeb57194cfa8fd3136386d27d6d8",
+      "reviewer_display_text_sha256": "sha256:0b3cbc8437e18d7faae482ddae1f55605bd8594ddfc4b8ae28e266639a7b1c28",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-032",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000174",
+        "observation_id": 174,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:9072dd3717af82825b2ca5bacb871238ec71d78690f238790eaa5710062761fd",
+      "reviewer_display_text_sha256": "sha256:7812fe4de6dd3716d5f9273db2b7b4f0fbf5f40a22447da3b4991ead09802eb1",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-033",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000176",
+        "observation_id": 176,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:4fb164e8b4544000edba09eed940955c2542c5f579c8d9dc09ccd754ea799683",
+      "reviewer_display_text_sha256": "sha256:241574a26e23fc1d771ca39bf73c9604696e1ac19ed6f277e6302369ff25474e",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-034",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000177",
+        "observation_id": 177,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:8ecc0211d671f48faeab18d623c88abc5b7f9214916a1ba3c34dceef28d95574",
+      "reviewer_display_text_sha256": "sha256:a511babcdb3cc0c3d20621e9360baef7da8fc399d7376462840a14862864e026",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-035",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000178",
+        "observation_id": 178,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:0db630a0040f9c2ada81845d51043dde47e3b61bb4be9f5d9019c0e702cddf83",
+      "reviewer_display_text_sha256": "sha256:b52e5a05176c461d7d841efa5b6e1bd449c3519e792b72b940976e931bc07579",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-036",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000179",
+        "observation_id": 179,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:54b4529500f46228edd567d452af2bb545a23ccd248529b5d83014b2faaaec78",
+      "reviewer_display_text_sha256": "sha256:fef3c06196aed1978793c76188cd462ab384f10eab594250b92237c43771bd23",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-037",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000189",
+        "observation_id": 189,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:945fdbccbe887ec5a19a6d4d1667b6ce5730162a6c1f51263472267f086f4f7b",
+      "reviewer_display_text_sha256": "sha256:27e2f2984e213a2f9b5a969478e54605024e1220275fce772a812f23324ad8be",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-038",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000190",
+        "observation_id": 190,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:c0acf2f0503e5bb5ac1e1da387ade29b5dffcee983365e530611e8ff0907fd5c",
+      "reviewer_display_text_sha256": "sha256:d589072fd6efb37d8ec8710dd5d6778ab693a08096761cc880ffd8e14de6e52d",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-039",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000192",
+        "observation_id": 192,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:9ac4aa44e7f8b20fb2e678f1959c136d6171b652b3b8e7c6d7e1e216b8835bf9",
+      "reviewer_display_text_sha256": "sha256:15016134446bade6701bcd4e7e84caa5a65123256a30c88039b939783a5e3376",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-040",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000193",
+        "observation_id": 193,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:4435c69132779fb6b8a7c071b2ee3653a595e7347e8718d25c6cc44bf0823517",
+      "reviewer_display_text_sha256": "sha256:8d4b4e35a390c68e9b06e4c5cd03046e8f041ce324bd3f14db2d899e016f44f8",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-041",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000195",
+        "observation_id": 195,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:72dada19b313274be212e2b9dbc51aa704524f9cb97168c41f0fddc9bab83e69",
+      "reviewer_display_text_sha256": "sha256:41920005a636a3972c166cd804cf703bdafb30d5d610ebe324248e1008cd58ec",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-042",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000197",
+        "observation_id": 197,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:72f4778aaf17dabf555ff29620b2af2acd1e9ff983c2ded69cb24751d5250036",
+      "reviewer_display_text_sha256": "sha256:5caa16680e57fd46cfc95f38c7cf689f0d2b3970ea7f61cbef0dff88c67e7a97",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-043",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000199",
+        "observation_id": 199,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:06e6457357f147ced15cc461cf1667a95d7d66bbd1966044c3f52933467bffd9",
+      "reviewer_display_text_sha256": "sha256:f60e37ff55ab7005c8b1ce571a9250a37fc4be8af4e78e2612485df4083002d9",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-044",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000202",
+        "observation_id": 202,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:9da202d292c4295b82607ddd270df14f4fc1e361da384d1d389ce355cd6a3d40",
+      "reviewer_display_text_sha256": "sha256:892adf09fdec3e4e5eb7ea95d778ef72204be618628dea01ab0c7f3dafeb67ef",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-045",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000203",
+        "observation_id": 203,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:90161e00d7861b28c2aa64c40c5951ad1c5d49227c5518844a4507b832da62d2",
+      "reviewer_display_text_sha256": "sha256:073e2ce03cc57f2aeede249538e5610f54b1afe4d4741b2847320da4e0aa859e",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-046",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000212",
+        "observation_id": 212,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:b2ffb8420e13f29c154a8be4d409a70befae2685292480b75b70b97151852f96",
+      "reviewer_display_text_sha256": "sha256:95420c378a20ead6746588d603a70da92f695aa1972ea3e235247fba84df01b1",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "acrylique",
+          "peinture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 241,
+            "source_text_span": "Sûre, simple à utiliser et sèche en seulement 30 minutes : Antartica est la peinture acrylique lavable et respirante sur laquelle vous pouvez compter même lorsque la température baisse, pour renouveler murs et plafonds de manière impeccable.",
+            "normalized_text": "sûre, simple à utiliser et sèche en seulement 30 minutes : antartica est la peinture acrylique lavable et respirante sur laquelle vous pouvez compter même lorsque la température baisse, pour renouveler murs et plafonds de manière impeccable.",
+            "language_code": "fr",
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-047",
+      "source_type": "facebook_ad",
+      "observation_ref": {
+        "example_id": "facebook_ad_observation_000215",
+        "observation_id": 215,
+        "selected_field_path": "facebook_ad_observations.detected_metadata_json.raw_source_payload.card_text",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:e09ba366dbe9c2f973bd6ed5ec6e5fa17ded26edd84c12ee84afc331b55090b4",
+      "reviewer_display_text_sha256": "sha256:806c87d0236e425f3d27cce0254285de563e9b85c0d86e398db1320d7f8276e7",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "SERVICE",
+        "rule_id": "service_terms_v1",
+        "matched_terms": [
+          "emploi"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-048",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000019",
+        "observation_id": 19,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:b1a9669ed22cd5bef1242e6b6f1151ed80c08793283c232f5714dd89bd921b07",
+      "reviewer_display_text_sha256": "sha256:507691dab322523846b989ea472e6405bd6f0825ee32463dcae841f1fa3e840e",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "SERVICE",
+        "rule_id": "service_terms_v1",
+        "matched_terms": [
+          "location de voiture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-049",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000023",
+        "observation_id": 23,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:e3c92f36d838e24d7d34bc0b71a976e90e09c692aa37b9162f503e5a031fdd58",
+      "reviewer_display_text_sha256": "sha256:2bf19d2429fbfdd56631d63ab4ee3be84e57ab9c1c7af46abb927a7b84e9b10f",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "REAL_ESTATE",
+        "rule_id": "real_estate_terms_v1",
+        "matched_terms": [
+          "appartement",
+          "vente appartement"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-050",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000029",
+        "observation_id": 29,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:a9399e1b8e5d527dd94bffe87881f1b2c7ac47342059a4b682a61942cd884d30",
+      "reviewer_display_text_sha256": "sha256:e7b4c53fd37cf114c44bd69d0e24ff5d2127499d0642adbf9504fc040cbf0f9d",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "acrylique",
+          "peinture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 28,
+            "source_text_span": "Peinture ACRYLIQUE BLACK MAT",
+            "normalized_text": "peinture acrylique black mat",
+            "language_code": null,
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-051",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000030",
+        "observation_id": 30,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:e1d9b0f23af21d29faa60f9a14a04c46f5413f2a3fcd510bb0667c3e2fc30f46",
+      "reviewer_display_text_sha256": "sha256:ad1c5176f12c2eebb7aef82dd3781c6d14a8ee61f6497c053d789947e2977cbe",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "acrylique",
+          "peinture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 28,
+            "source_text_span": "Peinture ACRYLIQUE MAT ACRYL",
+            "normalized_text": "peinture acrylique mat acryl",
+            "language_code": null,
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-052",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000031",
+        "observation_id": 31,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:1399ff427c38194fb7ac45599f67a1867f29cb0f6dda6eeda64ba13e7f01b615",
+      "reviewer_display_text_sha256": "sha256:efdcf70d06e0470eb9f316b1bb8d94512b83f9259a67d8ef117aa53a4777cc55",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "acrylique",
+          "peinture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 25,
+            "source_text_span": "Peinture ACRYLIQUE Satiné",
+            "normalized_text": "peinture acrylique satiné",
+            "language_code": null,
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-053",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000032",
+        "observation_id": 32,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:ec199157d701a6747eded5fc282e742624f73ed4d8614237a92013fc2ddd6e11",
+      "reviewer_display_text_sha256": "sha256:048d65a7e5e841a2d06f875954671e8be86a50f301d7485b1de60e7ad204f03e",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "peinture",
+          "soffitto"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 17,
+            "source_text_span": "Peinture SOFFITTO",
+            "normalized_text": "peinture soffitto",
+            "language_code": null,
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-054",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000036",
+        "observation_id": 36,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:9b0f256f725d480c84cb3175b4a4158b0945aee762b828698ad128ff17aa5943",
+      "reviewer_display_text_sha256": "sha256:b5fb4e670e472cf1c49c5191e6e1a416483bb6fe66d4af8b012fd62e5420ff13",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "PRODUCT",
+        "rule_id": "explicit_product_terms_v2",
+        "matched_terms": [
+          "peinture"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [
+        {
+          "mention": {
+            "mention_index": 0,
+            "source_span_start": 0,
+            "source_span_end": 17,
+            "source_text_span": "Peinture FIXA-MUR",
+            "normalized_text": "peinture fixa-mur",
+            "language_code": null,
+            "mention_kind": "product",
+            "brand": null,
+            "model": null,
+            "category": "paint",
+            "variant": null,
+            "quantity_value": null,
+            "quantity_unit": null,
+            "capacity_value": null,
+            "capacity_unit": null,
+            "specifications_json": null,
+            "extraction_method": "deterministic_rules_v2",
+            "extraction_confidence": "HIGH"
+          },
+          "matching": {
+            "state": "UNMAPPED",
+            "candidate_product_id": null,
+            "candidate_product_ids": [],
+            "confidence_label": "NO_MATCH",
+            "decision_method": "no_exact_alias_v1",
+            "reason": "no_exact_alias_candidate",
+            "conflicts": []
+          }
+        }
+      ],
+      "final_states": [
+        "UNMAPPED"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-055",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000043",
+        "observation_id": 43,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:9b4fd219dce78cdeadbe5465730456e21648be6dfde3c10016062402d43ff87c",
+      "reviewer_display_text_sha256": "sha256:894b520b74f4188a4944779903135733f0e78dc3cefde60dbe3cd3d5ba12a82d",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "UNKNOWN",
+        "rule_id": "no_supported_classification_v1",
+        "matched_terms": [],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-056",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000045",
+        "observation_id": 45,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:bcc50121e153f36dc8e8ee51e44899fad3fad0ca0e22eb4b4de8e8959f665411",
+      "reviewer_display_text_sha256": "sha256:08960ac4953c56044151b6893b3ea6cff6793e6215d053c1885b3fd680b4d045",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "REAL_ESTATE",
+        "rule_id": "real_estate_terms_v1",
+        "matched_terms": [
+          "appartement",
+          "vente appartement"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-057",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000046",
+        "observation_id": 46,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:4c026bc85398228eb273f9573158aee93318facf80e247fd9912f364da06e2b8",
+      "reviewer_display_text_sha256": "sha256:8ffc8963adab586770cc52559f6c0076ec773d710f43ba818de38eaba43531f1",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "REAL_ESTATE",
+        "rule_id": "real_estate_terms_v1",
+        "matched_terms": [
+          "appartement",
+          "vente appartement"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-058",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000048",
+        "observation_id": 48,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:1041894bd45616c7cdafe47b5e68621b9eeb9da169b370c337336a0887bdcd96",
+      "reviewer_display_text_sha256": "sha256:82c3bf81c4f9b0b8ac5658f284fb6691d1557839268fc3c52d03ed21cd2ad8c3",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "REAL_ESTATE",
+        "rule_id": "real_estate_terms_v1",
+        "matched_terms": [
+          "appartement",
+          "vente appartement"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    },
+    {
+      "sample_id": "W035-059",
+      "source_type": "marketplace_listing",
+      "observation_ref": {
+        "example_id": "marketplace_listing_observation_000049",
+        "observation_id": 49,
+        "selected_field_path": "marketplace_listing_observations.source_payload_json.announcement.raw_title",
+        "selection_rule_version": "source_text_selector_v2"
+      },
+      "engine_input_sha256": "sha256:5108b7949171ddf37127486779ab393c160361ba3a9f8ff529e10dea19fdb727",
+      "reviewer_display_text_sha256": "sha256:4ea240c2d2390f9cdfb800eb03e93a954f82fcea02aa56bff1a4de723391bf69",
+      "baseline_input_note": "The deterministic output was produced by Worker 034 from the exact source text before privacy redaction. Redactions affect only contact or credential-like spans; compare against the separately supplied display-text hash.",
+      "classification": {
+        "value": "REAL_ESTATE",
+        "rule_id": "real_estate_terms_v1",
+        "matched_terms": [
+          "appartement",
+          "vente appartement"
+        ],
+        "method": "deterministic_rules"
+      },
+      "mentions": [],
+      "final_states": [
+        "NO_MENTION"
+      ],
+      "sensitive_spans_redacted_from_baseline": {}
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "report_id": "worker_035_annotation_package_v1",
+  "prepared_at": "2026-10-17T15:57:06+03:00",
+  "database_path_reference": "data/Database.sqlite",
+  "database_sha256_before": "sha256:5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+  "database_sha256_after": "sha256:5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+  "database_unchanged": true,
+  "production_database_writes": false,
+  "census": {
+    "all_observations": {
+      "facebook_ad": 217,
+      "marketplace_listing": 51
+    },
+    "all_observations_total": 268,
+    "eligible_observations": {
+      "facebook_ad": 129,
+      "marketplace_listing": 34
+    },
+    "eligible_total": 163,
+    "ineligible_observations": 105,
+    "source_selector_versions": {
+      "facebook_ad": "source_text_selector_v2",
+      "marketplace_listing": "source_text_selector_v2"
+    },
+    "mutable_entity_fields_used_as_evidence": false
+  },
+  "sample": {
+    "size": 59,
+    "sample_set_sha256": "sha256:10c6803ffc119ad977871e519379c4e7d389c84f42a91e2c4805e4a270be3c43",
+    "source_distribution": {
+      "Facebook": 47,
+      "Ouedkniss": 12
+    },
+    "current_deterministic_mention_presence": {
+      "Facebook": {
+        "with_mention": 3,
+        "without_mention": 44
+      },
+      "Ouedkniss": {
+        "with_mention": 5,
+        "without_mention": 7
+      }
+    },
+    "baseline_classification_counts_by_source": {
+      "Facebook": {
+        "EDUCATION": 3,
+        "PRODUCT": 3,
+        "SERVICE": 3,
+        "UNKNOWN": 38
+      },
+      "Ouedkniss": {
+        "PRODUCT": 5,
+        "REAL_ESTATE": 5,
+        "SERVICE": 1,
+        "UNKNOWN": 1
+      }
+    },
+    "method": "The target source quota follows largest-remainder apportionment of 60 across the 129 Facebook and 34 Ouedkniss text-eligible observations (47/13). After excluding 18 inherited controls, screened content, and duplicate local text within each source, only 12 distinct Ouedkniss texts remained; the final sample is therefore 47 Facebook plus 12 Ouedkniss observations (59 total). No-mention strata include every current non-product class with usable examples; SHA-256 rank within each stratum uses the recorded seed. The sample is challenge-enriched and is not a prevalence estimator.",
+    "seed": "worker035-2026-10-17-v1",
+    "strata_and_counts": {
+      "facebook_ad": {
+        "mentions/PRODUCT": {
+          "candidates_after_control_and_content_screening": 4,
+          "unique_text_candidates": 3,
+          "duplicate_text_candidates": 1,
+          "sampled": 3
+        },
+        "no_mentions/SERVICE": {
+          "candidates_after_control_and_content_screening": 3,
+          "unique_text_candidates": 3,
+          "duplicate_text_candidates": 0,
+          "sampled": 3
+        },
+        "no_mentions/EDUCATION": {
+          "candidates_after_control_and_content_screening": 3,
+          "unique_text_candidates": 3,
+          "duplicate_text_candidates": 0,
+          "sampled": 3
+        },
+        "no_mentions/UNKNOWN": {
+          "candidates_after_control_and_content_screening": 90,
+          "unique_text_candidates": 77,
+          "duplicate_text_candidates": 13,
+          "sampled": 38
+        }
+      },
+      "marketplace_listing": {
+        "mentions/PRODUCT": {
+          "candidates_after_control_and_content_screening": 10,
+          "unique_text_candidates": 5,
+          "duplicate_text_candidates": 5,
+          "sampled": 5
+        },
+        "no_mentions/UNKNOWN": {
+          "candidates_after_control_and_content_screening": 2,
+          "unique_text_candidates": 1,
+          "duplicate_text_candidates": 1,
+          "sampled": 1
+        },
+        "no_mentions/SERVICE": {
+          "candidates_after_control_and_content_screening": 2,
+          "unique_text_candidates": 1,
+          "duplicate_text_candidates": 1,
+          "sampled": 1
+        },
+        "no_mentions/REAL_ESTATE": {
+          "candidates_after_control_and_content_screening": 14,
+          "unique_text_candidates": 5,
+          "duplicate_text_candidates": 9,
+          "sampled": 5
+        }
+      }
+    },
+    "inherited_controls_excluded": 18
+  },
+  "exclusions": {
+    "ineligible_observations_without_usable_local_text": 105,
+    "inherited_prior_adjudication_controls_excluded_from_sample": 18,
+    "exact_duplicate_text_candidates_not_selected_by_source": {
+      "facebook_ad": 14,
+      "marketplace_listing": 16
+    },
+    "exact_duplicate_text_candidates_not_selected_total": 30,
+    "content_screening_exclusions_by_source_and_reason": {
+      "facebook_ad:adult_or_abuse_narrative": 15,
+      "facebook_ad:single_word_fragment": 2
+    },
+    "content_screening_exclusion_total": 17,
+    "other_observations_excluded_after_documented_screening": 0,
+    "reason": "The sample contains only usable observation-local evidence; the 18 inherited adjudication controls were held out so this new annotation set remains independent of prior labels. Adult, abuse-related, or romance-story ads and one-word UNKNOWN fragments were excluded to minimize unnecessary sensitive or potentially personal content. Exact duplicate local text within a source was represented once to avoid redundant reviews; this reduced the final sample to 59."
+  },
+  "privacy": {
+    "redacted_evidence_records": 0,
+    "redacted_evidence_spans_by_type": {},
+    "redacted_baseline_mention_spans_by_type": {},
+    "post_redaction_scan_matches": {
+      "credential_or_token": 0,
+      "email": 0,
+      "url": 0,
+      "phone": 0,
+      "social_handle": 0
+    },
+    "scan_passed": true,
+    "reviewed_fields": [
+      "observation-local evidence text",
+      "deterministic mention spans",
+      "generated guide and reports"
+    ],
+    "redaction_policy": "Email addresses, URLs, phone-number patterns, social handles, and credential/token assignments were redacted from packaged evidence. The underlying database was not altered; the exact source text SHA-256 and selected field path are retained."
+  },
+  "reproduction": {
+    "commands": [
+      ".\\.venv\\Scripts\\python.exe normalization\\worker_034_evaluate.py",
+      ".\\.venv\\Scripts\\python.exe normalization\\worker_035_prepare.py"
+    ],
+    "worker_034_manifest_id": "worker_034_normalization_real_observations_v1",
+    "worker_034_git_revision": "40c9addb0aaeb871d93ba0d0df86104e1ca86cb7",
+    "worker_034_script_sha256": "sha256:0eeea371860b13eabc6638c366fbf70ddaacac200bc25f043b3201411f80001b",
+    "worker_035_script_sha256": "sha256:b3eee77ee3454f139fb66e90fe57bf7728c44977c6f58fff2191d207c05e339d",
+    "python_version": "3.11.0",
+    "worker_034_versions": {
+      "command": ".\\.venv\\Scripts\\python.exe normalization\\worker_034_evaluate.py",
+      "git_revision": "40c9addb0aaeb871d93ba0d0df86104e1ca86cb7",
+      "python_version": "3.11.0",
+      "normalization": "deterministic_v1",
+      "selector": "source_text_selector_v2",
+      "classification": "classification_v2",
+      "extraction": "deterministic_extract_v2",
+      "matching": "deterministic_match_v1",
+      "script_sha256": "sha256:0eeea371860b13eabc6638c366fbf70ddaacac200bc25f043b3201411f80001b",
+      "example_set_sha256": "sha256:dd1c4cb255b94239ed9866e75ffde73e4cb79eb9a311b20c71ca02c746fb8323"
+    },
+    "worker_035_reads_database_as": "file hash only; no SQLite connection"
+  },
+  "outputs": [
+    "reports/worker_035_annotation_package.md",
+    "reports/worker_035_results.json",
+    "normalization/evaluation/worker_035_annotation_sample.json",
+    "normalization/evaluation/worker_035_reviewer_guide.md",
+    "normalization/evaluation/worker_035_baseline.json"
+  ]
+}
