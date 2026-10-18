@@ -1,0 +1,120 @@
+{
+  "report_id": "worker_040_safe_transport_v1",
+  "final_status": "BLOCKED_RUNTIME_OR_DEPENDENCY",
+  "decision": {
+    "connector_gate": "PASSED",
+    "implementation_added": true,
+    "live_use_allowed": false,
+    "blocker": "The observed runtime is CPython 3.11.0 with OpenSSL 1.1.1q. Python is unpatched relative to the current 3.11.17 security release, OpenSSL 1.1.1 is past public end of life, and the production target runtime is unresolved."
+  },
+  "connector": {
+    "httpx": "0.28.1",
+    "httpcore": "1.0.9",
+    "integration_boundary": "HTTPX public BaseTransport plus HTTP Core documented ConnectionPool and NetworkBackend interfaces",
+    "dial_behavior": "Policy resolves and validates all answers; per-hop backend dials a numeric pinned answer without hostname resolution; HTTP Core receives the original hostname for Host, SNI, and certificate hostname verification.",
+    "private_hooks": false,
+    "monkey_patching": false,
+    "tls_verification_disabled": false,
+    "redirects": "Manual, exact-host checked each hop, re-resolved, loop-detected, bounded.",
+    "proxy": "trust_env=False; no explicit proxy",
+    "body_limit": "Streaming decoded response bytes are counted; Content-Length is not trusted."
+  },
+  "api_stability": {
+    "public_supported": [
+      "httpx.BaseTransport",
+      "httpcore.ConnectionPool",
+      "httpcore.NetworkBackend",
+      "httpcore.SyncBackend",
+      "httpcore.NetworkStream"
+    ],
+    "private_or_version_sensitive": [],
+    "proof": "Local HTTPS socket tests established numeric-IP dialing, original-host certificate validation, wrong-host rejection, and untrusted-CA rejection with the pinned versions."
+  },
+  "tests": {
+    "command": "uv run --no-project --with-requirements requirements-test.lock python -m pytest tests/test_safe_http_transport.py -q",
+    "result": "34 passed",
+    "mock_evidence": [
+      "URL scheme/port/credentials/allowlist/IDNA checks",
+      "IPv4/IPv6 prohibited and mapped addresses",
+      "mixed DNS answer fails before transport creation",
+      "fresh resolution and changed pinned answer per redirect (rebinding case), denied/disallowed target, redirect loop and hop limit",
+      "proxy environment poisoning",
+      "status, content type, oversized/chunked/dishonest-length/compressed expansion checks"
+    ],
+    "local_socket_evidence": [
+      "HTTPS test server reached through pinned loopback IP while request used unresolved shop.example hostname",
+      "original Host header and local endpoint verified",
+      "wrong-host certificate rejected",
+      "untrusted CA rejected",
+      "read timeout and transport-level overall deadline observed",
+      "raw wire-byte limit observed"
+    ],
+    "limits": [
+      "No production egress isolation claim",
+      "Rejected redirect zero-connector evidence is mocked, not a local target socket counter",
+      "No deterministic connect-timeout or complete overall-deadline test",
+      "No IPv6 socket integration",
+      "Special-purpose and transition IPv6 policy needs broader review",
+      "Synchronous system DNS resolution is not bounded by the overall deadline"
+    ]
+  },
+  "dependencies": {
+    "manifest_files": ["requirements.txt", "requirements-test.txt"],
+    "hash_lock_files": ["requirements.lock", "requirements-test.lock"],
+    "httpcore_selection_reason": "1.0.9 includes the release-note fix for GHSA-vqfr-h8mv-ghfj; 1.0.9 is compatible with HTTPX 0.28.1.",
+    "license_review": {
+      "httpx": "BSD-3-Clause",
+      "httpcore": "BSD-3-Clause",
+      "anyio": "MIT",
+      "certifi": "MPL-2.0",
+      "h11": "MIT",
+      "idna": "BSD",
+      "sniffio": "MIT",
+      "typing-extensions": "PSF-2.0"
+    }
+  },
+  "runtime": {
+    "python": "3.11.0",
+    "platform": "Windows x64",
+    "openssl": "OpenSSL 1.1.1q 5 Jul 2022",
+    "python_status": "3.11 remains security-fix-only supported through October 2027; installed 3.11.0 is superseded by 3.11.17.",
+    "openssl_status": "OpenSSL 1.1.1 public support ended 2023-09-11.",
+    "production_target_confirmed": false
+  },
+  "database": {
+    "path": "data/Database.sqlite",
+    "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "read_only_measurement": true,
+    "expected_baseline_provided": false,
+    "writes_performed": false
+  },
+  "scope": {
+    "merchant_sites_contacted": false,
+    "migrations_001_004_modified": false,
+    "worker_037_modified_or_staged": false,
+    "subsequent_worker_started": false,
+    "database_writes": false
+  },
+  "changed_files": [
+    "sensors/safe_http_transport.py",
+    "tests/test_safe_http_transport.py",
+    "tests/fixtures/safe_transport/ca.pem",
+    "tests/fixtures/safe_transport/server.pem",
+    "tests/fixtures/safe_transport/server.key",
+    "requirements.txt",
+    "requirements.lock",
+    "requirements-test.txt",
+    "requirements-test.lock",
+    "reports/worker_040_safe_transport.md",
+    "reports/worker_040_safe_transport.json"
+  ],
+  "references": [
+    "https://raw.githubusercontent.com/encode/httpx/0.28.1/httpx/_transports/default.py",
+    "https://www.python-httpx.org/advanced/transports/",
+    "https://www.encode.io/httpcore/network-backends/",
+    "https://www.encode.io/httpcore/extensions/",
+    "https://pypi.org/project/httpcore/",
+    "https://www.python.org/downloads/release/python-31117/",
+    "https://mirror.openssl-library.org/post/2023-06-15-1.1.1-eol-reminder/"
+  ]
+}

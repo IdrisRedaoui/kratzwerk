@@ -1,0 +1,9 @@
+# Explicit runtime pins for the Worker 040 transport adapter.
+# Keep HTTPX/HTTP Core paired; update only with the local TLS and policy suite.
+httpx==0.28.1
+httpcore==1.0.9
+anyio==4.10.0
+certifi==2025.8.3
+idna==3.10
+sniffio==1.3.1
+h11==0.16.0
