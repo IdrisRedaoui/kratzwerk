@@ -1,0 +1,63 @@
+{
+  "report_id": "worker_036_store_product_sensor_v1",
+  "completed_at": "2026-10-18",
+  "architecture": {
+    "decision": "Pure HTML extraction module receiving caller-fetched HTML; persistence deferred because no neutral store-page observation table exists.",
+    "integration_point": "sensors/store_product_sensor.py",
+    "network_fetching": false,
+    "database_persistence": false,
+    "canonical_identity_or_mapping_writes": false,
+    "trusted_price_evidence_writes": false
+  },
+  "fields": [
+    "name", "brand", "model", "sku", "mpn", "gtin", "description",
+    "offers (price/currency/availability/url/sku kept together)",
+    "product_url", "canonical_url", "image_urls", "options", "variants",
+    "source_url", "retrieved_at", "extraction_method"
+  ],
+  "provenance": "Per-field method and source path retained for extracted values. Conflicting values are preserved in unresolved with provenance; product records and offers are not merged across variants.",
+  "limitations": [
+    "No fetcher; redirect, DNS/IP safety, timeout, and response-size enforcement belong to future fetch integration.",
+    "Syntactic HTTP(S) URL validation does not resolve or reject private destination IPs.",
+    "Generic microdata/RDFa and broad fallback selectors are not implemented.",
+    "No live network test or crawl was performed."
+  ],
+  "tests": {
+    "command": ".\\.venv\\Scripts\\python.exe -m unittest tests.test_store_product_sensor -v",
+    "result": "7 tests passed",
+    "coverage": [
+      "JSON-LD Products and Offers",
+      "Shopify-like metadata",
+      "custom storefront metadata",
+      "explicit variants/options",
+      "multiple offers and currencies",
+      "missing, malformed, and conflicting fields",
+      "category and non-product pages",
+      "source provenance",
+      "unsafe URL scheme rejection",
+      "deterministic repeated extraction",
+      "no trusted price evidence workflow reference"
+    ],
+    "full_suite_run": false
+  },
+  "database": {
+    "path": "data/Database.sqlite",
+    "sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "matches_prior_worker_035_before_and_after_hash": true,
+    "production_database_unchanged": true,
+    "production_writes": false,
+    "migrations_performed": false
+  },
+  "files_changed": [
+    "sensors/store_product_sensor.py",
+    "tests/test_store_product_sensor.py",
+    "tests/fixtures/store_products/shopify_like.html",
+    "tests/fixtures/store_products/jsonld_variants.html",
+    "tests/fixtures/store_products/custom_store.html",
+    "tests/fixtures/store_products/conflicting.html",
+    "tests/fixtures/store_products/category.html",
+    "reports/worker_036_store_product_sensor.md",
+    "reports/worker_036_results.json"
+  ],
+  "recommendation": "A future integration worker can add a constrained public-page fetch adapter and, if append-only extraction history is required, propose a dedicated store-page observation table for review before any migration."
+}
