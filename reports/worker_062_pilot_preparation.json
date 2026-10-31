@@ -1,0 +1,148 @@
+{
+  "document_id": "worker_062_pilot_preparation",
+  "worker": 62,
+  "title": "Worker 062 — 10-Store Pilot Candidate Set",
+  "recorded_at_utc": "2026-10-31T17:49:57Z",
+  "decision": "BLOCKED_PENDING_OPERATOR_DECISIONS",
+  "ready_for_separate_live_start_decision": false,
+  "execution_boundary": {
+    "merchant_product_page_http_requests": 0,
+    "ad_library_collection_requests": 0,
+    "production_database_open_mode": "read-only URI plus PRAGMA query_only=ON",
+    "production_database_mutated": false,
+    "migrations_run": false,
+    "trusted_price_evidence_written": false,
+    "raw_html_retained": false,
+    "active_pilot_persistence_started": false
+  },
+  "sensor_summary": {
+    "sensor": "sensors.facebook_ads_sensor",
+    "sensor_collection_execution": "NOT_RUN; existing stored output was sufficient for this bounded candidate review",
+    "stored_output_directly_consumed": true,
+    "read_path": "data/Database.sqlite: facebook_ad_observations JOIN facebook_ads",
+    "ad_entity_count": 162,
+    "observation_count": 217,
+    "migration_context_observation_count": 69,
+    "sensor_capture_observation_count": 148,
+    "capture_query_counts": {
+      "DZ|Peinture": 148
+    },
+    "observations_with_nonempty_landing_url": 110,
+    "distinct_landing_urls": 63,
+    "additional_records_collected": 0,
+    "deduplication": "Source records and destination URLs were counted from stored IDs and values; no new collection or processing pass was run."
+  },
+  "merchant_summary": {
+    "public_brand_domain_candidates": 4,
+    "legal_operators_established": 0,
+    "distinct_legal_operator_count_established": 0,
+    "merchant_candidate_ids": [
+      "KW062-M01",
+      "KW062-M02",
+      "KW062-M03",
+      "KW062-M04"
+    ],
+    "algeria_evidence_scope": "All four came from stored Sensor captures querying country DZ. That supports ad market targeting only and does not establish the operator's location or legal identity.",
+    "san_marco_handling": "A fifth product-route URL is recorded as an insufficient-evidence lead and is not counted as an Algerian merchant candidate.",
+    "existing_e_sahel_decision": {
+      "status": "EXCLUDED",
+      "condition": "Keep excluded unless written authorization satisfying the previously recorded terms requirement is documented.",
+      "source": "reports/worker_061_vps_preflight.json",
+      "included_in_ad_derived_candidate_count": false
+    }
+  },
+  "candidate_url_summary": {
+    "product_page_route_candidates": 5,
+    "routes_linked_to_four_provisional_store_brands": 4,
+    "destination_contents_live_verified": 0,
+    "candidate_url_ids": [
+      "KW062-U01",
+      "KW062-U02",
+      "KW062-U03",
+      "KW062-U04",
+      "KW062-U05"
+    ],
+    "classification_counts_all_63_stored_destinations": {
+      "PRODUCT_PAGE_CANDIDATE": 5,
+      "STORE_HOME_PAGE": 6,
+      "CATEGORY_PAGE": 2,
+      "SEARCH_OR_LISTING_PAGE": 10,
+      "SOCIAL_OR_ADVERTISEMENT_PAGE": 33,
+      "REDIRECT_OR_UNKNOWN": 7,
+      "INVALID_OR_UNSUPPORTED": 0
+    },
+    "eligibility_counts_for_five_product_route_candidates": {
+      "ELIGIBLE_FOR_FINAL_REVIEW": 0,
+      "REVIEW_REQUIRED": 4,
+      "EXCLUDED": 0,
+      "INSUFFICIENT_EVIDENCE": 1
+    },
+    "url_query_handling": "All five candidate URLs have no query parameters. No parameters were stripped or added."
+  },
+  "research_store": {
+    "implementation_status": "IMPLEMENTED_NOT_ACTIVATED",
+    "package": "research_observation_store",
+    "storage": "Separate caller-selected SQLite database; rejects the protected production Database.sqlite by resolved path and file identity.",
+    "append_only_observations": true,
+    "stable_observation_ids": "Deterministic UUIDv5 from the caller-provided stable idempotency key.",
+    "duplicate_safe_ingestion": true,
+    "merchant_and_candidate_url_references": true,
+    "source_ad_record_and_observation_provenance": true,
+    "requested_redirect_final_url_fields": true,
+    "fetch_and_extraction_outcomes_separate": true,
+    "raw_and_normalized_values_separate": true,
+    "raw_html_storage": false,
+    "trusted_price_status_or_approval": false,
+    "sensitive_query_values_filtered": true,
+    "retention_policy": "Creation requires an explicit retention duration and approval reference; no duration is selected by this task.",
+    "pilot_database_created": false,
+    "real_pilot_persistence_status": "BLOCKED_PENDING_APPROVED_RETENTION_AND_OPERATOR_POLICY",
+    "store_product_sensor_adapter": "observation_from_collection_result maps the existing StoreProductCollector metadata-only result into the isolated store; no fetch or persistence was invoked."
+  },
+  "remaining_blockers": {
+    "operator_decisions": [
+      "Confirm the four public-facing brands are Algerian merchant sources and establish each legal operator.",
+      "Resolve whether the four brands represent distinct legal operators.",
+      "Approve an exact pilot roster and the source-specific product URLs.",
+      "Document terms, robots, legal-policy basis, and technical source review for each selected URL.",
+      "Select and approve an explicit retention duration and operator policy for the isolated observation store.",
+      "Provide the separate live-start authorization after preparation and review."
+    ],
+    "technical_or_access_checks": [
+      "Worker 061 VPS runtime, outbound egress, persistent path, process locking, and deployed-build checks remain NOT_VERIFIED.",
+      "No current technical access or challenge state is known for any merchant destination because none was requested."
+    ],
+    "future_request_stop_conditions": [
+      "CAPTCHA or anti-bot challenge",
+      "Authentication requirement",
+      "HTTP 403, 429, or other explicit denial/block",
+      "Any unreviewed redirect destination"
+    ]
+  },
+  "database_safety": {
+    "path": "data/Database.sqlite",
+    "before_sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "after_sha256": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "read_only_inspection": true
+  },
+  "test_results": {
+    "runs": [
+      {
+        "command": "C:\\Users\\Idris\\AppData\\Local\\Temp\\kratzwerk-worker059-py311-d3d0ae8419354b41ac2ecb406eaeb3ea\\Scripts\\python.exe -B -m pytest -p no:cacheprovider -q tests/test_research_observation_store.py",
+        "result": "8 passed"
+      },
+      {
+        "command": "C:\\Users\\Idris\\AppData\\Local\\Temp\\kratzwerk-worker059-py311-d3d0ae8419354b41ac2ecb406eaeb3ea\\Scripts\\python.exe -B -m pytest -p no:cacheprovider -q tests/test_store_product_collection.py::test_local_end_to_end_transport_scheduler_extraction_and_provenance",
+        "result": "1 passed"
+      }
+    ],
+    "json_syntax_validation": "PASS",
+    "scope": "Synthetic local fixtures and loopback-only integration; no merchant network requests."
+  },
+  "reports": [
+    "reports/worker_062_merchant_candidate_register.md",
+    "reports/worker_062_product_url_register.md",
+    "reports/worker_062_pilot_preparation.json",
+    "reports/worker_062_final_readiness.md"
+  ]
+}
