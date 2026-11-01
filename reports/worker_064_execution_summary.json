@@ -1,0 +1,118 @@
+{
+  "document_id": "worker_064_execution_summary",
+  "worker": 64,
+  "title": "Worker 064 — Public Store Observation Pilot",
+  "recorded_at_utc": "2026-11-01T10:26:46Z",
+  "final_execution_decision": "BLOCKED_PENDING_OPERATOR_DECISIONS",
+  "authorization_and_scope": {
+    "collection_policy_reference": "Worker 064 user task dated 2026-11-01",
+    "merchant_candidate_hard_limit": 10,
+    "merchant_candidates_reassessed": 8,
+    "product_page_requests_per_merchant_hard_limit": 2,
+    "product_page_attempts_hard_limit": 20,
+    "global_concurrent_merchant_requests_limit": 1,
+    "minimum_same_merchant_interval_seconds": 60,
+    "rolling_24h_product_page_attempts_per_merchant_limit": 2,
+    "required_product_transport": "existing SafeStoreFetcher and StoreProductCollector",
+    "production_database_write_authorized": false
+  },
+  "ad_library_sensor": {
+    "interface": "sensors.facebook_ads_sensor.collect_live_ads",
+    "mode": "read-only; store_capture was not called",
+    "existing_worker063_candidate_records_reused": 8,
+    "new_queries": [
+      {"keyword": "informatique algerie", "country": "DZ", "query_local_unique_ads": 27, "scroll_steps": 3, "final_cards": 27, "product_route_candidates_detected": 0},
+      {"keyword": "bijoux algerie", "country": "DZ", "query_local_unique_ads": 83, "scroll_steps": 10, "final_cards": 83, "product_route_candidates_detected": 0},
+      {"keyword": "sport algerie", "country": "DZ", "query_local_unique_ads": 49, "scroll_steps": 6, "final_cards": 58, "product_route_candidates_detected": 0}
+    ],
+    "query_local_card_total": 159,
+    "cross_query_unique_library_id_count": null,
+    "additional_merchant_candidates_retained": 0,
+    "additional_product_routes_detected": 0,
+    "new_records_persisted": 0,
+    "limitation": "Live query results were processed transiently; no ad rows or observation rows were written to production. Cross-query ID deduplication was not retained."
+  },
+  "discovery_and_review": {
+    "ad_derived_merchant_candidates": 8,
+    "candidate_ids": ["KW063-M01", "KW063-M02", "KW063-M03", "KW063-M04", "KW063-M05", "KW063-M06", "KW063-M07", "KW063-M08"],
+    "product_page_route_candidates": 8,
+    "product_routes_from_worker063": 7,
+    "additional_diar_dzair_product_route_candidate": "KW064-U08",
+    "known_legal_operator_identities": 2,
+    "operator_distinctness_across_all_candidates": "UNRESOLVED",
+    "source_eligibility_counts": {"ELIGIBLE": 0, "REVIEW_REQUIRED": 7, "EXCLUDED": 1},
+    "product_url_classification_counts": {"ELIGIBLE": 0, "REVIEW_REQUIRED": 6, "EXCLUDED": 2},
+    "separately_preserved_excluded_source_count": 1,
+    "robots_review": {
+      "bricoutillages.com": {"review_date": "2026-11-01", "url": "https://bricoutillages.com/robots.txt", "http_status": 200, "relevant_product_route": "Allowed; no matching disallow for /product/ path", "interpretation": "Crawl rule only; not legal authorization."},
+      "ooredoo.dz": {"url": "https://www.ooredoo.dz/robots.txt", "finding": "Empty Disallow previously observed; not treated as authorization."},
+      "other_candidate_hosts": "Not resolved in the current review; these sources remain REVIEW_REQUIRED."
+    }
+  },
+  "product_collection": {
+    "distinct_merchants_attempted": 0,
+    "eligible_product_urls": 0,
+    "product_page_attempts": 0,
+    "successful_http_responses": 0,
+    "failed_http_responses": 0,
+    "http_401_403_429": 0,
+    "captcha_or_anti_bot_stops": 0,
+    "redirects": 0,
+    "cross_host_redirects": 0,
+    "retries": 0,
+    "successful_extractions": 0,
+    "incomplete_extractions": 0,
+    "failed_extractions": 0,
+    "actual_product_field_count": 0,
+    "reason_no_product_request": "No candidate product URL reached ELIGIBLE. Seven merchant candidates remain REVIEW_REQUIRED; Diar Dzair is EXCLUDED by its platform terms, and Casa Chic's only Ad Library URL is HTTP/port 80."
+  },
+  "research_observation_store": {
+    "status": "NOT_ACTIVATED",
+    "implementation_reused": "research_observation_store plus StoreProductCollector adapter from Worker 062",
+    "retention_duration_days": null,
+    "retention_approval_reference": null,
+    "reason": "No approved retention duration/reference was supplied. No durable observation store was created. No product observation existed to persist; required reports preserve the execution audit trail.",
+    "raw_html_retained": false,
+    "trusted_price_evidence_written": false
+  },
+  "transport_controls_reviewed": {
+    "fetcher": "SafeStoreFetcher worker058.1 / https-pinned-v2",
+    "https_port_443_only": true,
+    "max_wire_and_decoded_response_bytes": 2097152,
+    "overall_deadline_seconds": 15,
+    "max_redirects": 3,
+    "cross_host_redirect_requires_independent_host_review": true,
+    "cross_process_scheduler_required": true,
+    "same_host_pacing_and_rolling_limit_enforced_by_scheduler": true,
+    "runtime_dependency_pins": {"python": "3.11.0", "httpx": "0.28.1", "httpcore": "1.0.9", "openssl": "1.1.1q"},
+    "live_merchant_transport_exercised": false,
+    "deployment_runtime_and_egress_verified": false
+  },
+  "database_safety": {
+    "path": "data/Database.sqlite",
+    "sha256_before": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "sha256_after": "5ca539eb7a03d84aad54b79c353961e78efc594df54eb6aa13410cf574aa0aff",
+    "mutated": false,
+    "migrations_run": false
+  },
+  "verification": {
+    "project_code_changed": false,
+    "task_code_tests_run": 0,
+    "prior_focused_tests_reused_from_worker063": "127 passed (SafeStoreFetcher, schedulers, collector, observation store, product sensor and provenance; recorded 2026-10-31)",
+    "why_tests_not_repeated": "No project code was changed; Worker 063's focused validation was not repeated, consistent with the instruction not to repeat prior validation exercises.",
+    "new_report_json_syntax": "PASS",
+    "new_report_count_reconciliation": "PASS — 0 observations, 8 product-route candidates (6 review required, 2 excluded), 0 product-page attempts; source counts reconcile with the Markdown reports."
+  },
+  "remaining_operator_decisions": [
+    "Resolve the scope/content of Bricoutillages' referenced conditions of sale and confirm whether the website is operated by a specific legal entity; the public brand/domain identity is established but the operator is not.",
+    "Provide source-specific legal/terms and operator identity evidence for Kingdom SHOP, peinture pro / JustSell, Vendex DZ, Casa Chic, and UniQa Dz; no blanket merchant-permission prerequisite is being imposed.",
+    "Resolve the Ooredoo legal-notice ambiguity; Ooredoo was not used as an initial pilot source.",
+    "If durable research persistence is later needed, specify an explicit retention period and approval reference."
+  ],
+  "reports": [
+    "reports/worker_064_extracted_store_products.md",
+    "reports/worker_064_extracted_store_products.json",
+    "reports/worker_064_merchant_and_url_register.md",
+    "reports/worker_064_execution_report.md"
+  ]
+}
